@@ -45,6 +45,7 @@
 !!	# TABLA DE CONTENIDOS:
 !!
 !!	1)	Limbo
+!!	2)	Descampado 1
 !!
 !!------------------------------------------------------------------------------
 
@@ -61,6 +62,26 @@ Room	limbo "en algún lugar"
 		clarification 0,
  has	male;
 
+
+!!==============================================================================
+!!	2)	Descampado 1
+!!------------------------------------------------------------------------------
+
+Outdoors	descampado_1 "Descampado"
+ with	name_m	'descampado',
+		gender	G_MASCULINO,
+		initial [; if (self hasnt visited) {
+			O__M(self, 1);
+			PressAnyKey();
+			new_line;
+			return true;
+		}],
+		description [; 
+			if (self hasnt visited) return O__M(self, 2);
+			return O__M(self, 3);
+		],
+ has	male;
+
 !! XXX OBJETO PROTAGONISTA
 Object	-> Chico "chico"
  with	name_m	'personaje' 'protagonista',
@@ -68,5 +89,6 @@ Object	-> Chico "chico"
 		adjectives 'principal',
 		description [; return O__M(self, 1); ],
  has	animate male proper;
+
 
 

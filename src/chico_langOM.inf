@@ -6,6 +6,29 @@
 	switch (obj) {
 
 
+descampado_1: switch (n) {
+1:	! introducción
+print "---¿Por qué tenemos que desmembrarla?
+^^
+Ella es sólo un bulto en el suelo, recortado por los deslumbrantes faros del coche. Es una noche sin luna y sin estrellas y los faros son la única luz del descampado. Hace frío.
+^^
+---Porque te he dicho que hay que hacerlo.
+^^
+Saca algo del maletero y lo lanza hacia aquí. Cae a apenas un paso del cuerpo. Una sierra. En la noche, las manchas que salpican la tierra alrededor del cuerpo parecen negras. Algo más aterriza junto a la sierra. Un rollo de bolsas de plástico de basura negras. Bajo los faros del coche todo es o blanco o negro.";
+new_line;
+return true;
+2:	! description (inicial)
+print "Mario viene desde el maletero y mira con ojos apremientes la sierra del suelo, esperando que cumpla la orden. El muy cabrón. Sé que el otro, Alberto, no va a mover un músculo. Está ahí, apoyado contra el capó negro, fumando tranquilamente. Y ella... ella es sólo un bulto en el suelo, con el largo pelo negro enmarañado y empapado en sangre. Joder, tiene algo enrredado en el pelo. Tal vez trocitos de cerebro. No debían estar ahí, sino dentro de su cabeza... joder. Está claro que ella tampoco va a mover un músculo.
+^^
+---Vamos, chico.";
+new_line;
+return true;
+3:	! description
+print "Bajo los faros del coche todo es o blanco o negro. Mario mira con ojos apremiantes la sierra del suelo, esperando que cumpla la orden. El muy cabrón. Está claro que el otro, Alberto, no va a mover un músculo. Está ahí, apoyado contra el capó negro, fumando tranquilamente. Y ella... ella es sólo un bulto en el suelo, con el largo pelo negro enmarañado y empapado en sangre y cubierto de trocitos de cerebro... ella tampoco va a mover un músculo.";
+new_line;
+return true;
+}
+
 limbo: switch (n) {
 1:	! description
 print "Más allá de la barrera casi insuperable que separa la realidad de todo lo demás. Un lugar etéreo, donde la vida, la materia y la vitalidad no son necesariamente constantes; un lugar donde el tiempo y el espacio no existen tal y como los capta nuestro ser despierto...";

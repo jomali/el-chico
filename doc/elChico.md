@@ -16,7 +16,7 @@ Mario viene desde el maletero y mira con ojos apremientes la sierra del suelo, e
 
 --Vamos, chico.
 
-Bajo los faros del coche todo es o blanco o negro. Mario mira con ojos apremientes la sierra del suelo, esperando que cumpla la orden. El muy cabrón. Está claro que el otro, Alberto, no va a mover un músculo. Está ahí, apoyado contra el capó negro, fumando tranquilamente. Y ella... ella es sólo un bulto en el suelo, con el largo pelo negro enmarañado y empapado en sangre y cubierto de trocitos de cerebro... ella tampoco va a mover un músculo.
+Bajo los faros del coche todo es o blanco o negro. Mario mira con ojos apremiantes la sierra del suelo, esperando que cumpla la orden. El muy cabrón. Está claro que el otro, Alberto, no va a mover un músculo. Está ahí, apoyado contra el capó negro, fumando tranquilamente. Y ella... ella es sólo un bulto en el suelo, con el largo pelo negro enmarañado y empapado en sangre y cubierto de trocitos de cerebro... ella tampoco va a mover un músculo.
 
 Un hijo puta con aires de gángster de película. Zapatos negros, traje negro, camisa blanca manchada en sangre negra, pistola negra en la mano. Una pistola de verdad. Loco hijo de puta. ¿Por qué demonios me metería en esta mierda?
 

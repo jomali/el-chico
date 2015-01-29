@@ -1696,7 +1696,7 @@ Default _grammatical_inflection 2;
 		!! El prompt aparece justo antes de pedir una nueva línea al jugador. 
 		!! Puede definirse para que sea una frase, o se genere una frase 
 		!! aleatoria en cada turno.
-		new_line; print (emph) "> ";
+		new_line; print "> ";
 
 	Pronouns:
 		!! Esta acción (generada por el verbo PRONOMBRES) muestra una lista 
