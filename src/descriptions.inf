@@ -1,0 +1,82 @@
+
+
+!!==============================================================================
+!!
+!!	EL CHICO
+!!	Definición de mensajes de los objetos
+!!
+!!==============================================================================
+!!
+!!	Archivo:		descriptions.inf
+!!	Autor(es):		J. Francisco Martín <jfm.lisaso@gmail.com>
+!!					Ana María Río
+!!	Idioma:			ES (Castellano)
+!!	Sistema:		Inform-INFSP 6
+!!	Plataforma:		Máquina-Z / GLULX
+!!	Versión:		0.0
+!!	Fecha:			2015/01/29
+!!
+!!------------------------------------------------------------------------------
+!!
+!!	# HISTORIAL DE VERSIONES
+!!
+!!	0.0: 2015/01/29 Inicio del desarrollo.
+!!
+!!------------------------------------------------------------------------------
+!!
+!!	This program is free software; you can redistribute it and/or modify
+!!	it under the terms of the GNU General Public License as published by
+!!	the Free Software Foundation; either version 2 of the License, or
+!!	(at your option) any later version.
+!!
+!!	This program is distributed in the hope that it will be useful,
+!!	but WITHOUT ANY WARRANTY; without even the implied warranty of
+!!	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+!!	GNU General Public License for more details.
+!!
+!!	You should have received a copy of the GNU General Public License along
+!!	with this program; if not, write to the Free Software Foundation, Inc.,
+!!	51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. Or see
+!!	<http://www.gnu.org/licenses/>.
+!!
+!!	Copyright (C) 2015, J. Francisco Martín
+!!
+!!------------------------------------------------------------------------------
+
+
+[ LanguageOM obj n;
+	switch (obj) {
+
+
+!!------------------------------------------------------------------------------
+!!	LIMBO
+limbo: switch (n) {
+1:	! description
+print "Más allá de la barrera casi insuperable que separa la realidad de todo lo demás. Un lugar etéreo, donde la vida, la materia y la vitalidad no son necesariamente constantes; un lugar donde el tiempo y el espacio no existen tal y como los capta nuestro ser despierto...";
+if (LIMBO hasnt visited) print "^^---¿Qué? ¿Cómo?... ¿cómo he llegado aquí?";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+!!	CHICO
+Chico: switch (n) {
+1:	! description
+return L__M(##Miscellany, 19);
+}
+
+
+	}
+];
+
+
+!!==============================================================================
+!!	Rutina para imprimir los mensajes de los objetos
+!!------------------------------------------------------------------------------
+
+[ O__M obj n x1;
+	if (n == 0) n = 1;
+	LanguageOM(obj, n, x1);
+];
+
+

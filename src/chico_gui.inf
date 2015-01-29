@@ -1,0 +1,182 @@
+
+
+!!==============================================================================
+!!
+!!	EL CHICO
+!!	Definición de la interfaz gráfica (sólo en GLULX)
+!!
+!!==============================================================================
+!!
+!!	File:			chico_gui.inf
+!!	Author(s):		J. Francisco Martín <jfm.lisaso@gmail.com>
+!!	Language:		ES (Castellano)
+!!	System:			Inform-INFSP 6
+!!	Platform:		GLULX
+!!	Version:		1.0
+!!	Release:		2015/01/29
+!!
+!!------------------------------------------------------------------------------
+!!
+!!	# HISTORIAL DE VERSIONES
+!!
+!!	1.0: 2015/01/29	Definición original de la interfaz. 
+!!
+!!------------------------------------------------------------------------------
+!!
+!!	This program is free software; you can redistribute it and/or modify
+!!	it under the terms of the GNU General Public License as published by
+!!	the Free Software Foundation; either version 2 of the License, or
+!!	(at your option) any later version.
+!!
+!!	This program is distributed in the hope that it will be useful,
+!!	but WITHOUT ANY WARRANTY; without even the implied warranty of
+!!	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+!!	GNU General Public License for more details.
+!!
+!!	You should have received a copy of the GNU General Public License along
+!!	with this program; if not, write to the Free Software Foundation, Inc.,
+!!	51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. Or see
+!!	<http://www.gnu.org/licenses/>.
+!!
+!!	Copyright (C) 2015, J. Francisco Martín
+!!
+!!------------------------------------------------------------------------------
+!!
+!!	# TABLA DE CONTENIDOS:
+!!
+!!	1)	Constantes y variables de la interfaz.
+!!	2)	Extensiones.
+!!	3)	Definición de la interfaz.
+!!	4)	Rutinas auxiliares de manejo de la interfaz.
+!!	5)	Inicialización de las ventanas.
+!!
+!!------------------------------------------------------------------------------
+
+
+!!==============================================================================
+!!	1)	Constantes y variables de la interfaz.
+!!------------------------------------------------------------------------------
+
+
+!!==============================================================================
+!!	2)	Extensiones.
+!!------------------------------------------------------------------------------
+
+Include "gimage.h";				! GWindows: Image Window Widget
+Include "gstatusX.h";			! GWindows: Status Window Widget
+Include "gtile.h";				! GWindows: Tiled Image Window Widget
+
+
+!!==============================================================================
+!!	3)	Definición de la interfaz.
+!!------------------------------------------------------------------------------
+WindowPair rootUI;
+  WindowPair -> bottomCentralArea;
+	WindowPair -> -> centralArea;
+	  WindowPair -> -> -> centralSecondaryArea;
+		WindowPair -> -> -> -> mainArea;
+		  TextBuffer -> -> -> -> -> textWindow;
+		  GStatusXWin -> -> -> -> -> statusBar
+			with	split 1, split_dir winmethod_Above;
+		GraphWin -> -> -> -> leftArea
+		  with split 26, split_dir winmethod_Left;
+	  GraphWin -> -> -> rightArea
+		with split 8, split_dir winmethod_Right;
+	GraphWin -> -> topArea
+	  with	split 0, split_dir winmethod_Above;
+  GraphWin -> bottomArea
+	with split 2, split_dir winmethod_Below,
+		 redraw [;
+			if (self.width > 1160) {
+				glk_window_set_arrangement(parent(leftArea).winid, 
+					winmethod_Left|winmethod_Proportional, 
+					40, 
+					leftArea.winid);
+				leftArea.split = 40;
+				glk_window_set_arrangement(parent(rightArea).winid, 
+					winmethod_Right|winmethod_Proportional, 
+					12, 
+					rightArea.winid);
+				rightArea.split = 12;
+			} else if (self.width > 900) {
+				glk_window_set_arrangement(parent(leftArea).winid, 
+					winmethod_Left|winmethod_Proportional, 
+					34, 
+					leftArea.winid);
+				leftArea.split = 34;
+				glk_window_set_arrangement(parent(rightArea).winid, 
+					winmethod_Right|winmethod_Proportional, 
+					10, 
+					rightArea.winid);
+				rightArea.split = 10;
+			} else if (self.width > 660) {
+				glk_window_set_arrangement(parent(leftArea).winid, 
+					winmethod_Left|winmethod_Proportional, 
+					26, 
+					leftArea.winid);
+				leftArea.split = 26;
+				glk_window_set_arrangement(parent(rightArea).winid, 
+					winmethod_Right|winmethod_Proportional, 
+					8, 
+					rightArea.winid);
+				rightArea.split = 8;
+			} else if (self.width > 460) {
+				glk_window_set_arrangement(parent(leftArea).winid, 
+					winmethod_Left|winmethod_Proportional, 
+					6, 
+					leftArea.winid);
+				leftArea.split = 6;
+				glk_window_set_arrangement(parent(rightArea).winid, 
+					winmethod_Right|winmethod_Proportional, 
+					6, 
+					rightArea.winid);
+				rightArea.split = 6;
+			} else {
+				glk_window_set_arrangement(parent(leftArea).winid, 
+					winmethod_Left|winmethod_Proportional, 
+					0, 
+					leftArea.winid);
+				leftArea.split = 0;
+				glk_window_set_arrangement(parent(rightArea).winid, 
+					winmethod_Right|winmethod_Proportional, 
+					0, 
+					rightArea.winid);
+				rightArea.split = 0;
+			}
+			glk_window_get_size(statusBar.winid, 
+				statusBar.&width, 
+				statusBar.&height);
+			statusBar.update();
+		 ];
+
+
+!!==============================================================================
+!!	4)	Rutinas auxiliares de manejo de la interfaz.
+!!------------------------------------------------------------------------------
+
+
+!!==============================================================================
+!!	5)	Inicialización de las ventanas.
+!!------------------------------------------------------------------------------
+[ InitGWindows;
+	Active_UI = rootUI;
+	Main_GWindow = textWindow;
+
+	!! Definición de estilo de texto de usuario 1:
+	glk_stylehint_set(wintype_TextBuffer, style_User1, 
+		stylehint_BackColor, $FFFFAA);
+	glk_stylehint_set(wintype_TextBuffer, style_User1, 
+		stylehint_Oblique, 0);
+	glk_stylehint_set(wintype_TextBuffer, style_User1,
+		stylehint_Weight, 0);
+
+	!! Definición de estilo de texto de usuario 2:
+	glk_stylehint_set(wintype_TextBuffer, style_User2, 
+		stylehint_BackColor, $CCCCCC);
+	glk_stylehint_set(wintype_TextBuffer, style_User2, 
+		stylehint_Oblique, 0);
+	glk_stylehint_set(wintype_TextBuffer, style_User2,
+		stylehint_Weight, 0);
+];
+
+

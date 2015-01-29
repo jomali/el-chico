@@ -1,0 +1,956 @@
+!% -SD
+!% +language_name=Spanish
+!% $MAX_LABELS=2000
+!% $MAX_ZCODE_SIZE=45000
+!% $list
+
+
+!!==============================================================================
+!!
+!!	EL CHICO
+!!
+!!==============================================================================
+!!
+!!	Archivo:		chico.inf
+!!	Autor(es):		J. Francisco Martín <jfm.lisaso@gmail.com>
+!!	Idioma:			ES (Castellano)
+!!	Sistema:		Inform-INFSP 6
+!!	Plataforma:		GLULX
+!!	Versión:		0.0
+!!	Fecha:			2015/01/29
+!!
+!!------------------------------------------------------------------------------
+!!
+!!	# HISTORIAL DE VERSIONES
+!!
+!!	0.0: 2015/01/29	Inicio del desarrollo.
+!!
+!!------------------------------------------------------------------------------
+!!
+!!	This program is free software; you can redistribute it and/or modify
+!!	it under the terms of the GNU General Public License as published by
+!!	the Free Software Foundation; either version 2 of the License, or
+!!	(at your option) any later version.
+!!
+!!	This program is distributed in the hope that it will be useful,
+!!	but WITHOUT ANY WARRANTY; without even the implied warranty of
+!!	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+!!	GNU General Public License for more details.
+!!
+!!	You should have received a copy of the GNU General Public License along
+!!	with this program; if not, write to the Free Software Foundation, Inc.,
+!!	51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. Or see
+!!	<http://www.gnu.org/licenses/>.
+!!
+!!	Copyright (C) 2015, J. Francisco Martín
+!!
+!!------------------------------------------------------------------------------
+!!
+!!	# TABLA DE CONTENIDOS:
+!!
+!!	1)	Constantes y variables globales del relato
+!!	2)	Reemplazos de rutinas utilizadas por la librería Inform
+!!	3)	Librerías y extensiones (parte 1 de 2)
+!!	4)	Puntos de entrada Glk con GWindows (sólo en GLULX)
+!!	5)	Librerías y extensiones (parte 2 de 2)
+!!	6)	Puntos de entrada del relato
+!!	7)	Otras rutinas
+!!	8)	Gramática estándar y extendida
+!!	9)	Definición de atributos, clases y objetos
+!!
+!!------------------------------------------------------------------------------
+
+
+!!==============================================================================
+!!	1)	Constantes y variables globales del relato
+!!------------------------------------------------------------------------------
+
+!! Información bibliográfica:
+
+Constant Story
+"EL CHICO";
+
+Constant Headline
+"Una ficción pulp interactiva por J. Francisco Martín";
+
+#Ifdef DEBUG;					! Fase de desarrollo
+Constant Checking 1;
+Release 0;
+#Ifnot;							! Versión publicable
+Constant Checking 0;
+Release 0;
+#Endif; ! DEBUG;
+
+!! Constantes de la librería Inform:
+
+Constant MANUAL_PRONOUNS;		! Los pronoms. refieren a objetos ya mencionados
+Constant MAX_CARRIED 3;			! Máx. de objetos que se pueden llevar en mano
+Constant NO_PLACES;				! Acciones LUGARES y OBJETOS desactivadas
+Constant NO_SCORE;				! No se lleva conteo de puntuación
+Constant SIN_MENSAJES;			! Se omiten los mensajes por defecto de la lib.
+
+!! Constantes y variables de la extensión *types*:
+
+Constant PARSER_PREFIX "[";		! Define texto inicial de los mens. del parser
+Constant PARSER_SUFIX "]";		! Define texto final de los mens. del parser
+Global _parser_style = _IST_;	! Selecciona estilo de los mensajes del parser
+
+!! Constantes de la extensión *topicInventory*:
+
+Constant TINV_STYLE _IST_;		! Estilo de los mensajes de *topicInventory*
+Constant TINV_PREFIX "[";		! Define texto inicial de los mensajes
+Constant TINV_SUFIX "]";		! Define texto final de los mensajes
+Constant TINV_MSG1 "";			! Texto del mensaje MSG1
+Constant TINV_MSG2 "";			! Texto del mensaje MSG2
+Constant TINV_COMMA " / ";		! Separador del inventario de temas
+Constant TINV_OR " / ";			! Separador final del inventario de temas
+Constant TINV_NO_MSG "No hay temas que tratar.";
+
+!! Otras constantes y variables del relato:
+
+Constant _TEXT_BUFFER_SIZE = 64;
+Array _text_buffer --> _TEXT_BUFFER_SIZE;
+
+Global _keyword_highlighting=true; ! Indica si el resaltado está activado
+Global _object_keyword_st	=1;	! Estilo de texto para palabras clave OBJETO
+Global _direction_keyword_st=2;	! Estilo de texto para palabras clave DIRECCIÓN
+Global _topic_keyword_st	=3;	! Estilo de texto para palabras clave TEMA
+
+
+!!==============================================================================
+!!	2)	Reemplazos de rutinas utilizadas por la librería Inform
+!!------------------------------------------------------------------------------
+
+Replace Banner;					! Créditos generales de la aplicación
+Replace DrawStatusLine;			! Dibuja la barra de estado
+Replace ExamineSub;				! Rutina para la acción ##Examine
+Replace GetGNAOfObject;			! Rutina para obtener el GNA de un objeto
+Replace LMode1Sub;				! Lookmode 1: Breve
+Replace LMode2Sub;				! Lookmode 2: Largo (establecido por defecto)
+Replace LMode3Sub;				! Lookmode 3: Superbreve
+Replace LookSub;				! Rutina para la acción ##Look
+Replace PSN__;					! Rutina para imprimir nombre corto de un obj.
+Replace VersionSub;				! Créditos detallados de la aplicación
+
+
+!!==============================================================================
+!!	3)	Librerías y extensiones (parte 1 de 2)
+!!------------------------------------------------------------------------------
+
+#Ifdef TARGET_GLULX;
+Include "gwindefs.h";			! GWindows: Definiciones
+#Endif; ! TARGET_GLULX;
+
+Include "Parser.h";				! Decodifica la entrada del teclado
+Include "types.h";				! Rutinas para modificar estilo de los textos
+Include ">chico_lib.inf";		! Personalizaciones de la librería Inform
+Include ">chico_langLM.inf";	! Mensajes de la librería
+Include ">chico_langOM.inf";	! Mensajes de los objetos
+
+#Ifdef TARGET_GLULX;
+Include "gwincls.h";			! GWindows: Window Class Framework
+#Endif; ! TARGET_GLULX;
+
+
+!!==============================================================================
+!!	4)	Puntos de entrada Glk con GWindows (sólo en GLULX)
+!!------------------------------------------------------------------------------
+
+#Ifdef TARGET_GLULX;
+
+!!------------------------------------------------------------------------------
+!! Rutina gancho encargada de reinicializar el gestor de audio Damusix y 
+!! recuperar los canales de audio. (Sin esta rutina, al reiniciar la aplicación 
+!! la música de la nueva partida se solapará con aquella que se estuviese 
+!! reproduciendo durante la partida anterior).
+!!
+!!	@param phase
+!!	@param type
+!!	@param ref
+!!	@param rock
+!!	@retorna nada
+!!------------------------------------------------------------------------------
+[ GWindowsGlkIdentify phase type ref rock;
+	!! Se identifican todos los Objetos de Sonido gestionados por Damusix:
+	Damusix.IdentificarSonidos(phase);
+	phase = type + ref + rock; ! (por evitar alertas del compilador)
+];
+
+!!------------------------------------------------------------------------------
+!! Punto de entrada para manejar eventos Glk con la librería GWindows. 
+!! Reemplaza al habitual 'HandleGlkEvent(ev, context, abortres)'.
+!!
+!!	@param ev
+!!	@param context
+!!	@param abortres
+!!	@retorna nada
+!!------------------------------------------------------------------------------
+[ GWindowsGlkEvent ev context abortres
+	i;
+	!! Se notifica el efecto de fade de Tiempo Real:
+	Damusix.NotificarFade(ev);
+	!! Se gestiona el evento Glk:
+	switch (ev-->0) {
+	0:	! evtype_None		 - none
+	1:	! evtype_Timer		 - event repeated at fixed intervals
+		AimingManager.run();
+	2:	! evtype_CharInput	 - keystroke input in a window
+	3:	! evtype_LineInput	 - full line of input in a window
+	4:	! evtype_MouseInput	 - mouse input in a window
+	5:	! evtype_Arrange	 - some windows need redrawing
+	6:	! evtype_Redraw		 - graphic windows need redrawing
+	7:	! evtype_SoundNotify - sound finished playing
+	8:	! evtype_Hyperlink	 - selection of a hyperlink in a window
+		glk_request_hyperlink_event(gg_mainwin);
+		glk_cancel_char_event(gg_mainwin);
+		glk_cancel_line_event(gg_mainwin, 0);
+		!! ev-->2 almacena un objeto (sobre el que creamos el hipervínculo)
+		PrintToBuffer(_text_buffer, _TEXT_BUFFER_SIZE, ev-->2);
+		for (i=0 : i<=_text_buffer-->0 : i++) {
+			abortres-->i = _text_buffer-->i;
+		}
+		return 2;
+	}
+	context = 0; ! (por evitar alertas del compilador)
+];
+
+
+#Endif; ! TARGET_GLULX;
+
+
+!!==============================================================================
+!!	5)	Librerías y extensiones (parte 2 de 2)
+!!------------------------------------------------------------------------------
+
+#Ifdef TARGET_GLULX;
+Include "infglk.h";				! Envoltura sobre las funciones Glk
+Include "damusix.h";			! Administrador unificado de sonido en GLULX
+Include "gwindows.h";			! GWindows: Reemplazos de la librería
+Include ">chico.bli";			! Recursos multimedia de la aplicación
+Include ">chico_gui.inf";		! Definición de la interfaz gráfica
+#Endif; ! TARGET_GLULX;
+
+Include "aimAndFire.h";			! Sistema de apuntado y disparo QTE
+Include "pPreprocessor.h";		! Preprocesador del parser
+Include "receptacles.h";		! Contenedores con límites de capacidad
+Include "topicInventory.h";		! Sistema de conversación con inv. de temas
+
+Include "VerbLib.h";			! Define cómo trabajan las acciones
+
+
+!!==============================================================================
+!!	6)	Puntos de entrada del relato
+!!------------------------------------------------------------------------------
+!!	 -	BeforeParsing()
+!!	 -	Initialise()
+!!	 -	InScope()
+!!	 -	PrintVerb()
+!!	 -	UnknownVerb()
+!!------------------------------------------------------------------------------
+
+!!------------------------------------------------------------------------------
+!! Permite manipular la entrada de usuario antes de que sea analizada por la 
+!! librería. Es llamada después de que el sistema haya leído la entrada de 
+!! texto y haya definido ya las tablas *buffer* y *parser*, pero aún no ha 
+!! hecho nada más salvo establecer el contador de palabras *wn* a 1. La rutina 
+!! puede manipular estas tablas libremente mientras permanezcan consistentes la 
+!! una con la otra, y puede dejar el contador de palabras en cualquier punto.
+!!
+!!	@returna nada
+!!------------------------------------------------------------------------------
+[ BeforeParsing;
+	ConversationManager.run();
+	ParsingPreprocessor.run();
+];
+
+!!------------------------------------------------------------------------------
+!! Inicializaciones del relato. Esta rutina es obligatoria y, entre otras 
+!! posibles inicializaciones, DEBE ESTABLECER LA LOCALIDAD INICIAL del jugador 
+!! (o el objeto accesible sobre o dentro el que empieza).
+!!
+!!	@retorna booleano/entero
+!!		tanto *verdadero* como *falso* para continuar con la ejecución normal 
+!!		del relato, o 2 para suprimir la impresión de los créditos de la 
+!!		aplicación, que de otra manera se imprimirían inmediatamente después de 
+!!		llamar a la rutina.
+!!------------------------------------------------------------------------------
+[ Initialise;
+	EraseWindow();
+
+	!! Comprobaciones del intérprete -------------------------------------------
+	CheckInterpreter();
+
+	!! Inicializaciones multimedia ---------------------------------------------
+	#Ifdef TARGET_GLULX;
+	!! Establece la escucha de eventos glk para el uso de hiperenlaces:
+	glk_request_hyperlink_event(gg_mainwin);
+	!! Inicializa los canales de audio:
+	!Damusix.AsignarCanal(SONIDO, CANAL, VOLUMEN, REPETICIONES);
+	!! Inicializa los parámetros del gestor del sistema de apuntado:
+	AimingManager.set_status_window(statusBar.winid);
+	#Endif; ! TARGET_GLULX;
+
+	!! Pantalla de inicio ------------------------------------------------------
+	Banner();
+	new_line;
+
+	!! Advertencia de la demostración:
+	#Ifdef DEMO_RELEASE;
+	print (strong) "ADVERTENCIA:", " Esta es una demostración de un relato 
+	interactivo en estado de desarrollo. Los contenidos (en especial los 
+	textos) mostrados a continuación no deben ser considerados en ningún 
+	momento ejemplo del resultado de la versión final del relato.^";
+	new_line;
+	#Endif; ! DEMO_RELEASE;
+
+	StartParserStyle();
+	CreateLink("Haz click aquí o pulsa una tecla para empezar");
+	EndParserStyle();
+	PressAnyKey();
+	EraseWindow();
+
+	!! Inicializaciones del relato ---------------------------------------------
+	!! Es importante realizar las inicializaciones del relato después de 
+	!! imprimir la pantalla de inicio. De lo contrario el nombre de la 
+	!! localidad inicial aparecerá escrito en la barra de estado.
+	SetGrammaticalInflection(FIRST_PERSON_PRESENT);
+	ChangePlayer(Chico);		! Establece el personaje jugable
+	lookmode = 2;				! Lookmode largo
+
+	return 2;
+];
+
+!!------------------------------------------------------------------------------
+!! Definición del foco del interlector; permite cambiar en el sistema la 
+!! definición de lo que se encuentra al alcance del personaje. Utiliza las 
+!! rutinas de la librería *ScopeWithin()* y *PlaceInScope()* para establecer 
+!! cuál debería ser el foco.
+!!
+!!	@retorna booleano
+!!		*falso* para indicar al sistema que añada todos los objetos que suelen 
+!!		estar por defecto al alcance, o *verdadero* para indicar que no se debe 
+!!		añadir nada más al foco
+!!------------------------------------------------------------------------------
+[ InScope person
+	item;
+	!! Aseguramos que la localidad actual esté siempre en el foco del personaje:
+	PlaceInScope(real_location);
+	!! En la oscuridad, se mueven al foco todos aquellos objetos que hayan sido 
+	!! manipulados ya previamente por el personaje:
+	if ((person == player) && (location == thedark)) {
+		objectloop(item in parent(self))
+			if (item has moved) PlaceInScope(item);
+	}
+
+	return false;
+];
+
+!!------------------------------------------------------------------------------
+!! Permite cambiar el verbo que imprime el sistema al hacer al usuario 
+!! preguntas del tipo: "Intenta de nuevo porque sólo se pudo entender que 
+!! quieres <lo que sea>.", en caso de que se haya definido alguna acción 
+!! inusual por medio de la rutina *UnknownVerb()*.
+!!
+!!	@param word
+!!		dirección de diccionario del verbo
+!!	@retorna booleano
+!!		*verdadero* para indicar al sistema que se ha imprimido el verbo, o 
+!!		*falso* para continuar con a ejecución normal y que el sistema imprima 
+!!		el verbo de la forma habitual
+!!------------------------------------------------------------------------------
+[ PrintVerb word;
+	if (word == 'no.verb' or 'teleport.verb') {
+		print "hacer algo con";
+		return true;
+	}
+
+	return false;
+];
+
+!!------------------------------------------------------------------------------
+!! Invocada por el sistema cuando se encuentra con un verbo desconocido, de 
+!! forma que pueda cambiarse por uno definido en el relato. Se utiliza para 
+!! contemplar la siguientes situaciones:
+!!
+!! 1) Desplazarse automáticamente a una localidad adyacente a la localidad 
+!! actual tecleando simplemente su nombre.
+!!
+!! 2) Lanzar una acción por defecto sobre un objeto cuando se teclea únicamente 
+!! su nombre. En este caso se sigue la implementación propuesta en 
+!! <http://rec.arts.int-fiction.narkive.com/Cz9j184N/inform-6-parser-question>, 
+!! con modificaciones para que sólo se intente lanzar la acción sobre objetos 
+!! que existen realmente y están presentes dentro del foco del personaje. De 
+!! otra forma, siempre se intentaría lanzar la acción ##DefaultAction, aún 
+!! cuando la intención del usuario no fuese manipular un objeto sino utilizar 
+!! una acción que en realidad no está definida. (Tenemos que asegurarnos que la 
+!! localidad actual se encuentra dentro del foco del personaje para que pueda 
+!! referirse a ella ---ver rutina *InScope()*...).
+!!
+!!	@retorna
+!!		*falso* para permitir que el sistema continúe con la ejecución normal e 
+!!		imprima un mensaje de error, o un valor de diccionario del verbo a 
+!!		utilizar en lugar del verbo desconocido
+!!------------------------------------------------------------------------------
+[ UnknownVerb
+	obj;
+
+	obj = ParsingPreprocessor.get_selected_object();
+	if (obj ~= real_location && obj ofclass Room) {
+		verb_wordnum = 0;
+		return 'teleport.verb';
+	}
+	if (TestScope(obj, player)) {
+		verb_wordnum = 0;
+		return 'no.verb';
+	}
+
+	return false;
+];
+
+
+!!==============================================================================
+!!	7)	Otras rutinas
+!!------------------------------------------------------------------------------
+!!	 -	CheckInterpreter()
+!!	 -	CreateLink()
+!!		 -	ObjectKeywordStyle()
+!!		 -	DirectionKeywordStyle()
+!!		 -	TopicKeywordStyle()
+!!	 -	EraseWindow()
+!!	 -	HorizontalRule()
+!!	 -	PressAnyKey()
+!!	 -	TopHolder()
+!!------------------------------------------------------------------------------
+
+!!------------------------------------------------------------------------------
+!! Comprueba las funcionalidades del intérprete.
+!!
+!!	@retorna verdadero
+!!------------------------------------------------------------------------------
+[ CheckInterpreter;
+	#Ifdef TARGET_GLULX;
+	!! Comprobaciones de Tiempo Real:
+	if (~~glk_gestalt(gestalt_Timer, 0)) {
+		print (strong) "ERROR:", " Esta aplicación utiliza eventos de tiempo 
+		real, pero tu intérprete GLULX no los soporta. Para ejecutar la 
+		aplicación necesitarás un intérprete adecuado.^";
+		new_line;
+		print (parser) "Pulsa una tecla para salir.";
+		PressAnyKey();
+		quit;
+	}
+	!! Comprobaciones de Gráficos y Audio:
+	if (~~(glk_gestalt(gestalt_Sound, 0) && glk_gestalt(gestalt_SoundMusic, 0)
+		&& glk_gestalt(gestalt_Graphics, 0))) {
+		print (strong) "ADVERTENCIA:", " Esta aplicación incluye contenidos
+		gráficos y de audio, pero tu intérprete GLULX no los soporta
+		adecuadamente. El programa se iniciará con parte o la totalidad de sus
+		recursos multimedia desactivados.^";
+		new_line;
+		print (parser) "Pulsa una tecla para continuar.";
+		PressAnyKey();
+		EraseWindow();
+	}
+	#Endif; ! TARGET_GLULX;
+	return true;
+];
+
+!!------------------------------------------------------------------------------
+!! Crea un hipervínculo con el objeto pasado como parámetro. Admite además un 
+!! texto opcional, para imprimirlo en lugar del objeto. (NOTA: Si se incluye la 
+!! extensión 'types.h', se utilizan estilos de resaltado de texto para destacar 
+!! los hipervínculos).
+!!
+!!	@param obj:Objeto || obj:String
+!!		objeto o cadena de caracteres utilizada para crear el hipervínculo
+!!	@param text:String (opcional)
+!!		texto alternativo del hipervínculo
+!!	@retorna boolean
+!!		falso si el objeto pasado como parámetro no es válido. Verdadero en 
+!!		caso contrario
+!!------------------------------------------------------------------------------
+[ CreateLink obj text
+	st;
+	!! Comprueba que 'obj' sea un parámetro válido:
+	if ((obj == 0) || (metaclass(obj) == nothing)) return false;
+	!! Establece inicio del hipervínculo:
+	#Ifdef TARGET_GLULX;
+	glk_set_hyperlink(obj);
+	#Endif; ! TARGET_GLULX;
+	!! Usa estilo de texto resaltado:
+	#Ifdef _TYPES_;
+	st = _current_style;
+	ObjectKeywordStyle();
+	if (metaclass(obj) == Object) {
+		if ((obj ofclass Room or CompassDirection) || (obj has door))
+			DirectionKeywordStyle();
+		!! TODO TopicKeyWordStyle();
+	}
+	#Endif; ! _TYPES_;
+	!! Imprime el texto del hipervínculo:
+	if (metaclass(text) == String) {
+		print (string) text;
+		jump linkNamePrinted;
+	}
+	if (metaclass(obj) == Routine) obj();
+	if (metaclass(obj) == String) print (string) obj;
+	if (metaclass(obj) == Object) {
+		if (indef_mode && obj.&short_name_indef ~= 0 
+			&& PrintOrRun(obj, short_name_indef, 1) ~= 0)
+			jump linkNamePrinted;
+		if (obj.&short_name ~= 0 && PrintOrRun(obj, short_name, 1) ~= 0)
+			jump linkNamePrinted;
+		print (object) obj;
+	}
+
+	.linkNamePrinted;
+
+	!! Termina de usar el estilo resaltado:
+	#Ifdef _TYPES_;
+	switch (st) {
+		_IST_:		ItalicStyle();
+		_BST_:		BoldStyle();
+		_MST_:		MonospacedStyle();
+		default:	RomanStyle();
+	}
+	#Endif; ! _TYPES_;
+	!! Establece final del hipervínculo:
+	#Ifdef TARGET_GLULX;
+	glk_set_hyperlink(0);
+	#Endif; ! TARGET_GLULX;
+
+	return true;
+];
+!! Inicia el estilo de texto resaltado para palabras clave de tipo OBJETO:
+[ ObjectKeywordStyle;
+	if (_keyword_highlighting) {
+		switch (_object_keyword_st) {
+			1:	glk_set_style(style_User1);
+			2:	glk_set_style(style_User2);
+			3:	ItalicStyle();
+			4:	BoldStyle();
+			5:	MonospacedStyle();
+		}
+	}
+];
+!! Inicia el estilo de texto resaltado para palabras clave de tipo DIRECCIÓN:
+[ DirectionKeywordStyle;
+	if (_keyword_highlighting) {
+		switch (_direction_keyword_st) {
+			1:	glk_set_style(style_User1);
+			2:	glk_set_style(style_User2);
+			3:	ItalicStyle();
+			4:	BoldStyle();
+			5:	MonospacedStyle();
+		}
+	}
+];
+!! Inicia el estilo de texto resaltado para palabras clave de tipo TEMA:
+[ TopicKeywordStyle;
+	if (_keyword_highlighting) {
+		switch (_topic_keyword_st) {
+			1:	glk_set_style(style_User1);
+			2:	glk_set_style(style_User2);
+			3:	ItalicStyle();
+			4:	BoldStyle();
+			5:	MonospacedStyle();
+		}
+	}
+];
+
+!!------------------------------------------------------------------------------
+!! Deja la ventana en blanco.
+!!
+!!	@retorna verdadero
+!!------------------------------------------------------------------------------
+[ EraseWindow;
+    #Ifdef TARGET_ZCODE;
+    @erase_window -1;
+    #Ifnot; ! TARGET_GLULX
+    if (gg_quotewin) {
+		glk($0024, gg_quotewin, 0); ! close_window
+		gg_quotewin = 0;
+    }
+    glk($002A, gg_mainwin); ! window_clear
+    if (gg_statuswin) glk($002A, gg_statuswin); ! window_clear
+    #Endif;
+	return true;
+];
+
+!!------------------------------------------------------------------------------
+!! Imprime una regla horizontal centrada en pantalla.
+!!
+!!	@retorna verdadero
+!!------------------------------------------------------------------------------
+[ HorizontalRule;
+	MonospacedStyle();
+	spaces (ScreenWidth()-1-7) / 2; ! 7 -> longitud de "*  *  *"
+	print "*  *  *^";
+	RomanStyle();
+	return true;
+];
+
+!!------------------------------------------------------------------------------
+!! Espera una pulsación de tecla del usuario o, si se introduce un valor, a que 
+!! pase una cantidad 'delay' de décimas de segundo antes de continuar.
+!!
+!!	@param delay:entero (opcional)
+!!		si se introduce un entero, espera a que se cumpla la cantidad 'delay' 
+!!		de décimas de segundo antes de continuar. En caso contrario, espera a 
+!!		una pulsación de tecla
+!!	@retorna char
+!!		caracter introducido por el usuario
+!!------------------------------------------------------------------------------
+[ PressAnyKey delay 
+	result;
+	#Ifdef TARGET_GLULX;
+	if (Damusix.EnFade()) delay = 0;
+	#Endif; ! TARGET_GLULX;
+	if (delay > 0) result = KeyDelay(delay);
+	else result = KeyCharPrimitive();
+	return result;
+];
+
+!!------------------------------------------------------------------------------
+!! Dado un objeto como parámetro, retorna su antecesor más lejano en el árbol 
+!! de objetos del modelo del mundo.
+!!
+!!	@param obj:Object
+!!		objeto del que se desea averiguar cuál es su antecesor más lejano
+!!	@retorna Object
+!!		antecesor más lejano del objeto pasado como parámetro
+!!------------------------------------------------------------------------------
+[ TopHolder obj
+	aux;
+	while (parent(obj) ~= 0) {
+		aux = ObjectScopedBySomething(obj);
+		if (aux == 0) aux = parent(obj);
+		obj = aux;
+	}
+	return obj;
+];
+
+
+!!==============================================================================
+!!	8)	Gramática estándar y extendida
+!!------------------------------------------------------------------------------
+!!	Acciones añadidas o modificadas:
+!!	 -	##DefaultAction
+!!	 -	##Highlight
+!!		 -	##HighlightOn
+!!		 -	##HighlightOff
+!!	 -	##LMode2
+!!	 -	##NoSuchVerb - Permite eliminar las acciones:
+!!		 -	##Sorry
+!!		 -	##Swim
+!!	 -	##Remember
+!!	 -	##TalkOn, ##TalkTo
+!!	 -	##Teleport
+!!------------------------------------------------------------------------------
+
+Include "SpanishG.h";			! Gramática española
+Include "SpanishEG.h";			! Gramática española extendida
+
+!!------------------------------------------------------------------------------
+!! ##DefaultAction
+!!------------------------------------------------------------------------------
+
+Verb 'no.verb'
+	* noun							-> DefaultAction
+;
+
+[ DefaultActionSub;
+	if (noun ofclass Room) <<Look>>;
+	else <<Examine noun>>;
+];
+
+!!------------------------------------------------------------------------------
+!! ##Highlight, ##HighlightOn, ##HighlightOff
+!!------------------------------------------------------------------------------
+
+Verb meta 'highlight' 'resaltado'
+	*								-> Highlight
+	* 'on' / 'si'					-> HighlightOn
+	* 'encendido' / 'activado'		-> HighlightOn
+	* 'off' / 'no'					-> HighlightOff
+	* 'apagado' / 'desactivado'		-> HighlightOff
+;
+VerboIrregular "establecer estilo de texto resaltado" with imperativo
+	'highlight' 'resaltado';
+
+[ HighlightSub flag;
+	while (flag == false) {
+		EraseWindow();
+		print "En ";
+		ObjectKeywordStyle();
+		print (string) Story;
+		RomanStyle();
+		print " hay tres tipos de palabras clave. Es importante que tu programa 
+		intérprete las imprima con un estilo de resaltado adecuado. Teclea un 
+		número para cambiar el estilo de resaltado de cada palabra clave hasta 
+		encontrar un estilo que se vea bien en tu sistema.^";
+		new_line;
+
+		print "1) Palabras clave de tipo objeto: ";
+		ObjectKeywordStyle();
+		switch (_object_keyword_st) {
+			0:	print "sin estilo";
+			1:	print "color de fondo A";
+			2:	print "color de fondo B";
+			3:	print "cursiva";
+			4:	print "negrita";
+			5:	print "monoespaciado";
+		}
+		RomanStyle();
+		print ".^";
+
+		print "2) Palabras clave de tipo dirección: ";
+		DirectionKeywordStyle();
+		switch (_direction_keyword_st) {
+			0:	print "sin estilo";
+			1:	print "color de fondo A";
+			2:	print "color de fondo B";
+			3:	print "cursiva";
+			4:	print "negrita";
+			5:	print "monoespaciado";
+		}
+		RomanStyle();
+		print ".^";
+
+		print "3) Palabras clave de tipo tema: ";
+		TopicKeywordStyle();
+		switch (_topic_keyword_st) {
+			0:	print "sin estilo";
+			1:	print "color de fondo A";
+			2:	print "color de fondo B";
+			3:	print "cursiva";
+			4:	print "negrita";
+			5:	print "monoespaciado";
+		}
+		RomanStyle();
+		print ".^";
+		new_line;
+
+		print "Pulsa 0 para salir de aquí.^";
+		switch (PressAnyKey()) {
+			'0':	flag = true;
+			'1':	_object_keyword_st++;
+					if (_object_keyword_st > 5) _object_keyword_st = 0;
+			'2':	_direction_keyword_st++;
+					if (_direction_keyword_st > 5) _direction_keyword_st = 0;
+			'3':	_topic_keyword_st++;
+					if (_topic_keyword_st > 5) _topic_keyword_st = 0;
+		}
+	}
+	EraseWindow();
+	<<Look>>;
+];
+
+[ HighlightOnSub
+	st;
+	if (_keyword_highlighting) {
+		print_ret (parser) "El resaltado de palabras clave ya estaba 
+		activado.";
+	}
+	!! Activa el resaltado de palabras clave y se lo notifica al usuario:
+	_keyword_highlighting = true;
+	StartParserStyle();
+	print "Resaltado de palabras clave ";
+	st = _current_style;
+	ObjectKeywordStyle();
+	print "activado";
+	switch (st) {
+		_RST_:	RomanStyle();
+		_IST_:	ItalicStyle();
+		_BST_:	BoldStyle();
+		_MST_:	MonospacedStyle();
+	}
+	print ".";
+	EndParserStyle();
+	new_line;
+	return true;
+];
+
+[ HighlightOffSub
+	st;
+	if (~~_keyword_highlighting) {
+		print_ret (parser) "El resaltado de palabras clave ya estaba 
+		desactivado.";
+	}
+	!! Desactiva el resaltado de palabras clave y se lo notifica al usuario:
+	_keyword_highlighting = false;
+	StartParserStyle();
+	print "Resaltado de palabras clave ";
+	st = _current_style;
+	ObjectKeywordStyle();
+	print "desactivado";
+	switch (st) {
+		_RST_:	RomanStyle();
+		_IST_:	ItalicStyle();
+		_BST_:	BoldStyle();
+		_MST_:	MonospacedStyle();
+	}
+	print ".";
+	EndParserStyle();
+	new_line;
+	return true;
+];
+
+!!------------------------------------------------------------------------------
+!! ##LMode2
+!!------------------------------------------------------------------------------
+
+Extend only 'normal' replace
+    *								-> LMode2
+;
+
+!!------------------------------------------------------------------------------
+!! ##NoSuchVerb
+!! Permite eliminar acciones definidas automáticamente por la librería Inform.
+!! Código extraído de <http://www.firthworks.com/roger/informfaq/vv.html#6>.
+!!------------------------------------------------------------------------------
+
+[ Anything; ! Se ignora el resto de la entrada de usuario
+	while (NextWordStopped() ~= -1);
+	return GPR_PREPOSITION;
+];
+
+Extend	'perdona' replace
+	* Anything						-> NoSuchVerb
+;
+
+Extend	'nada' replace
+	* Anything						-> NoSuchVerb
+;
+
+[ NoSuchVerbSub; return ParserError(VERB_PE); ];
+
+!!------------------------------------------------------------------------------
+!! ##TalkOn, ##TalkTo
+!!------------------------------------------------------------------------------
+
+Extend	'habla' replace
+	* noun							-> TalkTo
+	* 'a'/'con' noun				-> TalkTo
+	* creature						-> TalkTo
+	* 'a'/'con' creature			-> TalkTo
+	* 'por' noun					-> TalkOn
+	* 'por' creature				-> TalkOn
+;
+
+Verb	'conversa' 'platica'
+	* noun							-> TalkTo
+	* 'a'/'con' noun				-> TalkTo
+	* creature						-> TalkTo
+	* 'a'/'con' creature			-> TalkTo
+	* 'por' noun					-> TalkOn
+	* 'por' creature				-> TalkOn
+;
+
+[ TalkOnSub;
+	StartParserStyle();
+	print "Habla con ", (name) noun;
+	EndParserStyle();
+	new_line;
+	<<TalkTo noun second>>;
+];
+
+[ TalkToSub;
+	!! 1) El personaje intenta hablar consigo mismo:
+	if ( noun == player ) {
+		switch (_grammatical_inflection) {
+		1,2,3:	"Hablar con uno mismo no resulta especialmente divertido.";
+		4,5,6:	"Hablar con uno mismo no resultaba especialmente divertido.";
+		}
+	}
+	!! 2) El personaje intenta hablar con un objeto inanimado:
+	if ( noun hasnt animate )
+		switch (_grammatical_inflection) {
+		1,2,3:	"Sería más interesante intentar hablar con cosas que puedan 
+				devolver una respuesta.";
+		4,5,6:	"Hubiese sido más interesante intentar hablar con cosas que 
+				pudiesen devolver una respuesta.";
+	}
+	!! 3) El personaje intenta hablar con un objeto animado:
+	switch (_grammatical_inflection) {
+		1:	print_ret (The) noun, " no parece", (n) noun, " interesad", 
+			(o) noun, " en hablar conmigo.";
+		2:	print_ret (The) noun, " no parece", (n) noun, " interesad", 
+			(o) noun, " en hablar contigo.";
+		3:	print (The) noun, " no parece", (n) noun, " interesad", 
+			(o) noun, " en hablar con ";
+			SpanishNominativePronoun(player);
+			".";
+		4:	print_ret (The) noun, " no parecía", (n) noun, " interesad", 
+			(o) noun, " en hablar conmigo.";
+		5:	print_ret (The) noun, " no parecía", (n) noun, " interesad", 
+			(o) noun, " en hablar contigo.";
+		6:	print (The) noun, " no parecía", (n) noun, " interesad", 
+			(o) noun, " en hablar con ";
+			SpanishNominativePronoun(player);
+			".";
+	}
+];
+
+!!------------------------------------------------------------------------------
+!! ##Teleport
+!!------------------------------------------------------------------------------
+
+[ TeleportScope
+	obj adjacent_location;
+	switch (scope_stage) {
+		1:	return false;
+		2:	objectloop (obj in Compass) {
+				keep_silent = true;
+				adjacent_location = real_location.(obj.door_dir)();
+				keep_silent = false;
+				if (adjacent_location ~= 0) {
+					PlaceInScope(adjacent_location);
+				}
+			}
+		3:	print_ret (parser) "No puedes llegar hasta ahí desde donde te 
+			encuentras en estos momentos.";
+	}
+];
+
+Extend 've' last
+	* scope=TeleportScope			-> Teleport
+	* 'a//' scope=TeleportScope		-> Teleport
+	* 'hacia' scope=TeleportScope	-> Teleport
+;
+
+Extend 'entra' last
+	* scope=TeleportScope			-> Teleport
+	* 'a//' scope=TeleportScope		-> Teleport
+	* 'en' scope=TeleportScope		-> Teleport
+;
+
+Verb 'teleport.verb'
+	* scope=TeleportScope			-> Teleport
+;
+
+[ TeleportSub
+	obj adjacent_location;
+	objectloop (obj in Compass) {
+		keep_silent = true;
+		adjacent_location = real_location.(obj.door_dir)();
+		keep_silent = false;
+		if (adjacent_location ~= 0) {
+			if (noun == adjacent_location) {
+				<<Go obj>>;
+			}
+		}
+	}
+
+	PlayerTo(noun, 2);
+];
+
+
+!!==============================================================================
+!!	9)	Definición de atributos, clases y objetos
+!!------------------------------------------------------------------------------
+
+Include ">chico_classes.inf";
+Include ">chico_objects.inf";
+
+

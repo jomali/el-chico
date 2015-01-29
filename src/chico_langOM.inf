@@ -1,0 +1,33 @@
+
+
+
+
+[ LanguageOM obj n;
+	switch (obj) {
+
+
+limbo: switch (n) {
+1:	! description
+print "Más allá de la barrera casi insuperable que separa la realidad de todo lo demás. Un lugar etéreo, donde la vida, la materia y la vitalidad no son necesariamente constantes; un lugar donde el tiempo y el espacio no existen tal y como los capta nuestro ser despierto...";
+if (LIMBO hasnt visited) print "^^---¿Qué? ¿Cómo?... ¿cómo he llegado aquí?";
+new_line;
+return true;
+}
+
+Chico: switch (n) {
+1:	! description
+return L__M(##Miscellany, 19);
+}
+
+
+	}
+];
+
+
+
+[ O__M obj n x1;
+	if (n == 0) n = 1;
+	LanguageOM(obj, n, x1);
+];
+
+

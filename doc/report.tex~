@@ -1,0 +1,1172 @@
+
+%%	File:			informe.tex
+%%	Author(s):		J. Francisco Martín <jfm.lisaso@gmail.com>
+%%	Version:		v0.1
+%%	Released:		2014/07/17
+%%
+%% Informe del trabajo personal desarrollado para la asignatura GRÁFICOS POR 
+%% COMPUTADOR Y REALIDAD VIRTUAL, curso 2013-2014. Requiere la clase LaTeX 
+%% IEEEtran.cls, en su versión 1.8 o posterior.
+
+
+%% ============================================================================
+
+
+%% Este informe utiliza la plantilla *bare_adv.tex*, de Michael Shell 
+%% <http://www.michaelshell.org/>. A continuación se adjunta la advertencia 
+%% legal incluida en la plantilla original:
+%%
+%% This code is offered as-is without any warranty either expressed or 
+%% implied; without even the implied warranty of MERCHANTABILITY or FITNESS 
+%% FOR A PARTICULAR PURPOSE! User assumes all risk. In no event shall IEEE 
+%% or any contributor to this code be liable for any damages or losses, 
+%% including, but not limited to, incidental, consequential, or any other 
+%% damages, resulting from the use or misuse of any information contained 
+%% here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%%
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
+%% and
+%% http://www.ieee.org/
+
+
+%% ============================================================================
+
+
+% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
+% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
+% *** with production work. IEEE's font choices can trigger bugs that do  ***
+% *** not appear when using other class files.                            ***
+% The testflow support page is at:
+% http://www.michaelshell.org/tex/testflow/
+
+
+% IEEEtran V1.7 and later provides for these CLASSINPUT macros to allow the
+% user to reprogram some IEEEtran.cls defaults if needed. These settings
+% override the internal defaults of IEEEtran.cls regardless of which class
+% options are used. Do not use these unless you have good reason to do so as
+% they can result in nonIEEE compliant documents. User beware. ;)
+%
+%\newcommand{\CLASSINPUTbaselinestretch}{1.0} % baselinestretch
+%\newcommand{\CLASSINPUTinnersidemargin}{1in} % inner side margin
+%\newcommand{\CLASSINPUToutersidemargin}{1in} % outer side margin
+%\newcommand{\CLASSINPUTtoptextmargin}{1in}   % top text margin
+%\newcommand{\CLASSINPUTbottomtextmargin}{1in}% bottom text margin
+
+
+% Note that the a4paper option is mainly intended so that authors in
+% countries using A4 can easily print to A4 and see how their papers will
+% look in print - the typesetting of the document will not typically be
+% affected with changes in paper size (but the bottom and side margins will).
+% Use the testflow package mentioned above to verify correct handling of
+% both paper sizes by the user's LaTeX system.
+%
+% Also note that the "draftcls" or "draftclsnofoot", not "draft", option
+% should be used if it is desired that the figures are to be displayed in
+% draft mode.
+%
+\documentclass[12pt,journal,compsoc]{IEEEtran}
+
+% The Computer Society requires 12pt.
+% If IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it like:
+% \documentclass[10pt,journal,compsoc]{../sty/IEEEtran}
+
+% For Computer Society journals, IEEEtran defaults to the use of 
+% Palatino/Palladio as is done in IEEE Computer Society journals.
+% To go back to Times Roman, you can use this code:
+%\renewcommand{\rmdefault}{ptm}\selectfont
+
+
+%% ============================================================================
+
+
+% Some very useful LaTeX packages include:
+% (uncomment the ones you want to load)
+
+
+%% *** LANGUAGE PACKAGES ******************************************************
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+
+%% *** MISC UTILITY PACKAGES **************************************************
+
+%\usepackage{ifpdf}
+% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
+% compilation based on whether the output is pdf or dvi.
+% usage:
+% \ifpdf
+%   % pdf code
+% \else
+%   % dvi code
+% \fi
+% The latest version of ifpdf.sty can be obtained from:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/
+% Also, note that IEEEtran.cls V1.7 and later provides a builtin
+% \ifCLASSINFOpdf conditional that works the same way.
+% When switching from latex to pdflatex and vice-versa, the compiler may
+% have to be run twice to clear warning/error messages.
+
+
+%% *** CITATION PACKAGES ******************************************************
+
+\ifCLASSOPTIONcompsoc
+  % IEEE Computer Society needs nocompress option
+  % requires cite.sty v4.0 or later (November 2003)
+  % \usepackage[nocompress]{cite}
+\else
+  % normal IEEE
+  % \usepackage{cite}
+\fi
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off
+% such as if a citation ever needs to be enclosed in parenthesis.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 4.0 (2003-05-27) and later if using hyperref.sty. cite.sty does
+% not currently provide for hyperlinked citations.
+% The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/cite/
+% The documentation is contained in the cite.sty file itself.
+%
+% Note that some packages require special options to format as the Computer
+% Society requires. In particular, Computer Society  papers do not use
+% compressed citation ranges as is done in typical IEEE papers
+% (e.g., [1]-[4]). Instead, they list every citation separately in order
+% (e.g., [1], [2], [3], [4]). To get the latter we need to load the cite
+% package with the nocompress option which is supported by cite.sty v4.0
+% and later.
+%
+% Note also the use of a CLASSOPTION conditional provided by 
+% IEEEtran.cls V1.7 and later.
+
+
+%% *** GRAPHICS RELATED PACKAGES **********************************************
+
+\ifCLASSINFOpdf
+  \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  \graphicspath{{./res/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  \DeclareGraphicsExtensions{.jpeg,.jpg,.pdf,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+% graphicx was written by David Carlisle and Sebastian Rahtz. It is
+% required if you want graphics, photos, etc. graphicx.sty is already
+% installed on most LaTeX systems. The latest version and documentation
+% can be obtained at: 
+% http://www.ctan.org/tex-archive/macros/latex/required/graphics/
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found at:
+% http://www.ctan.org/tex-archive/info/epslatex/
+%
+% latex, and pdflatex in dvi mode, support graphics in encapsulated
+% postscript (.eps) format. pdflatex in pdf mode supports graphics
+% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
+% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
+% not a bitmapped formats (.jpeg, .png). IEEE frowns on bitmapped formats
+% which can result in "jaggedy"/blurry rendering of lines and letters as
+% well as large increases in file sizes.
+%
+% You can find documentation about the pdfTeX application at:
+% http://www.tug.org/applications/pdftex
+
+
+%% *** MATH PACKAGES **********************************************************
+
+%\usepackage[cmex10]{amsmath}
+% A popular package from the American Mathematical Society that provides
+% many useful and powerful commands for dealing with mathematics. If using
+% it, be sure to load this package with the cmex10 option to ensure that
+% only type 1 fonts will utilized at all point sizes. Without this option,
+% it is possible that some math symbols, particularly those within
+% footnotes, will be rendered in bitmap form which will result in a
+% document that can not be IEEE Xplore compliant!
+%
+% Also, note that the amsmath package sets \interdisplaylinepenalty to 10000
+% thus preventing page breaks from occurring within multiline equations. Use:
+%\interdisplaylinepenalty=2500
+% after loading amsmath to restore such page breaks as IEEEtran.cls normally
+% does. amsmath.sty is already installed on most LaTeX systems. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/amslatex/math/
+
+
+%% *** SPECIALIZED LIST PACKAGES **********************************************
+
+%\usepackage{acronym}
+% acronym.sty was written by Tobias Oetiker. This package provides tools for
+% managing documents with large numbers of acronyms. (You don't *have* to
+% use this package - unless you have a lot of acronyms, you may feel that
+% such package management of them is bit of an overkill.)
+% Do note that the acronym environment (which lists acronyms) will have a
+% problem when used under IEEEtran.cls because acronym.sty relies on the
+% description list environment - which IEEEtran.cls has customized for
+% producing IEEE style lists. A workaround is to declared the longest
+% label width via the IEEEtran.cls \IEEEiedlistdecl global control:
+%
+% \renewcommand{\IEEEiedlistdecl}{\IEEEsetlabelwidth{SONET}}
+% \begin{acronym}
+%
+% \end{acronym}
+% \renewcommand{\IEEEiedlistdecl}{\relax}% remember to reset \IEEEiedlistdecl
+%
+% instead of using the acronym environment's optional argument.
+% The latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/acronym/
+
+
+%\usepackage{algorithmic}
+% algorithmic.sty was written by Peter Williams and Rogerio Brito.
+% This package provides an algorithmic environment fo describing algorithms.
+% You can use the algorithmic environment in-text or within a figure
+% environment to provide for a floating algorithm. Do NOT use the algorithm
+% floating environment provided by algorithm.sty (by the same authors) or
+% algorithm2e.sty (by Christophe Fiorio) as IEEE does not use dedicated
+% algorithm float types and packages that provide these will not provide
+% correct IEEE style captions. The latest version and documentation of
+% algorithmic.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithms/
+% There is also a support site at:
+% http://algorithms.berlios.de/index.html
+% Also of interest may be the (relatively newer and more customizable)
+% algorithmicx.sty package by Szasz Janos:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithmicx/
+
+
+%% *** ALIGNMENT PACKAGES *****************************************************
+
+%\usepackage{array}
+% Frank Mittelbach's and David Carlisle's array.sty patches and improves
+% the standard LaTeX2e array and tabular environments to provide better
+% appearance and additional user controls. As the default LaTeX2e table
+% generation code is lacking to the point of almost being broken with
+% respect to the quality of the end results, all users are strongly
+% advised to use an enhanced (at the very least that provided by array.sty)
+% set of table tools. array.sty is already installed on most systems. The
+% latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/tools/
+
+
+%\usepackage{mdwmath}
+%\usepackage{mdwtab}
+% Also highly recommended is Mark Wooding's extremely powerful MDW tools,
+% especially mdwmath.sty and mdwtab.sty which are used to format equations
+% and tables, respectively. The MDWtools set is already installed on most
+% LaTeX systems. The lastest version and documentation is available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/mdwtools/
+%
+% IEEEtran contains the IEEEeqnarray family of commands that can be used to
+% generate multiline equations as well as matrices, tables, etc., of high
+% quality.
+
+
+%\usepackage{eqparbox}
+% Also of notable interest is Scott Pakin's eqparbox package for creating
+% (automatically sized) equal width boxes - aka "natural width parboxes".
+% Available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/eqparbox/
+
+
+%% *** SUBFIGURE PACKAGES *****************************************************
+
+%\ifCLASSOPTIONcompsoc
+%  \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+%\else
+%  \usepackage[caption=false,font=footnotesize]{subfig}
+%\fi
+% subfig.sty, written by Steven Douglas Cochran, is the modern replacement
+% for subfigure.sty, the latter of which is no longer maintained and is
+% incompatible with some LaTeX packages including fixltx2e. However,
+% subfig.sty requires and automatically loads Axel Sommerfeldt's caption.sty
+% which will override IEEEtran.cls' handling of captions and this will result
+% in non-IEEE style figure/table captions. To prevent this problem, be sure
+% and invoke subfig.sty's "caption=false" package option (available since
+% subfig.sty version 1.3, 2005/06/28) as this is will preserve IEEEtran.cls
+% handling of captions.
+% Note that the Computer Society format requires a larger sans serif font
+% than the serif footnote size font used in traditional IEEE formatting
+% and thus the need to invoke different subfig.sty package options depending
+% on whether compsoc mode has been enabled.
+%
+% The latest version and documentation of subfig.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/
+
+
+%% *** FLOAT PACKAGES *********************************************************
+
+%\usepackage{fixltx2e}
+% fixltx2e, the successor to the earlier fix2col.sty, was written by
+% Frank Mittelbach and David Carlisle. This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure. The latest version and documentation can be found at:
+% http://www.ctan.org/tex-archive/macros/latex/base/
+
+
+%\usepackage{stfloats}
+% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
+% the ability to do double column floats at the bottom of the page as well
+% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
+% LaTeX2e). It also provides a command:
+%\fnbelowfloat
+% to enable the placement of footnotes below bottom floats (the standard
+% LaTeX2e kernel puts them above bottom floats). This is an invasive package
+% which rewrites many portions of the LaTeX2e float routines. It may not work
+% with other packages that modify the LaTeX2e float routines. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/sttools/
+% Do not use the stfloats baselinefloat ability as IEEE does not allow
+% \baselineskip to stretch. Authors submitting work to the IEEE should note
+% that IEEE rarely uses double column equations and that authors should try
+% to avoid such use. Do not be tempted to use the cuted.sty or midfloat.sty
+% packages (also by Sigitas Tolusis) as IEEE does not format its papers in
+% such ways.
+% Do not attempt to use stfloats with fixltx2e as they are incompatible.
+% Instead, use Morten Hogholm'a dblfloatfix which combines the features
+% of both fixltx2e and stfloats:
+%
+% \usepackage{dblfloatfix}
+% The latest version can be found at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/dblfloatfix/
+
+
+%\ifCLASSOPTIONcaptionsoff
+%  \usepackage[nomarkers]{endfloat}
+% \let\MYoriglatexcaption\caption
+% \renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
+%\fi
+% endfloat.sty was written by James Darrell McCauley, Jeff Goldberg and 
+% Axel Sommerfeldt. This package may be useful when used in conjunction with 
+% IEEEtran.cls'  captionsoff option. Some IEEE journals/societies require that
+% submissions have lists of figures/tables at the end of the paper and that
+% figures/tables without any captions are placed on a page by themselves at
+% the end of the document. If needed, the draftcls IEEEtran class option or
+% \CLASSINPUTbaselinestretch interface can be used to increase the line
+% spacing as well. Be sure and use the nomarkers option of endfloat to
+% prevent endfloat from "marking" where the figures would have been placed
+% in the text. The two hack lines of code above are a slight modification of
+% that suggested by in the endfloat docs (section 8.4.1) to ensure that
+% the full captions always appear in the list of figures/tables - even if
+% the user used the short optional argument of \caption[]{}.
+% IEEE papers do not typically make use of \caption[]'s optional argument,
+% so this should not be an issue. A similar trick can be used to disable
+% captions of packages such as subfig.sty that lack options to turn off
+% the subcaptions:
+% For subfig.sty:
+% \let\MYorigsubfloat\subfloat
+% \renewcommand{\subfloat}[2][\relax]{\MYorigsubfloat[]{#2}}
+% However, the above trick will not work if both optional arguments of
+% the \subfloat command are used. Furthermore, there needs to be a
+% description of each subfigure *somewhere* and endfloat does not add
+% subfigure captions to its list of figures. Thus, the best approach is to
+% avoid the use of subfigure captions (many IEEE journals avoid them anyway)
+% and instead reference/explain all the subfigures within the main caption.
+% The latest version of endfloat.sty and its documentation can obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/endfloat/
+%
+% The IEEEtran \ifCLASSOPTIONcaptionsoff conditional can also be used
+% later in the document, say, to conditionally put the References on a 
+% page by themselves.
+
+
+%% *** PDF, URL AND HYPERLINK PACKAGES ****************************************
+
+\usepackage{url}
+% url.sty was written by Donald Arseneau. It provides better support for
+% handling and breaking URLs. url.sty is already installed on most LaTeX
+% systems. The latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/url/
+% Basically, \url{my_url_here}.
+
+
+% NOTE: PDF thumbnail features are not required in IEEE papers
+%       and their use requires extra complexity and work.
+%\ifCLASSINFOpdf
+%  \usepackage[pdftex]{thumbpdf}
+%\else
+%  \usepackage[dvips]{thumbpdf}
+%\fi
+% thumbpdf.sty and its companion Perl utility were written by Heiko Oberdiek.
+% It allows the user a way to produce PDF documents that contain fancy
+% thumbnail images of each of the pages (which tools like acrobat reader can
+% utilize). This is possible even when using dvi->ps->pdf workflow if the
+% correct thumbpdf driver options are used. thumbpdf.sty incorporates the
+% file containing the PDF thumbnail information (filename.tpm is used with
+% dvips, filename.tpt is used with pdftex, where filename is the base name of
+% your tex document) into the final ps or pdf output document. An external
+% utility, the thumbpdf *Perl script* is needed to make these .tpm or .tpt
+% thumbnail files from a .ps or .pdf version of the document (which obviously
+% does not yet contain pdf thumbnails). Thus, one does a:
+% 
+% thumbpdf filename.pdf 
+%
+% to make a filename.tpt, and:
+%
+% thumbpdf --mode dvips filename.ps
+%
+% to make a filename.tpm which will then be loaded into the document by
+% thumbpdf.sty the NEXT time the document is compiled (by pdflatex or
+% latex->dvips->ps2pdf). Users must be careful to regenerate the .tpt and/or
+% .tpm files if the main document changes and then to recompile the
+% document to incorporate the revised thumbnails to ensure that thumbnails
+% match the actual pages. It is easy to forget to do this!
+% 
+% Unix systems come with a Perl interpreter. However, MS Windows users
+% will usually have to install a Perl interpreter so that the thumbpdf
+% script can be run. The Ghostscript PS/PDF interpreter is also required.
+% See the thumbpdf docs for details. The latest version and documentation
+% can be obtained at.
+% http://www.ctan.org/tex-archive/support/thumbpdf/
+
+
+% NOTE: PDF hyperlink and bookmark features are not required in IEEE
+%       papers and their use requires extra complexity and work.
+% *** IF USING HYPERREF BE SURE AND CHANGE THE EXAMPLE PDF ***
+% *** TITLE/SUBJECT/AUTHOR/KEYWORDS INFO BELOW!!           ***
+
+\newcommand\MYhyperrefoptions{bookmarks=true,bookmarksnumbered=true,
+pdfpagemode={UseOutlines},plainpages=false,pdfpagelabels=true,
+colorlinks=true,linkcolor={black},citecolor={black},urlcolor={black},
+% XXX Seleccionar los valores adecuados para el documento actual:
+pdftitle={Creacion de un entorno virtual interactivo en 3D a traves de Unity}, pdfsubject={Graficos por computador y realidad virtual},
+pdfauthor={Jose Francisco Martin Lisaso},
+pdfkeywords={Computacion, Graficos por computador, Realidad virtual}}
+
+\ifCLASSINFOpdf
+  \usepackage[\MYhyperrefoptions,pdftex]{hyperref}
+\else
+  \usepackage[\MYhyperrefoptions,breaklinks=true,dvips]{hyperref}
+  \usepackage{breakurl}
+\fi
+% One significant drawback of using hyperref under DVI output is that the
+% LaTeX compiler cannot break URLs across lines or pages as can be done
+% under pdfLaTeX's PDF output via the hyperref pdftex driver. This is
+% probably the single most important capability distinction between the
+% DVI and PDF output. Perhaps surprisingly, all the other PDF features
+% (PDF bookmarks, thumbnails, etc.) can be preserved in
+% .tex->.dvi->.ps->.pdf workflow if the respective packages/scripts are
+% loaded/invoked with the correct driver options (dvips, etc.). 
+% As most IEEE papers use URLs sparingly (mainly in the references), this
+% may not be as big an issue as with other publications.
+%
+% That said, Vilar Camara Neto created his breakurl.sty package which
+% permits hyperref to easily break URLs even in dvi mode.
+% Note that breakurl, unlike most other packages, must be loaded
+% AFTER hyperref. The latest version of breakurl and its documentation can
+% be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/breakurl/
+% breakurl.sty is not for use under pdflatex pdf mode.
+%
+% The advanced features offer by hyperref.sty are not required for IEEE
+% submission, so users should weigh these features against the added
+% complexity of use.
+% The package options above demonstrate how to enable PDF bookmarks
+% (a type of table of contents viewable in Acrobat Reader) as well as
+% PDF document information (title, subject, author and keywords) that is
+% viewable in Acrobat reader's Document_Properties menu. PDF document
+% information is also used extensively to automate the cataloging of PDF
+% documents. The above set of options ensures that hyperlinks will not be
+% colored in the text and thus will not be visible in the printed page,
+% but will be active on "mouse over". USING COLORS OR OTHER HIGHLIGHTING
+% OF HYPERLINKS CAN RESULT IN DOCUMENT REJECTION BY THE IEEE, especially if
+% these appear on the "printed" page. IF IN DOUBT, ASK THE RELEVANT
+% SUBMISSION EDITOR. You may need to add the option hypertexnames=false if
+% you used duplicate equation numbers, etc., but this should not be needed
+% in normal IEEE work.
+% The latest version of hyperref and its documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/hyperref/
+
+
+%% ============================================================================
+
+
+% Figures and tables captions:
+\RequirePackage[labelfont={bf,sf,small},%
+                labelsep=period,%
+                justification=raggedright]{caption}
+\setlength{\abovecaptionskip}{0pt}
+\setlength{\belowcaptionskip}{0pt}
+
+
+% *** Do not adjust lengths that control margins, column widths, etc. ***
+% *** Do not use packages that alter fonts (such as pslatex).         ***
+% There should be no need to do such things with IEEEtran.cls V1.6 and later.
+% (Unless specifically asked to do so by the journal or conference you plan
+% to submit to, of course. )
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+
+
+%% *** TÍTULO DEL DOCUMENTO ***************************************************
+
+% Pueden utilizarse saltos de línea ('\\') dentro del título para darle el 
+% formato deseado. Se debe evitar el uso de símbolos matemáticos especiales.
+\title{Creación de un entorno virtual\\interactivo en 3D a través de \emph{Unity}}
+
+
+%% *** AUTORES ****************************************************************
+
+% Note positions of commas and nonbreaking spaces ( ~ ) LaTeX will not break
+% a structure at a ~ so this keeps an author's name from being broken across
+% two lines.
+%
+% Use \thanks{} to gain access to the first footnote area
+% a separate \thanks must be used for each paragraph as LaTeX2e's \thanks
+% was not built to handle multiple paragraphs
+%
+%\IEEEcompsocitemizethanks is a special \thanks that produces the bulleted
+% lists the Computer Society journals use for "first footnote" author
+% affiliations. Use \IEEEcompsocthanksitem which works much like \item
+% for each affiliation group. When not in compsoc mode,
+% \IEEEcompsocitemizethanks becomes like \thanks and
+% \IEEEcompsocthanksitem becomes a line break with idention. This
+% facilitates dual compilation, although admittedly the differences in the
+% desired content of \author between the different types of papers makes a
+% one-size-fits-all approach a daunting prospect. For instance, compsoc 
+% journal papers have the author affiliations above the "Manuscript
+% received ..."  text while in non-compsoc journals this is reversed. Sigh.
+
+\author{José~Francisco~Martín~Lisaso, 
+	\normalsize{\IEEEmembership{Universidad~de~Cantabria}}\\
+	Curso 2013/2014}
+
+% Original (descomentar para utilizar):
+
+%\author{Michael~Shell,~\IEEEmembership{Member,~IEEE,}
+%	John~Doe,~\IEEEmembership{Fellow,~OSA,}
+%	and~Jane~Doe,~\IEEEmembership{Life~Fellow,~IEEE}%
+%% ** the last % stops a space **
+%\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem M. Shell is with the 
+%Department of Electrical and Computer Engineering, Georgia Institute of 
+%Technology, Atlanta, GA, 30332.\protect\\
+%% ** note need leading \protect in front of \\ to get a newline within	**
+%% ** \thanks as \\ is fragile and will error, could use \hfil\break		**
+%% ** instead.															**
+%E-mail: see http://www.michaelshell.org/contact.html
+%\IEEEcompsocthanksitem J. Doe and J. Doe are with Anonymous University.}%
+%% ** the last % stops a space **
+%\thanks{Manuscript received April 19, 2005; revised December 27, 2012.}}
+
+% note the % following the last \IEEEmembership and also \thanks - 
+% these prevent an unwanted space from occurring between the last author name
+% and the end of the author line. i.e., if you had this:
+% 
+% \author{....lastname \thanks{...} \thanks{...} }
+%                     ^------------^------------^----Do not want these spaces!
+%
+% a space would be appended to the last name and could cause every name on that
+% line to be shifted left slightly. This is one of those "LaTeX things". For
+% instance, "\textbf{A} \textbf{B}" will typeset as "A B" not "AB". To get
+% "AB" then you have to do: "\textbf{A}\textbf{B}"
+% \thanks is no different in this regard, so shield the last } of each \thanks
+% that ends a line with a % and do not let a space in before the next \thanks.
+% Spaces after \IEEEmembership other than the last one are OK (and needed) as
+% you are supposed to have spaces between the names. For what it is worth,
+% this is a minor point as most people would not even notice if the said evil
+% space somehow managed to creep in.
+
+
+%% *** ENCABEZADOS DEL DOCUMENTO **********************************************
+
+\markboth{Creación de un entorno virtual interactivo en 3D a través de 
+\emph{Unity}}%
+{José Francisco Martín Lisaso}
+% The only time the second header will appear is for the odd numbered pages
+% after the title page when using the twoside option.
+% 
+% *** Note that you probably will NOT want to include the author's ***
+% *** name in the headers of peer review papers.                   ***
+% You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
+% you desire.
+
+
+%% ****************************************************************************
+
+% The publisher's ID mark at the bottom of the page is less important with
+% Computer Society journal papers as those publications place the marks
+% outside of the main text columns and, therefore, unlike regular IEEE
+% journals, the available text space is not reduced by their presence.
+% If you want to put a publisher's ID mark on the page you can do it like
+% this:
+%\IEEEpubid{0000--0000/00\$00.00~\copyright~2012 IEEE}
+% or like this to get the Computer Society new two part style.
+%\IEEEpubid{\makebox[\columnwidth]{\hfill 0000--0000/00/\$00.00~
+%\copyright~2012 IEEE}%
+%\hspace{\columnsep}\makebox[\columnwidth]{Published by the IEEE Computer 
+%Society\hfill}}
+% Remember, if you use this you must call \IEEEpubidadjcol in the second
+% column for its text to clear the IEEEpubid mark (Computer Society journal
+% papers don't need this extra clearance.)
+
+
+%% *** NOTIFICACIONES ESPECIALES DEL DOCUMENTO ********************************
+
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+%% *** ABSTRACT E ÍNDICE ******************************************************
+
+% For Computer Society papers, we must declare the abstract and index terms
+% PRIOR to the title within the \IEEEtitleabstractindextext IEEEtran
+% command as these need to go into the title area created by \maketitle.
+% As a general rule, do not put math, special symbols or citations
+% in the abstract or keywords.
+\IEEEtitleabstractindextext{%
+%\begin{abstract}
+%The abstract goes here.
+%\end{abstract}
+%
+%% Note that keywords are not normally used for peerreview papers.
+%\begin{IEEEkeywords}
+%Computer Society, IEEEtran, journal, \LaTeX, paper, template.
+%\end{IEEEkeywords}
+}
+
+
+%% *** PÁGINA PRINCIPAL *******************************************************
+
+% Make the title area
+\maketitle
+
+% Removes page numbering from the first page
+\thispagestyle{empty}
+
+% To allow for easy dual compilation without having to reenter the
+% abstract/keywords data, the \IEEEtitleabstractindextext text will
+% not be used in maketitle, but will appear (i.e., to be "transported")
+% here as \IEEEdisplaynontitleabstractindextext when compsoc mode
+% is not selected <OR> if conference mode is selected - because compsoc
+% conference papers position the abstract like regular (non-compsoc)
+% papers do!
+\IEEEdisplaynontitleabstractindextext
+% \IEEEdisplaynontitleabstractindextext has no effect when using
+% compsoc under a non-conference mode.
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+%% ============================================================================
+
+
+\section{Introducción}
+
+% Computer Society journal papers do something a tad strange with the very
+% first section heading (almost always called "Introduction"). They place it
+% ABOVE the main text! IEEEtran.cls currently does not do this for you.
+% However, You can achieve this effect by making LaTeX jump through some
+% hoops via something like:
+%
+%\ifCLASSOPTIONcompsoc
+%  \noindent\raisebox{2\baselineskip}[0pt][0pt]%
+%  {\parbox{\columnwidth}{\section{Introduction}\label{sec:introduction}%
+%  \global\everypar=\everypar}}%
+%  \vspace{-1\baselineskip}\vspace{-\parskip}\par
+%\else
+%  \section{Introduction}\label{sec:introduction}\par
+%\fi
+%
+% Admittedly, this is a hack and may well be fragile, but seems to do the
+% trick for me. Note the need to keep any \label that may be used right
+% after \section in the above as the hack puts \section within a raised box.
+
+
+% An example of a floating figure using the graphicx package.
+% Note that \label must occur AFTER (or within) \caption.
+% For figures, \caption should occur after the \includegraphics.
+% Note that IEEEtran v1.7 and later has special internal code that
+% is designed to preserve the operation of \label within \caption
+% even when the captionsoff option is in effect. However, because
+% of issues like this, it may be the safest practice to put all your
+% \label just after \caption rather than within \caption{}.
+%
+% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
+% option should be used if it is desired that the figures are to be
+% displayed while in draft mode.
+%
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+%\caption{Simulation Results.}
+%\label{fig_sim}
+%\end{figure}
+
+% Note that IEEE typically puts floats only at the top, even when this
+% results in a large percentage of a column being occupied by floats.
+% However, the Computer Society has been known to put floats at the bottom.
+
+
+% An example of a double column floating figure using two subfigures.
+% (The subfig.sty package must be loaded for this to work.)
+% The subfigure \label commands are set within each subfloat command,
+% and the \label for the overall figure must come after \caption.
+% \hfil is used as a separator to get equal spacing.
+% Watch out that the combined width of all the subfigures on a 
+% line do not exceed the text width or a line break will occur.
+%
+%\begin{figure*}[!t]
+%\centering
+%\subfloat[Case I]{\includegraphics[width=2.5in]{box}%
+%\label{fig_first_case}}
+%\hfil
+%\subfloat[Case II]{\includegraphics[width=2.5in]{box}%
+%\label{fig_second_case}}
+%\caption{Simulation results.}
+%\label{fig_sim}
+%\end{figure*}
+%
+% Note that often IEEE papers with subfigures do not employ subfigure
+% captions (using the optional argument to \subfloat[]), but instead will
+% reference/describe all of them (a), (b), etc., within the main caption.
+
+
+% An example of a floating table. Note that, for IEEE style tables, the 
+% \caption command should come BEFORE the table. Table text will default to
+% \footnotesize as IEEE normally uses this smaller font for tables.
+% The \label must come after \caption as always.
+%
+%\begin{table}[!t]
+%% increase table row spacing, adjust to taste
+%\renewcommand{\arraystretch}{1.3}
+% if using array.sty, it might be a good idea to tweak the value of
+% \extrarowheight as needed to properly center the text within the cells
+%\caption{An Example of a Table}
+%\label{table_example}
+%\centering
+%% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+%\begin{tabular}{|c||c|}
+%\hline
+%One & Two\\
+%\hline
+%Three & Four\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+
+% Note that IEEE does not put floats in the very first column - or typically
+% anywhere on the first page for that matter. Also, in-text middle ("here")
+% positioning is not used. Most IEEE journals use top floats exclusively.
+% However, Computer Society journals sometimes do use bottom floats - bear
+% this in mind when choosing appropriate optional arguments for the
+% figure/table environments.
+% Note that, LaTeX2e, unlike IEEE journals, places footnotes above bottom
+% floats. This can be corrected via the \fnbelowfloat command of the
+% stfloats package.
+
+
+% The very first letter is a 2 line initial drop letter followed
+% by the rest of the first word in caps (small caps for compsoc).
+% 
+% form to use if the first word consists of a single letter:
+% \IEEEPARstart{A}{demo} file is ....
+% 
+% form to use if you need the single drop letter followed by
+% normal text (unknown if ever used by IEEE):
+% \IEEEPARstart{A}{}demo file is ....
+% 
+% Some journals put the first two words in caps:
+% \IEEEPARstart{T}{his demo} file is ....
+
+\IEEEPARstart{L}{a} idea fundamental encerrada tras el concepto \emph{entorno virtual} no es nueva. Podemos remontarnos a una fecha tan temprana como los años 1860 para encontrar inventos como los murales panorámicos de Baldassare Peruzzi, con los cuales se trataba crear la ilusión de estar en el interior de un entorno ficticio. Cerca de un siglo después (en 1968), Ivan Sutherland, con la misma idea de fondo que encerraban los murales de Peruzzi, creaba el primer dispositivo electrónico de realidad virtual montado sobre un casco. Sin embargo, ha sido ya en el umbral del nuevo milenio que los entornos virtuales en tres dimensiones han pasado a convertirse en auténticas realidades de nuestro día a día; proyectos como \emph{Second Life}, de Linden Lab\footnote{Se procurará incluir como notas al pie todas aquellas direcciones \emph{URL} a sitios web que puedan ser de algún interés al lector. A continuación se adjunta la del sitio de \emph{Second Life}: \url{http://secondlife.com/}}, u \emph{Open Wonderland}, iniciado por Sun Microsystems\footnote{\url{http://openwonderland.org/}}, por ejemplo, ofrecen al usuario la posibilidad de interactuar fácilmente con otros usuarios a través de un entorno digital en 3D. Y, por encima de todo, han sido \textbf{los videojuegos} los responsables principales de que sumergirnos en el interior de estos mundos electrónicos se haya convertido en una actividad habitual que millones de personas realizan todos días de manera rutinaria.
+
+% Usar \begin{figure*} para hacer que la figura ocupe el ancho total de la pág.
+\begin{figure}[ht]\centering
+\includegraphics[width=\linewidth]{skyrim_screenshot}
+\caption{Entorno virtual del videojuego Skyrim}
+\label{fig:skyrim_screenshot}
+\end{figure}
+
+El propósito de este trabajo es crear uno de estos mundos virtuales con los que un usuario pueda interactuar a través de su computador. A lo largo del desarrollo se espera practicar con varios de los conceptos tratados en la asignatura \emph{Gráficos por Computador y Realidad Virtual}, como el modelado en 3D de objetos sencillos, la aplicación de texturas, o la iluminación, procurando fijar la atención en mantener un aspecto gráfico que resulte consistente a fin de potenciar una de las principales virtudes de los entornos virtuales: la sensación de inmersión en el escenario por parte del usuario. Para llevar este propósito a cabo se usará el sistema de creación de videojuegos \emph{Unity}.
+
+
+%% ============================================================================
+
+
+\section{Creación del escenario}
+
+Crear un escenario virtual que tenga un aspecto realista resulta muy costoso. Habitualmente, los proyectos que optan por escenarios de este tipo están desarrollados por equipos enormes en el que hay numerosos artistas encargados de crear los modelos en 3D, las texturas y las animaciones, a fin de que el aspecto de todos los componentes del entorno guarden una coherencia entre sí.
+
+En este caso, evidentemente, los recursos con los que contamos son mucho más limitados y por tanto debemos buscar alternativas. Una de estas alternativas, adoptada por muchos equipos pequeños que no pueden permitirse el lujo de generar sus propios recursos, es adquirirlos de artistas que trabajan por su cuenta y ponen su trabajo a disposición del público, bien por un precio o de forma gratuíta. Esta opción presenta un gran inconveniente (además de los gastos en caso de elegir recursos de pago) y es que, al estar creados de forma independiente, diferentes recursos de diferentes artistas difícilmente mantendrán un aspecto que resulte uniforme y coherente, haciendo que el entorno pueda parecer ensamblado a partir de piezas que no encajan bien entre sí; una suerte de \emph{collage} que potencialmente puede romper la inmersión del usuario. Algo que en la medida de lo posible se pretende evitar en este proyecto.
+
+En su lugar se optará por otra elección que también está ampliamente extendida y es utilizada en muchas obras, y es dejar buscar el fotorrealismo en favor de una estética más simple que no requiera de complejos modelos 3D. Videojuegos como \emph{Darwinia}, de Introversion Software\footnote{\url{http://www.introversion.co.uk/darwinia/}}, o \emph{Minecraft}, de Mojang\footnote{\url{https://minecraft.net/}}, desarrollados por pequeños estudios, han optado por estéticas de este tipo con un gran éxito.
+
+\begin{figure}[ht]\centering
+\includegraphics[width=\linewidth]{darwinia_screenshot}
+\caption{Entorno virtual del videojuego Darwinia}
+\label{fig:darwinia_screenshot}
+\end{figure}
+
+Para crear este entorno se hará uso de las siguientes herramientas:
+
+\begin{itemize}
+\item El generador de terrenos incorporado por defecto en \emph{Unity}.
+
+\item La extensión \emph{terrain toolkit}, de Sándor Moldán\footnote{\url{https://code.google.com/p/unityterraintoolkit/}}, que añade diversas opciones al generador de terrenos por defecto.
+
+\item La extensión \emph{PolyWorld}, de Quantum Theory\footnote{\url{http://qt-ent.com/PolyWorld-Woodland/}}, que nos permitirá conseguir un acabado de pocos polígonos.
+\end{itemize}
+
+Además, utilizaremos algunos modelos tridimensionales simples que nos servirán como objetos de decorado en el terreno.
+
+\subsection{Creación del terreno}
+
+Vamos a intentar crear un entorno que simule una zona montañosa con pequeñas praderas. Este entorno digital se conformará utilizando como objeto base un terreno creado por medio del generador incorporado en \emph{Unity} y la citada extensión \emph{Terrain Toolkit}.
+
+En primer lugar creamos un nuevo objeto terreno. A través de la pestaña de opciones en \emph{script} facilitado por el generador de terrenos, le damos unas dimensiones de $260$x$260$ unidades y, a continuación, usando las opciones del \emph{script Terrain Toolkit} se genera un terreno por medio de fractales como se aprecia en las figuras \textbf{Figura 3} y \textbf{Figura 4}.
+
+\begin{figure}[ht]\centering
+\includegraphics[width=\linewidth]{terrain_01a}
+\caption{Generación de un terreno con \emph{Terrain Toolkit} utilizando fractales}
+\label{fig:terrain_01a}
+\end{figure}
+
+\begin{figure}[ht]\centering
+\includegraphics[width=\linewidth]{terrain_01b}
+\caption{Terreno generado mediante la utilización de fractales}
+\label{fig:terrain_01b}
+\end{figure}
+
+A este terreno generado de forma procedimental le añadimos modificaciones a mano usando el generador de terrenos, para añadirle las llanuras y caminos que se pueden ver en la \textbf{Figura 5}.
+
+\begin{figure}[ht]\centering
+\includegraphics[width=\linewidth]{terrain_02}
+\caption{Modificación manual del terreno}
+\label{fig:terrain_02}
+\end{figure}
+
+Empleando el \emph{Terrain Toolkit} de nuevo, se simulan diferentes efectos de erosión provocados por el viento y las precipitaciones (como se ve en la \textbf{Figura 6}). Para finalizar, una vez está terminado el modelo 3D del terreno, procedemos a la aplicación de texturas sobre él (\textbf{Figura 7}) y, mediante el uso de la extensión \emph{PolyWorld}, se transforma este modelo en uno simplificado de pocos polígonos y se genera un \emph{shader} a partir de la información de las texturas para conseguir el efecto que se puede observar en la \textbf{Figura 8}
+
+\begin{figure}[ht]\centering
+\includegraphics[width=\linewidth]{terrain_03}
+\caption{Simulación de erosión sobre el terreno}
+\label{fig:terrain_03}
+\end{figure}
+
+\begin{figure}[ht]\centering
+\includegraphics[width=\linewidth]{terrain_04}
+\caption{Aplicación de texturas}
+\label{fig:terrain_04}
+\end{figure}
+
+\begin{figure*}[ht]\centering
+\includegraphics[width=\linewidth]{terrain_05}
+\caption{Transformación del terreno usando la extensión \emph{PolyWorld}}
+\label{fig:terrain_05}
+\end{figure*}
+
+\subsection{Adición de objetos no interactivos}
+
+Una vez listo el terreno, añadimos diversos objetos de decorado como rocas, algo de vegetación, unas colinas que podrán verse a lo lejos y varias nubes suspendidas en el cielo.
+
+Para que estos objetos encajen bien en el escenario, su aspecto debe imitar igualmente tanto el acabado de pocos polígonos como el aspecto cromático del terreno. A este respecto, la extensión \emph{PolyWorld} incluye otro \emph{script} análogo al utilizado para transformar el terreno que nos permite tranformar cualquier modelo 3D en un modelo simple de pocos polígonos.
+
+\emph{PolyWorld} cuenta igualmente con una pequeña colección de objetos diseñados con ese mismo aspecto y listos ya para ser usados. Todos los objetos utilizados como decorados en el escenario forman parte de esta librería de objetos que incluye la extensión.
+
+
+%% ============================================================================
+
+
+\section{Personaje manejado por el usuario}
+
+Después de tener montado el escenario es necesario proporcionar mecanismos al usuario que le permitan desplazarse por él: un objeto personaje que pueda controlar. Estos personajes habitualmente se conforman por dos objetos básicos:
+
+\begin{enumerate}
+\item Objeto que \textbf{representa físicamente} al personaje, lo sitúa en una posición determinada, con unas ciertas dimensiones y eventualmente le podría permitir detectar colisiones con otros objetos del escenario.
+
+\item Objeto \textbf{cámara} que se encargará de mostrar en pantalla la posición del personaje.
+\end{enumerate}
+
+Hay numerosas formas de relacionar estas dos entidades: colocar la cámara en el punto de vista del personaje y moverla con él, colocarla a su espalda, diseñar diferentes cámaras para diferentes zonas del escenario y pasar de una a otra en función de la posición del personaje, etc. Cada una de estas opciones tiene un impacto diferente en la experiencia final del usuario.
+
+Además, se debe tener en cuenta un factor importante cuando se utilizan cámaras en tercera persona, y es que se necesita un modelo de personaje y unas animaciones para este modelo. En este punto debemos cuidar mucho la implementación porque una mala elección del modelo o las animaciones pueden romper la inmersión del usuario. Podría adoptarse una estrategia minimalista, similar a la que hemos seguido a la hora de construir el escenario, y hacer que el objeto personaje sea simplemente un objeto poligonal sencillo o una esfera, por ejemplo, con lo que se podrían simplificarar enormemente modelo y animaciones.
+
+En lugar de esto, sin embargo, optaremos por usar otro tipo de cámara: una en \textbf{primera persona}. 
+
+Existe una diferencia sustancial entre elegir entre la primera y la tercera persona: la primera coloca al usuario en el cuerpo del personaje y lo convierte en él, permitiéndole ver lo que éste ve; mientras que con la tercera el usuario ve cómo el personaje obedece sus órdenes y le hace responsable de lo que pueda pasarle. Es decir, sólo con la elección de la cámara se consigue el efecto de convertir al usuario en personaje, o el de crear un lazo entre personaje y usuario y conseguir que el segundo se preocupe por el primero. En la mayoría de videojuegos en los que se evita el juego de roles en favor de un desarrollo más profundo de los personajes se opta por el uso de la cámara en tercera persona, algo que evidentemente no es casual\footnote{Por citar dos ejemplos que utilizan entornos similares pero persiguen objetivos diferentes: el videojuego \emph{Fallout 3}, de Bethesda Game Studios, trata de convertir al usuario en el personaje, hacerle sentir cómo sería vivir en una tierra post-apocalíptica (entra en lo que más arriba se ha llamado ``juego de roles``), y opta por el uso de la cámara en primera persona. Por otra parte, el videojuego \emph{The Last of Us}, de Naughty Dog, cuenta la historia de dos supervivientes a una plaga que ha acabado con la civilización tal y como la conocemos y describe cómo esa vida les va transformando, y en este caso se opta por el uso de una cámara en tercera persona}.
+
+En este caso no se pretende desarrollar ningún trasfondo para el personaje, sino simplemente dejar que el usuario experimente libremente el entorno virtual creado. Por ello, la cámara en primera en primera persona es perfectamente adecuada.
+
+\subsection{UFPS}
+
+Se necesitan dos \emph{scripts} para manejar al personaje: un controlador del objeto físico que lo desplazará en el espacio de acuerdo a la orientación subjetiva de la cámara (es decir, traducirá la entrada de teclado del usuario en desplazamiento hacia adelante y atrás, a derecha e izquierda, y hacia arriba ---haciéndole saltar---), y un segundo controlador para la cámara que modificará su orientación (en este caso, traducirá la entrada de ratón del usuario en rotaciones de cámara).
+
+En lugar de desarrollar toda una lógica nueva, se ha juzgado oportuno no <<reinventar la rueda>> y aprovechar lo que otros desarrolladores han creado ya y ofrecen públicamente. Así, haremos uso de los controladores incluidos en el \emph{framework UFSP (Ultimate First Person Shooter)}, de VisionPunk\footnote{\url{http://www.visionpunk.com/}}.
+
+
+%% ============================================================================
+
+
+\section{Adición de objetos interactivos}
+
+En este punto del desarrollo se ha alcanzado ya el objetivo inicial del proyecto: hemos creado un entorno virtual en 3D y a un objeto personaje con una lógica que le permite desplazarse libremente en función de la entrada del usuario. Esta lógica está gobernada por un amplio conjunto de variables que determinan diferentes aspectos físicos como la aceleración, la gravedad, el rozamiento con suelo y aire, o la potencia de salto, por ejemplo, y que pueden ser modificadas libremente. Aunque el objetivo inicial esté alcanzado, aprovecharemos esta facilidad para modificar las variables físicas y dar opción al usuario de cambiar alguna de ellas en tiempo de ejecución, de forma que pueda observar cómo estos cambios afectan al manejo del personaje.
+
+Para ello se creará una serie de objetos interactivos diferentes que podrán ser \emph{cogidos} por el personaje (para coger uno, éste deberá pasar simplemente sobre ellos). En el momento en el que el usuario coja uno de estos objetos, un nuevo \emph{script} modificará las variables físicas que afectan al comportamiento del personaje.
+
+Siguiendo con el diseño minimalista utilizado hasta ahora, los objetos modificadores serán figuras poligonales sencillas: cubos. Además, para mostrar que estos cubos son objetos especiales y no simples decorados, como el resto de objetos presentes hasta ahora en el escenario, se les hace levitar sobre el suelo, se les da un punto de luz, y se les asocia un \emph{script} en el que les hemos codificado un movimiento de rotación.
+
+En total, se crean cuatro tipos diferentes de objetos modificadores, además de un quinto objeto que el usuario puede coger igualmente, pero que no provoca cambios en las físicas. Para distinguirlos, se usa la siguiente codificación de colores:
+
+\begin{itemize}
+\item \textbf{Modificador verde:} Afecta a la gravedad y el salto, permitiendo al personaje mantenerse en el aire durante más tiempo. Las variables tratadas son: impulso del salto (\emph{force hold}), modificado en un factor de $1.22$; amortiguación al impulso de salto (\emph{force hold damping}), modificado en un factor de $1.22$; y modificador de gravedad, modificado en un factor de $0.36$.
+
+\item \textbf{Modificador azul:} Inverso del verde, también afecta a la gravedad y el salto pero hace que el personaje salte menos y sea atraído con más fuerza por el suelo. Las variables tratadas son: impulso del salto (\emph{force hold}), modificado en un factor de $1/1.22$; frenado del impulso (\emph{force hold damping}), modificado en un factor de $1/1.22$; y modificador de gravedad, modificado en un factor de $1/0.36$.
+
+\item \textbf{Modificador amarillo:} Afecta a la aceleración, permitiendo al personaje moverse con mayor rapidez. La única variable utilizada es la de aceleración, modificada en un factor de $1.5$.
+
+\item \textbf{Modificador morado:} Inverso al amarillo, también afecta a la aceleración pero hace que el personaje se mueva con menor rapidez. La única variable tratada es la de aceleración, modificada en un factor de $1/1.5$.
+
+\item \textbf{Modificador blanco:} Es el quinto modificador. No tiene efecto sobre las propiedades físicas que afectan al objeto personaje.
+\end{itemize}
+
+\begin{figure}[ht]\centering
+\includegraphics[width=\linewidth]{cubes}
+\caption{Objetos modificadores}
+\label{fig:cubes}
+\end{figure}
+
+El efecto de los modificadores es acumulativo. Es decir; si el usuario coge dos modificadores del mismo tipo, el efecto de ese modificador es mayor que si coge uno solo.
+
+
+%% ============================================================================
+
+
+\section{Últimos detalles}
+
+\subsection{Mecánica de juego}
+
+Desde el primer momento la intención del proyecto era simplemente dar forma a un entorno digital y no crear realmente un videojuego. Sin embargo, se ha querido aprovechar la presencia de los objetos interactivos incluidos en la sección anterior para añadir al proyecto una dimensión adicional de juego.
+
+Imitando propuestas muy simples como la del videojuego \emph{A Slower Speed of Light}, desarrollado en el MIT Game Lab\footnote{\url{http://gamelab.mit.edu/games/a-slower-speed-of-light/}}, se ha diseñado un sencillo juego basado en la colección de objetos: en el entorno hay repartidos un total de 25 objetos modificadores ---5 objetos por cada tipo de modificador---. La condición de victoria del juego es simplemente cogerlos todos, y bajo esta condición el programa termina. Además, se da al jugador la opción de reiniciar la aplicación a su estado inicial, y la de finalizarlo y salir en el momento en que él quiera.
+
+\begin{figure}[ht]\centering
+\includegraphics[width=\linewidth]{hud}
+\caption{Un texto informativo registra los objetos que se llevan cogidos}
+\label{fig:hud}
+\end{figure}
+
+A pesar de que la mecánica de juego sea tan básica, se ha procurado hacerlo lo más interesante posible repartiendo los modificadores de forma que se fuerce al usuario a explorar la totalidad del escenario. Se ha decidido también por no detallar el efecto que tiene cada modificador en el personaje en ningún momento, para que sea el jugador quien deba probar y descubrirlo por sí mismo. E incluso se ha tratado de empujar al jugador a seguir una mínima estrategia, colocando los objetos de forma que sólo se puedan capturar siguiendo un determinado orden (o, al menos, haciendo mucho más difícil conseguirlos todos si no se hace en el orden más adecuado).
+
+\begin{figure}[ht]\centering
+\includegraphics[width=\linewidth]{end}
+\caption{Pantalla final}
+\label{fig:end}
+\end{figure}
+
+\subsection{Efectos de sonido y música de fondo}
+
+Para terminar, se han añadido una pista de audio reproducida en bucle como música de fondo y un efecto de sonido que se lanza al coger los modificadores. Ambos audios son de dominio público.
+
+
+%% ============================================================================
+
+
+\section{Conclusiones}
+
+El desarrollo del trabajo nos ha permitido cumplir con el objetivo inicial de crear un pequeño entorno virtual interactivo en 3D, y ha servido como excusa para abordar algunos de los temas que forman parte de la asignatura \emph{Gráficos por Computador y Realidad Virtual}, como pretendíamos:
+
+\begin{itemize}
+\item Utilización de fractales para crear un terreno base con la extensión \emph{Terrain Toolkit}.
+
+\item Modelado 3D y aplicación de texturas gracias a las herramientas de generación de terrenos de \emph{Unity}.
+
+\item Utilización de diferentes aspectos de iluminación ---uso de luz direccional general para la escena, y de focos puntuales de luz para los objetos modificadores---.
+
+\end{itemize}
+
+Además, todo ello ha servido para practicar y familiarizarnos con el software \emph{Unity}, con el que no se tenía ninguna experiencia previa.
+
+El hallazgo más importante del proyecto, en cualquier caso, ha sido comprobar lo relativamente sencillo que resulta dar forma a un entorno virtual inmersivo si se cuenta con las herramientas adecuadas, así como \textbf{la idoneidad de estos entornos interactivos para crear experiencias en el usuario}. Esta capacidad para sumergir al usuario en un espacio virtual ha demostrado un enorme potencial tanto como medio de comunicación (como podemos ver en el ejemplo de \emph{Second Life}), como recurso didáctico (como apuntan proyectos como el citado \emph{A Slower Speed of Light}) o como medio de expresión (aspecto de formidable actualidad como demuestra el que los videojuegos se hayan convertido ya en la principal industria del entretenimiento, por encima del cine\footnote{Goldfarb, Andrew (20 de septiembre, 2013). "GTA 5 Sales Hit \$1 Billion in Three Days". IGN. Ziff Davis. Consultado el 06 de septiembre, 2014. \url{http://www.ign.com/articles/2013/09/20/gta-5-sales-hit-1-billion-in-three-days}}).
+
+\subsection{Líneas de trabajo futuras}
+
+Como líneas de trabajo futuras se podría plantear la posibilidad de practicar herramientas diferentes a \emph{Unity}, que estén enfocadas más directamente hacia el modelado 3D: como \emph{Maya}, de Autodesk\footnote{\url{http://www.autodesk.com/products/maya/overview}}, \emph{3D Studio Max}, también de Autodesk\footnote{\url{http://www.autodesk.com/products/3ds-max/overview}} o \emph{Blender}, de Fundación Blender\footnote{\url{http://www.blender.org/}}, por ejemplo, con las cuáles podríamos crear nuestros propios modelos e integrarlos en el entorno virtual.
+
+También sería interesante trabajar más en el aspecto sonoro del entorno. Por ejemplo incluir más efectos de audio, como pisadas (con sonidos diferentes en función de la textura sobre la que se está pisando), o hacer que la música de fondo reaccione dinámicamente al estado de la escena (acelerando o decelerando la velocidad de la reproducción cuando se cogen los modificadores que aumentan o disminuyen la velocidad del personaje, por ejemplo). Igualmente, sería interesante incluir otros objetos dinámicos (animales, agua, molinos,...) y efectos de partículas, que podrían servir para potenciar aún más la inmersión del usuario en el entorno.
+
+Para finalizar, si bien es cierto que los entornos digitales y las obras interactivas están de plena actualidad como medio de expresión, como se ha apuntado más arriba, juzgamos que aún hay mucho terreno por explorar. Atendiendo a algunas de las principales producciones actuales enseguida se puede comprobar cómo la mayor parte de estas obras aún continuan imitando fórmulas cinematográficas ---esto es una constante repetida a lo largo de la historia: las primeras producciones escritas siguían imitando los códigos del lenguaje hablado, las primeras producciones radiofónicas imitaban códigos del lenguaje escrito, el cine hizo lo propio con el lenguaje teatral... hasta que, poco a poco, los medios evolucionan y terminan desarrollando su lenguaje propio---. El medio digital interactivo sigue siendo un medio muy joven que aún debe continuar buscando las fórmulas más apropiadas para aprovechar esa interactividad y capacidad de inmersión por parte del usuario, y desarrollar sus códigos particulares.
+
+Sería muy interesante trabajar en este aspecto y buscar fórmulas efectivas y exclusivas de una obra digital interactiva para transmitir ideas y conceptos.
+
+
+%% ============================================================================
+
+
+% if have a single appendix:
+%\appendix[Proof of the Zonklar Equations]
+% or
+%\appendix  % for no appendix heading
+% do not use \section anymore after \appendix, only \section*
+% is possibly needed
+
+% use appendices with more than one appendix
+% then use \section to start each appendix
+% you must declare a \section before using any
+% \subsection or using \label (\appendices by itself
+% starts a section numbered zero.)
+
+% START
+%\appendices
+%\section{Proof of the First Zonklar Equation}
+%Appendix one text goes here.
+%
+%% you can choose not to have a title for an appendix
+%% if you want by leaving the argument blank
+%\section{}
+%Appendix two text goes here.
+%
+% use section* for acknowledgement
+%\ifCLASSOPTIONcompsoc
+%  % The Computer Society usually uses the plural form
+%  \section*{Acknowledgments}
+%\else
+%  % regular IEEE prefers the singular form
+%  \section*{Acknowledgment}
+%\fi
+%
+%The authors would like to thank...
+% END
+
+
+% Can use something like this to put references on a page
+% by themselves when using endfloat and the captionsoff option.
+% START
+%\ifCLASSOPTIONcaptionsoff
+%  \newpage
+%\fi
+% END
+
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+%\IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+%\IEEEtriggercmd{\enlargethispage{-5in}}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+%\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+
+% START
+%\begin{thebibliography}{1}
+%
+%\bibitem{IEEEhowto:kopka}
+%H.~Kopka and P.~W. Daly, \emph{A Guide to {\LaTeX}}, 3rd~ed.\hskip 1em plus
+%  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+%
+%\end{thebibliography}
+% END
+
+% biography section
+% 
+% If you have an EPS/PDF photo (graphicx package needed) extra braces are
+% needed around the contents of the optional argument to biography to prevent
+% the LaTeX parser from getting confused when it sees the complicated
+% \includegraphics command within an optional argument. (You could create
+% your own custom macro containing the \includegraphics command to make things
+% simpler here.)
+%\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
+% or if you just want to reserve a space for a photo:
+
+% START
+%\begin{IEEEbiography}{Michael Shell}
+%Biography text here.
+%\end{IEEEbiography}
+% END
+
+% if you will not have a photo at all:
+% START
+%\begin{IEEEbiographynophoto}{John Doe}
+%Biography text here.
+%\end{IEEEbiographynophoto}
+% END
+
+% insert where needed to balance the two columns on the last page with
+% biographies
+%\newpage
+
+% START
+%\begin{IEEEbiographynophoto}{Jane Doe}
+%Biography text here.
+%\end{IEEEbiographynophoto}
+% END
+
+% You can push biographies down or up by placing
+% a \vfill before or after them. The appropriate
+% use of \vfill depends on what kind of text is
+% on the last page and whether or not the columns
+% are being equalized.
+
+%\vfill
+
+% Can be used to pull up biographies so that the bottom of the last one
+% is flush with the other column.
+%\enlargethispage{-5in}
+
+
+% that's all folks
+\end{document}
+
