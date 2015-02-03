@@ -46,6 +46,12 @@
 !!
 !!	1)	Limbo
 !!	2)	Descampado 1
+!!	3)	Descampado 2
+!!	4)	Terraza
+!!	5)	Habitación
+!!	6)	Pasillo
+!!	7)	Baño
+!!	8)	Salón
 !!
 !!------------------------------------------------------------------------------
 
@@ -62,23 +68,42 @@ Room	limbo "en algún lugar"
 		clarification 0,
  has	male;
 
+Atrezzo	cielo "cielo"
+ with	name_m	'cielo',
+		description [;
+			if (real_location == DESCAMPADO_1 or DESCAMPADO_2)
+				return O__M(self, 1);
+			return O__M(self, 2);
+		],
+ has	male;
+
 
 !!==============================================================================
 !!	2)	Descampado 1
 !!------------------------------------------------------------------------------
 
-Outdoors	descampado_1 "Descampado"
+Outdoors	DESCAMPADO_1 "Descampado"
  with	name_m	'descampado',
 		gender	G_MASCULINO,
 		initial [; if (self hasnt visited) {
+			!! Establece la flexión gramatical:
+			SetGrammaticalInflection(FIRST_PERSON_PRESENT);
+			!! Texto inicial de la escena:
+			new_line;
+			HorizontalRule();
+			new_line;
 			O__M(self, 1);
-			PressAnyKey();
 			new_line;
 			return true;
 		}],
 		description [; 
 			if (self hasnt visited) return O__M(self, 2);
 			return O__M(self, 3);
+		],
+		before [;
+			Smell:
+				give cadaver_Yamileth general;
+				return O__M(self, 4);
 		],
  has	male;
 
@@ -90,5 +115,175 @@ Object	-> Chico "chico"
 		description [; return O__M(self, 1); ],
  has	animate male proper;
 
+Atrezzo	-> coche "coche"
+ with	name_m	'audi' 'coche' 'vehiculo',
+		gender	G_MASCULINO,
+		description [; return O__M(self, 1); ],
+ has	male;
+
+Atrezzo	-> bolsas "bolsas de basura"
+ with	name_fp	'bolsas',
+		gender	G_FEMENINO + G_PLURAL,
+		adjectives	'basura',
+ has	female pluralname;
+
+Furniture	-> cadaver_Yamileth "cadáver"
+ with	name_f	'mujer' 'persona' 'yamileth',
+		name_m	'bulto' 'cadaver' 'cuerpo',
+		gender	G_FEMENINO,
+		description [;
+			return O__M(self, 1);
+		],
+		before [;
+			Cut:
+				if (indirectlyContains(Chico, sierra)) {
+					O__M(self, 2);
+					new_line;
+					if (self has general) {
+						O__M(self, 3);
+						new_line;
+					}
+					PressAnyKey();
+					HorizontalRule();
+					new_line;
+					PressAnyKey();
+					!! XXX - Fin del prólogo
+					PlayerTo(TERRAZA);
+					return true;
+				}
+		],
+ has	female;
+
+Item	-> sierra "sierra"
+ with	name_f	'sierra',
+		gender	G_FEMENINO,
+		description [;
+			if (self hasnt described) return O__M(self, 1);
+			return O__M(self, 2);
+		],
+		after [; Take: return O__M(self, 3); ],
+ has	concealed female;
+
+NPC		-> Mario "Mario"
+ with	name_f	'persona',
+		name_m	'hombre' 'mario',
+		gender	G_MASCULINO,
+		description [; 
+			O__M(self, 1);
+			if (self hasnt described) O__M(self, 2);
+			new_line;
+			return true;
+		],
+ has	concealed male proper;
+
+NPC		-> Alberto "Alberto"
+ with	name_f	'persona',
+		name_m	'hombre' 'alberto',
+		gender	G_MASCULINO,
+		description [; return O__M(self, 1); ],
+ has	concealed male proper;
+
+
+!!==============================================================================
+!!	3)	Descampado 2
+!!------------------------------------------------------------------------------
+
+Outdoors	DESCAMPADO_2 "Descampado"
+ with	name_m	'descampado',
+		gender	G_MASCULINO,
+		initial [; if (self hasnt visited) {
+			!! Establece la flexión gramatical:
+			SetGrammaticalInflection(FIRST_PERSON_PRESENT);
+			return true;
+		}],
+ has	male;
+
+!!==============================================================================
+!!	4)	Terraza
+!!------------------------------------------------------------------------------
+
+Outdoors	TERRAZA "Terraza"
+ with	name_f	'terraza',
+		name_m	'patio',
+		gender	G_FEMENINO,
+		initial [; if (self hasnt visited) {
+			!! Establece la flexión gramatical:
+			SetGrammaticalInflection(FIRST_PERSON_PAST);
+			!! Texto inicial de la escena:
+			O__M(self, 1);
+			new_line;
+			return true;
+		}],
+		description [;
+			return O__M(self, 2);
+		],
+		w_to	HABITACION
+		in_to [; return self.w_to(); ],
+ has	female;
+
+
+!!==============================================================================
+!!	5)	Habitación
+!!------------------------------------------------------------------------------
+
+Indoors	HABITACION "Pequeña habitación"
+ with	name_f	'habitacion',
+		name_m	'cuarto',
+		adjectives	'pequena' 'pequeno',
+		gender	G_FEMENINO,
+		description [;
+			O__M(self, 1);
+			if (self hasnt visited) O__M(self, 2);
+			new_line;
+			return true;
+		],
+		n_to	PASILLO,
+		e_to	TERRAZA,
+		w_to	SALON,
+		out_to [; return self.e_to(); ],
+ has	female;
+
+
+!!==============================================================================
+!!	6)	Pasillo
+!!------------------------------------------------------------------------------
+
+Indoors	PASILLO "Pasillo"
+ with	name_m	'corredor' 'pasillo',
+		gender	G_MASCULINO,
+		description [;
+			return O__M(self, 1);
+		],
+		s_to	HABITACION,
+		e_to	BANNO,
+ has	male;
+
+
+!!==============================================================================
+!!	7)	Baño
+!!------------------------------------------------------------------------------
+
+Indoors	BANNO "Baño"
+ with	name_m	'aseo' 'bano',
+		gender	G_MASCULINO,
+		description [;
+			return O__M(self, 1);
+		],
+		w_to	PASILLO,
+ has	male;
+
+!!==============================================================================
+!!	8)	Salón
+!!------------------------------------------------------------------------------
+
+Indoors	SALON "Salón"
+ with	name_f	'estancia' 'habitacion' 'sala',
+		name_m	'cuarto' 'salon',
+		gender	G_MASCULINO,
+		description [;
+			return O__M(self, 1);
+		],
+		e_to	HABITACION,
+ has	male;
 
 

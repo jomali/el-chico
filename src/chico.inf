@@ -93,11 +93,11 @@ Constant SIN_MENSAJES;			! Se omiten los mensajes por defecto de la lib.
 
 Constant PARSER_PREFIX "[";		! Define texto inicial de los mens. del parser
 Constant PARSER_SUFIX "]";		! Define texto final de los mens. del parser
-Global _parser_style = _IST_;	! Selecciona estilo de los mensajes del parser
+Global _parser_style = _RST_;	! Selecciona estilo de los mensajes del parser
 
 !! Constantes de la extensión *topicInventory*:
 
-Constant TINV_STYLE _IST_;		! Estilo de los mensajes de *topicInventory*
+Constant TINV_STYLE _BST_;		! Estilo de los mensajes de *topicInventory*
 Constant TINV_PREFIX "[";		! Define texto inicial de los mensajes
 Constant TINV_SUFIX "]";		! Define texto final de los mensajes
 Constant TINV_MSG1 "";			! Texto del mensaje MSG1
@@ -112,9 +112,9 @@ Constant _TEXT_BUFFER_SIZE = 64;
 Array _text_buffer --> _TEXT_BUFFER_SIZE;
 
 Global _keyword_highlighting=true; ! Indica si el resaltado está activado
-Global _object_keyword_st	=1;	! Estilo de texto para palabras clave OBJETO
-Global _direction_keyword_st=2;	! Estilo de texto para palabras clave DIRECCIÓN
-Global _topic_keyword_st	=3;	! Estilo de texto para palabras clave TEMA
+Global _object_keyword_st	=4;	! Estilo de texto para palabras clave OBJETO
+Global _direction_keyword_st=4;	! Estilo de texto para palabras clave DIRECCIÓN
+Global _topic_keyword_st	=4;	! Estilo de texto para palabras clave TEMA
 
 
 !!==============================================================================
@@ -688,7 +688,8 @@ VerboIrregular "establecer estilo de texto resaltado" with imperativo
 		print " hay tres tipos de palabras clave. Es importante que tu programa 
 		intérprete las imprima con un estilo de resaltado adecuado. Teclea un 
 		número para cambiar el estilo de resaltado de cada palabra clave hasta 
-		encontrar un estilo que se vea bien en tu sistema.^";
+		encontrar un estilo que se vea bien en tu sistema. (Puedes activar y 
+		desactivar el resaltado tecleando RESALTADO SI/NO).^";
 		new_line;
 
 		print "1) Palabras clave de tipo objeto: ";

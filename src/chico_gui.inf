@@ -164,15 +164,15 @@ WindowPair rootUI;
 
 	!! Definición de estilo de texto de usuario 1:
 	glk_stylehint_set(wintype_TextBuffer, style_User1, 
-		stylehint_BackColor, $301010);
+		stylehint_BackColor, $151515);
 	glk_stylehint_set(wintype_TextBuffer, style_User1, 
 		stylehint_Oblique, 0);
 	glk_stylehint_set(wintype_TextBuffer, style_User1,
-		stylehint_Weight, 0);
+		stylehint_Weight, 1);
 
 	!! Definición de estilo de texto de usuario 2:
 	glk_stylehint_set(wintype_TextBuffer, style_User2, 
-		stylehint_BackColor, $303030);
+		stylehint_BackColor, $151515);
 	glk_stylehint_set(wintype_TextBuffer, style_User2, 
 		stylehint_Oblique, 0);
 	glk_stylehint_set(wintype_TextBuffer, style_User2,

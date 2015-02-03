@@ -49,36 +49,10 @@
 
 
 !!------------------------------------------------------------------------------
-!!	DESCAMPADO_1
-descampado_1: switch (n) {
-1:	! introducción
-print "---¿Por qué tenemos que desmembrarla?
-^^
-Ella es sólo un bulto en el suelo, recortado por los deslumbrantes faros del coche. Es una noche sin luna y sin estrellas y los faros son la única luz del descampado. Hace frío.
-^^
----Porque te he dicho que hay que hacerlo.
-^^
-Saca algo del maletero y lo lanza hacia aquí. Cae a apenas un paso del cuerpo. Una sierra. En la noche, las manchas que salpican la tierra alrededor del cuerpo parecen negras. Algo más aterriza junto a la sierra. Un rollo de bolsas de plástico de basura negras. Bajo los faros del coche todo es o blanco o negro.";
-new_line;
-return true;
-2:	! description (inicial)
-print "Mario viene desde el maletero y mira con ojos apremientes la sierra del suelo, esperando que cumpla la orden. El muy cabrón. Sé que el otro, Alberto, no va a mover un músculo. Está ahí, apoyado contra el capó negro, fumando tranquilamente. Y ella... ella es sólo un bulto en el suelo, con el largo pelo negro enmarañado y empapado en sangre. Joder, tiene algo enrredado en el pelo. Tal vez trocitos de cerebro. No debían estar ahí, sino dentro de su cabeza... joder. Está claro que ella tampoco va a mover un músculo.
-^^
----Vamos, chico.";
-new_line;
-return true;
-3:	! description
-print "Bajo los faros del coche todo es o blanco o negro. Mario mira con ojos apremiantes la sierra del suelo, esperando que cumpla la orden. El muy cabrón. Está claro que el otro, Alberto, no va a mover un músculo. Está ahí, apoyado contra el capó negro, fumando tranquilamente. Y ella... ella es sólo un bulto en el suelo, con el largo pelo negro enmarañado y empapado en sangre y cubierto de trocitos de cerebro... ella tampoco va a mover un músculo.";
-new_line;
-return true;
-}
-
-!!------------------------------------------------------------------------------
-!!	LIMBO
-limbo: switch (n) {
+!!	BANNO
+banno: switch (n) {
 1:	! description
-print "Más allá de la barrera casi insuperable que separa la realidad de todo lo demás. Un lugar etéreo, donde la vida, la materia y la vitalidad no son necesariamente constantes; un lugar donde el tiempo y el espacio no existen tal y como los capta nuestro ser despierto...";
-if (LIMBO hasnt visited) print "^^---¿Qué? ¿Cómo?... ¿cómo he llegado aquí?";
+print "Había una tía cagando en el baño.";
 new_line;
 return true;
 }
@@ -88,6 +62,164 @@ return true;
 Chico: switch (n) {
 1:	! description
 return L__M(##Miscellany, 19);
+}
+
+!!------------------------------------------------------------------------------
+!!	DESCAMPADO_1
+DESCAMPADO_1: switch (n) {
+1:	! introducción
+print "---¿Por qué tenemos que desmembrarla?
+^^
+Ella es sólo un bulto en el suelo, recortado por los deslumbrantes faros del coche. Es una noche encapotada y sin luna y los faros son la única luz del descampado. Hace frío.
+^^
+---Porque lo he dicho yo.
+^^
+Saca algo del maletero y lo lanza hacia aquí. Cae a apenas un paso del cuerpo. Una sierra. En la noche, las manchas que salpican la tierra alrededor del cuerpo parecen negras. Algo más aterriza junto a la sierra con un golpe. Un rollo de bolsas de plástico de basura negras. Bajo los faros del coche todo es o blanco o negro.";
+new_line;
+return true;
+2:	! description (~~described)
+print "[Mario] vuelve desde el maletero y mira [la sierra] impaciente, esperando a que cumpla la orden. El muy cabrón. Sé que el otro, [Alberto], no va a mover un músculo. Está ahí, apoyado contra el [@coche, capó] negro, fumando tranquilamente. Y ella... ella es sólo un [@cadaver_Yamileth, bulto] en el suelo, con el largo pelo negro enmarañado y empapado en sangre. Joder, tiene como unos grumos espesos y pegajosos en el pelo... tiene medio puto cerebro pulverizado y enrredado entre el pelo... joder. Está claro que ella tampoco va a mover un músculo.
+^^
+---Vamos, chico. No tenemos toda la noche.";
+new_line;
+return true;
+3:	! description
+print "Bajo los faros [del coche] todo es o blanco o negro. [Mario] mira [la sierra] impaciente, esperando a que cumpla la orden. El muy cabrón. Está claro que el otro, [Alberto], no va a mover un músculo. Está ahí, apoyado contra el capó negro, fumando tranquilamente. Y ella... ella es sólo un [@cadaver_Yamileth, bulto] en el suelo, con el largo pelo negro enmarañado y empapado en sangre y cubierto de trocitos de cerebro... ella tampoco va a mover un músculo.";
+new_line;
+return true;
+4:	! before: Smell
+print "El aire es gélido y huele a... no sé. A nada especial en realidad.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+!!	Alberto
+Alberto: switch (n) {
+1:	! description
+print "Alberto está fuera del alcance de los faros, así que es poco más que una silenciosa silueta apoyada contra [el coche]. El extremo incandescente de su cigarrillo brilla en la oscuridad. Como una luciérnaga.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+!!	Mario
+Mario: switch (n) {
+1:	! description
+print "Un hijo de puta con aires de gángster de película. Zapatos negros, traje negro, camisa blanca manchada de sangre negra, pistola negra. Una pistola de verdad. Loco hijo de puta.";
+return true;
+2:	! description (~~described)
+print " ¿Por qué demonios me metería en esta mierda?
+^^
+Ya. Por el dinero.";
+return true;
+3:
+print "---Coge esa puta [sierra] de una vez y empieza. No tenemos toda la noche.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+!!	cadaver_Yamileth
+cadaver_Yamileth: switch (n) {
+1:	! description
+print "Era una mujer joven y ahora es un cadáver joven. Un cadáver cubierto de sangre y trocitos de cerebro. Me dijo su nombre. Yamileth. Tenía un nombre bonito.";
+new_line;
+return true;
+2:	! before: Cut
+print "Por suerte está tirada de espaldas y no la tengo que ver la cara, pero no puedo apartar la mirada de los trocitos amorfos enrredados entre su pelo. Apoyo la condenada sierra sobre un brazo... y eso es todo lo lejos que llego antes de notar el flujo desde el estómago, a través del esófago, hasta la boca. Vomito sobre Yamileth.";
+new_line;
+return true;
+3:	! before: Cut
+print "El aire es gélido y huele a pota.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+!!	coche
+coche: switch (n) {
+1:	! description
+print "El coche está parado, con las luces puestas para alumbrar el descampado.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+!!	sierra
+sierra: switch (n) {
+1:	! description (~described)
+print "[Mario] es un puto psicópata. Hay una película, Saw, en la que aparece un psicópata. Encadena a un tipo del tobillo y le deja una pequeña sierra al alcance de la mano. El tipo intenta cortar el grillete con la sierra, pero es demasiado duro como para cortarlo con esa sierra tan pequeña, así que la tiene que utilizar para cortarse el tobillo. Los guionistas debían ser unos psicópatas buenos. Joder, el mundo está lleno de psicópatas.
+^^
+No sé cómo coño puedo estar pensando en una puta película ahora.
+^^
+Esa sierra es algo más grande que la del psicópata aquel. Tal vez con ella se podría cortar el grillete. Aunque da igual. Aquí no hay grilletes.";
+new_line;
+return true;
+2:	! description
+print "La sierra es algo más grande que la de la película del psicópata. Tal vez con ella se podría cortar aquel grillete con el que encadenó al protagonista. Aunque da igual. Aquí no hay grilletes.";
+new_line;
+return true;
+3:	! before: Take
+print "Agarro la sierra.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+!!	HABITACION
+HABITACION: switch (n) {
+1:	! description (~visited)
+print "Una habitación sin función muy clara. Más allá de servir de paso. Estaba menos atestada, aunque había un trasiego constante de gente que entraba y salía desde el [@SALON, salón] a [la terraza]. Salvo por algún descarriado que de cuando en cuando se desviaba por [un pasillo]. En busca de un baño, probablemente.";
+return true;
+2:	! description (~visited)
+print " ¿Has visto alguna vez las carreras de Fórmula 1? ¿Cuándo los coches se salen del circuito y entran a boxes para repostar...? Olvídalo. Mala analogía. Aquella gente no buscaba repostar si no soltar lastre.";
+return true;
+}
+
+!!------------------------------------------------------------------------------
+!!	LIMBO
+LIMBO: switch (n) {
+1:	! description
+print "Más allá de la barrera casi insuperable que separa la realidad de todo lo demás. Un lugar etéreo, donde la vida, la materia y la vitalidad no son necesariamente constantes; un lugar donde el tiempo y el espacio no existen tal y como los capta nuestro ser despierto...";
+if (LIMBO hasnt visited) print "^^---¿Qué? ¿Cómo?... ¿cómo he llegado aquí?";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+!!	PASILLO
+PASILLO: switch (n) {
+1:	! description
+print "El pasillo era una extensión alargada de la otra [@HABITACION, habitación], sin nada interesante. Nada que adornase las paredes. Ni un solo cuadro para entretener a un tío aburrido que había tenido que ir a aquella fiesta por obligación. Tenía una [@BANNO, puerta] en un lado. Cerrada. Y otra más en el extremo más alejado. Cerrada también.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+!!	SALON
+SALON: switch (n) {
+1:	! description
+print "Grande y abarrotado y bullicioso. Los sillones estaban ocupados. Los sofás estaban ocupados. Las sillas y las banquetas estaban ocupadas. Había un par de sillas plegables en una esquina. Ocupadas. Y el resto del espacio estaba caro también. Tenías que luchar para abrirte paso por el salón. Aunque podías aprovechar cuando alguno salía hacia la [@HABITACION, terraza] para robarle el sitio.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+!!	TERRAZA
+TERRAZA: switch (n) {
+1:	! initial
+print "SEIS HORAS ANTES.
+^^
+Alguien vomitaba alcohol y comida a medio digerir en el jardín, apoyado al tronco de un árbol. Era una fiesta en casa de José Freire, y esas fiestas siempre están llenas de gente. Gente que trabajaba para él, gente que quería trabajar con él, y otros muchos que no tengo ni idea de dónde salían y que simplemente parecían interesados en la comida, la bebida y la droga gratis. Al que vomitaba no le conocía. Debía ser de esos últimos.
+^^
+Yo, por supuesto, era de los que trabajaban para él. Bueno, trabajaba para gente que trabajaba para él, que es lo mismo. Y estaba allí porque se supone que debía estar allí, pero no me lo estaba pasando bien en absoluto. Al llegar había cogido una bebida, casi por obligación, y no recuerdo si llegué a darle un sorbo antes de dejármela olvidada en alguna parte. En aquel momento simplemente trataba matar la tarde sentado solo en una silla en la terraza. El plan inicial era sentarme al sol y entretenerme viendo a las tías que se bañaban en bikini en la piscina ---todas estaban imposiblemente buenas---. Sin embargo, ¡oh, sorpresa! aquello no había salido bien. En vez de a las tías, al que había acabado mirando era a mister vomitona.";
+new_line;
+return true;
+2:	! description
+print "Unas [@HABITACION, puertas de cristal] se abrían a aquella terraza llena de gente, en la parte de atrás de la enorme casa de Freire. Desconocidos todos, salvo un pequeño grupo reunido alrededor de una mesa, entre los que estaban los tíos con los que trabajaba. Ojalá no conociese a aquellos tíos y sí a alguna de las fulanas que chapoteaban en la piscina.";
+new_line;
+return true;
 }
 
 
