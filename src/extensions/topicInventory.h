@@ -13,13 +13,21 @@
 !!	Language:		ES (Castellano)
 !!	System:			Inform-INFSP 6
 !!	Platform:		Z-Machine / Glulx
-!!	Version:		2.1
-!!	Released:		2014/06/12
+!!	Version:		2.2
+!!	Released:		2015/02/06
 !!
 !!------------------------------------------------------------------------------
 !!
 !!	# HISTORIAL DE VERSIONES
 !!
+!!	2.2: 2015/02/06	Se corrige el comportamiento del controlador (método 
+!!					'run()' del objeto) cuando tiene una conversación activa 
+!!					pero que ya ha finalizado. Se introduce también un nuevo 
+!!					atributo booleano 'final_topic' a los temas. Si un tema 
+!!					tiene este atributo activado, después de ser tratado por el 
+!!					controlador se pondrá fin a la conversación de forma 
+!!					automática. Añade además la operación 'has_topic()' a la 
+!!					clase conversación.
 !!	2.1: 2014/06/12	Modificaciones en la propiedad *show_topic_inventory* del 
 !!					objeto gestor. Nueva constante CONVERSATION_COMMA.
 !!	2.0: 2014/04/03	Mejora la gestión del cambio de distintas conversaciones y 
@@ -325,7 +333,9 @@ Class	ConversationTopic
 		!! Indica si el tema es persistente. Cuando el gestor trata un tema no 
 		!! persistente, automáticamente le da el atributo *visited* para 
 		!! marcarlo como tema tratado y luego lo elimina de la conversación.
-		persistent false;
+		persistent false,
+		!! Indica si el tema pone fin a la conversación.
+		final_topic false;
 
 !!==============================================================================
 !!	Representa una conversación con una lista de temas que pueden ser tratados 
@@ -349,6 +359,9 @@ Class	ConversationTopic
 !!	 *	end() - Marca la conversación como finalizada.
 !!
 !!	 *	has_ended() - Indica si la conversación ha finalizado o no.
+!!
+!!	 *	has_topic(topic:ConversationTopic) - Indica si la conversación contiene 
+!!		o no el tema pasado como parámetro.
 !!
 !!	 *	remove_topic(topic:ConversationTopic, visited_flag:boolean) - Elimina 
 !!		un tema de la conversación. Si se invoca con *visited_flag* verdadero, 
@@ -401,6 +414,9 @@ Class	Conversation
 		has_ended [;
 			if (self has general) return true;
 			else return false;
+		],
+		has_topic [ topic;
+			return parent(topic) == self;
 		],
 		remove_topic [ topic visited_flag obj i x;
 			if (parent(topic) ~= self) return false;
@@ -555,6 +571,7 @@ Object ConversationManager "(Conversation Manager)"
 		],
 		run [ o o_tmp_hits;
 			if (self.current_conversation) {
+				if (self.current_conversation.has_ended()) return false;
 
 				!! A) Inicializaciones del método:
 				self.topic_inventory_flag = false; 
@@ -612,9 +629,11 @@ Object ConversationManager "(Conversation Manager)"
 						self.current_conversation.remove_topic(self.topic);
 					self.current_conversation.add_subtopics(self.topic);
 
-					!! Acción después de tratar el tema:
+					!! Acciones después de tratar el tema:
 					if (self.topic.reaction ~= 0)
 						PrintOrRun(self.topic, reaction);
+					if (self.topic.final_topic)
+						self.current_conversation.end();
 
 					!! Se modifica la entrada de usuario para que la librería 
 					!! lance la acción de apoyo ##NPCTalk (referenciada con la 

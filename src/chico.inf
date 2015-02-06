@@ -68,10 +68,10 @@
 !! Información bibliográfica:
 
 Constant Story
-"EL CHICO";
+"EL CHICO - Primera Parte";
 
 Constant Headline
-"Una ficción pulp interactiva por J. Francisco Martín";
+"Un pulp interactivo por J. Francisco Martín, (c) 2015";
 
 #Ifdef DEBUG;					! Fase de desarrollo
 Constant Checking 1;
@@ -111,10 +111,10 @@ Constant TINV_NO_MSG "No hay temas que tratar.";
 Constant _TEXT_BUFFER_SIZE = 64;
 Array _text_buffer --> _TEXT_BUFFER_SIZE;
 
-Global _keyword_highlighting=true; ! Indica si el resaltado está activado
-Global _object_keyword_st	=4;	! Estilo de texto para palabras clave OBJETO
-Global _direction_keyword_st=4;	! Estilo de texto para palabras clave DIRECCIÓN
-Global _topic_keyword_st	=4;	! Estilo de texto para palabras clave TEMA
+Global _keyword_highlighting = true; ! Indica si el resaltado está activado
+Global _keyword_st1 = 4;		! Estilo de texto 1 para palabras clave
+Global _keyword_st2 = 4;		! Estilo de texto 2 para palabras clave
+Global _keyword_st3 = 2;		! Estilo de texto 3 para palabras clave
 
 
 !!==============================================================================
@@ -313,7 +313,6 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 	!! Es importante realizar las inicializaciones del relato después de 
 	!! imprimir la pantalla de inicio. De lo contrario el nombre de la 
 	!! localidad inicial aparecerá escrito en la barra de estado.
-	SetGrammaticalInflection(FIRST_PERSON_PRESENT);
 	ChangePlayer(Chico);		! Establece el personaje jugable
 	lookmode = 2;				! Lookmode largo
 
@@ -413,9 +412,7 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 !!------------------------------------------------------------------------------
 !!	 -	CheckInterpreter()
 !!	 -	CreateLink()
-!!		 -	ObjectKeywordStyle()
-!!		 -	DirectionKeywordStyle()
-!!		 -	TopicKeywordStyle()
+!!		 -	KeywordStyle();
 !!	 -	EraseWindow()
 !!	 -	HorizontalRule()
 !!	 -	PressAnyKey()
@@ -457,19 +454,24 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 
 !!------------------------------------------------------------------------------
 !! Crea un hipervínculo con el objeto pasado como parámetro. Admite además un 
-!! texto opcional, para imprimirlo en lugar del objeto. (NOTA: Si se incluye la 
-!! extensión 'types.h', se utilizan estilos de resaltado de texto para destacar 
-!! los hipervínculos).
+!! texto opcional, para imprimirlo en lugar del objeto, y un tercer parámetro 
+!! booleano también opcional. Si la aplicación incluye la extensión 'types.h' 
+!! se utilizan estilos de resaltado de texto para destacar los hipervínculos. 
+!! Este último parámetro permite saltar la utilización del estilo resaltado si 
+!! se establece como 'true'.
 !!
 !!	@param obj:Objeto || obj:String
 !!		objeto o cadena de caracteres utilizada para crear el hipervínculo
 !!	@param text:String (opcional)
 !!		texto alternativo del hipervínculo
+!!	@param stFlag:boolean
+!!		si es verdadero, evita que el hipervínculo se imprima con un estilo de 
+!!		texto resaltado
 !!	@retorna boolean
 !!		falso si el objeto pasado como parámetro no es válido. Verdadero en 
-!!		caso contrario
+!!		caso contrario.
 !!------------------------------------------------------------------------------
-[ CreateLink obj text
+[ CreateLink obj text stFlag
 	st;
 	!! Comprueba que 'obj' sea un parámetro válido:
 	if ((obj == 0) || (metaclass(obj) == nothing)) return false;
@@ -478,15 +480,16 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 	glk_set_hyperlink(obj);
 	#Endif; ! TARGET_GLULX;
 	!! Usa estilo de texto resaltado:
-	#Ifdef _TYPES_;
-	st = _current_style;
-	ObjectKeywordStyle();
-	if (metaclass(obj) == Object) {
-		if ((obj ofclass Room or CompassDirection) || (obj has door))
-			DirectionKeywordStyle();
-		!! TODO TopicKeyWordStyle();
+	if (~~stFlag) {
+		#Ifdef _TYPES_;
+		st = _current_style;
+		KeywordStyle(1);
+		if (metaclass(obj) == Object) {
+			if ((obj ofclass Room or CompassDirection) || (obj has door))
+				KeywordStyle(2);
+		}
+		#Endif; ! _TYPES_;
 	}
-	#Endif; ! _TYPES_;
 	!! Imprime el texto del hipervínculo:
 	if (metaclass(text) == String) {
 		print (string) text;
@@ -506,14 +509,16 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 	.linkNamePrinted;
 
 	!! Termina de usar el estilo resaltado:
-	#Ifdef _TYPES_;
-	switch (st) {
-		_IST_:		ItalicStyle();
-		_BST_:		BoldStyle();
-		_MST_:		MonospacedStyle();
-		default:	RomanStyle();
+	if (~~stFlag) {
+		#Ifdef _TYPES_;
+		switch (st) {
+			_IST_:		ItalicStyle();
+			_BST_:		BoldStyle();
+			_MST_:		MonospacedStyle();
+			default:	RomanStyle();
+		}
+		#Endif; ! _TYPES_;
 	}
-	#Endif; ! _TYPES_;
 	!! Establece final del hipervínculo:
 	#Ifdef TARGET_GLULX;
 	glk_set_hyperlink(0);
@@ -521,42 +526,33 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 
 	return true;
 ];
-!! Inicia el estilo de texto resaltado para palabras clave de tipo OBJETO:
-[ ObjectKeywordStyle;
+!! Inicia uno de los estilo de texto resaltado para los hipervínculos:
+#Ifdef _TYPES_;
+[ KeywordStyle st;
 	if (_keyword_highlighting) {
-		switch (_object_keyword_st) {
+		switch (st) {
+		1:	switch (_keyword_st1) {
 			1:	glk_set_style(style_User1);
 			2:	glk_set_style(style_User2);
 			3:	ItalicStyle();
 			4:	BoldStyle();
-			5:	MonospacedStyle();
-		}
-	}
-];
-!! Inicia el estilo de texto resaltado para palabras clave de tipo DIRECCIÓN:
-[ DirectionKeywordStyle;
-	if (_keyword_highlighting) {
-		switch (_direction_keyword_st) {
+			}
+		2:	switch (_keyword_st2) {
 			1:	glk_set_style(style_User1);
 			2:	glk_set_style(style_User2);
 			3:	ItalicStyle();
 			4:	BoldStyle();
-			5:	MonospacedStyle();
-		}
-	}
-];
-!! Inicia el estilo de texto resaltado para palabras clave de tipo TEMA:
-[ TopicKeywordStyle;
-	if (_keyword_highlighting) {
-		switch (_topic_keyword_st) {
+			}
+		3:	switch (_keyword_st3) {
 			1:	glk_set_style(style_User1);
 			2:	glk_set_style(style_User2);
 			3:	ItalicStyle();
 			4:	BoldStyle();
-			5:	MonospacedStyle();
+			}
 		}
 	}
 ];
+#Endif; ! _TYPES_;
 
 !!------------------------------------------------------------------------------
 !! Deja la ventana en blanco.
@@ -681,66 +677,48 @@ VerboIrregular "establecer estilo de texto resaltado" with imperativo
 [ HighlightSub flag;
 	while (flag == false) {
 		EraseWindow();
-		print "En ";
-		ObjectKeywordStyle();
+		BoldStyle();
 		print (string) Story;
 		RomanStyle();
-		print " hay tres tipos de palabras clave. Es importante que tu programa 
-		intérprete las imprima con un estilo de resaltado adecuado. Teclea un 
-		número para cambiar el estilo de resaltado de cada palabra clave hasta 
-		encontrar un estilo que se vea bien en tu sistema. (Puedes activar y 
-		desactivar el resaltado tecleando RESALTADO SI/NO).^";
+		print " utiliza estilos de texto resaltado para destacar ciertas 
+		palabras clave y es importante que tu programa intérprete las imprima 
+		con el estilo adecuado. Puedes cambiar el estilo de resaltado de cada 
+		una de estas palabras clave hasta encontrar un estilo que se vea bien 
+		en tu sistema, tecleando el número de cada tipo de palabra clave:^";
 		new_line;
 
 		print "1) Palabras clave de tipo objeto: ";
-		ObjectKeywordStyle();
-		switch (_object_keyword_st) {
+		KeywordStyle(1);
+		switch (_keyword_st1) {
 			0:	print "sin estilo";
-			1:	print "color de fondo A";
-			2:	print "color de fondo B";
+			1:	print "color de fondo";
+			2:	print "fondo y cursiva";
 			3:	print "cursiva";
 			4:	print "negrita";
-			5:	print "monoespaciado";
 		}
 		RomanStyle();
 		print ".^";
 
 		print "2) Palabras clave de tipo dirección: ";
-		DirectionKeywordStyle();
-		switch (_direction_keyword_st) {
+		KeywordStyle(2);
+		switch (_keyword_st2) {
 			0:	print "sin estilo";
-			1:	print "color de fondo A";
-			2:	print "color de fondo B";
+			1:	print "fondo y negrita";
+			2:	print "fondo";
 			3:	print "cursiva";
 			4:	print "negrita";
-			5:	print "monoespaciado";
 		}
 		RomanStyle();
 		print ".^";
 
-		print "3) Palabras clave de tipo tema: ";
-		TopicKeywordStyle();
-		switch (_topic_keyword_st) {
-			0:	print "sin estilo";
-			1:	print "color de fondo A";
-			2:	print "color de fondo B";
-			3:	print "cursiva";
-			4:	print "negrita";
-			5:	print "monoespaciado";
-		}
-		RomanStyle();
-		print ".^";
 		new_line;
-
 		print "Pulsa 0 para salir de aquí.^";
 		switch (PressAnyKey()) {
 			'0':	flag = true;
-			'1':	_object_keyword_st++;
-					if (_object_keyword_st > 5) _object_keyword_st = 0;
-			'2':	_direction_keyword_st++;
-					if (_direction_keyword_st > 5) _direction_keyword_st = 0;
-			'3':	_topic_keyword_st++;
-					if (_topic_keyword_st > 5) _topic_keyword_st = 0;
+			'1':	_keyword_st1++;
+					if (_keyword_st1 > 4) _keyword_st1 = 0;
+			'2':	_keyword_st2++;
+					if (_keyword_st2 > 4) _keyword_st2 = 0;
 		}
 	}
 	EraseWindow();
@@ -758,7 +736,7 @@ VerboIrregular "establecer estilo de texto resaltado" with imperativo
 	StartParserStyle();
 	print "Resaltado de palabras clave ";
 	st = _current_style;
-	ObjectKeywordStyle();
+	KeywordStyle(1);
 	print "activado";
 	switch (st) {
 		_RST_:	RomanStyle();
@@ -783,7 +761,7 @@ VerboIrregular "establecer estilo de texto resaltado" with imperativo
 	StartParserStyle();
 	print "Resaltado de palabras clave ";
 	st = _current_style;
-	ObjectKeywordStyle();
+	KeywordStyle(1);
 	print "desactivado";
 	switch (st) {
 		_RST_:	RomanStyle();

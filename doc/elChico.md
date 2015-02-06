@@ -6,39 +6,99 @@
 
 * ---¿Por qué tenemos que desmembrarla?
 
-* Ella es sólo un bulto en el suelo, recortado por los deslumbrantes faros del coche. Es una noche encapotada y sin luna y los faros son la única luz del descampado. Hace frío.
+* Ella es sólo un bulto en el suelo, recortado por los deslumbrantes faros del coche. La noche se ha acabado encapotando y sin luna los faros son la única luz en el descampado. Hace frío.
 
-* ---Porque lo he dicho yo.
+* ---Porque lo he dicho yo. ¿A ti qué cojones te pasa?
 
-* Saca algo del maletero y lo lanza hacia aquí. Cae a apenas un paso del cuerpo. Una sierra. En la noche, las manchas que salpican la tierra alrededor del cuerpo parecen negras. Algo más aterriza junto a la sierra con un golpe. Un rollo de bolsas de plástico de basura negras. Bajo los faros del coche todo es o blanco o negro.
+* Saca algo del maletero y lo lanza hacia aquí. Cae a apenas un paso del cuerpo. Una sierra. En la noche, las manchas que salpican la tierra a su alrededor parecen negras. Algo más aterriza junto a la sierra con un golpe. Un rollo de bolsas de basura de plástico negras. Bajo los faros del coche todo es o blanco o negro.
 
-* Mario vuelve desde el maletero y mira la sierra impaciente, esperando a que cumpla la orden. El muy cabrón. Sé que el otro, Alberto, no va a mover un músculo. Está ahí, apoyado contra el capó negro, fumando tranquilamente. Y ella... ella es sólo un bulto en el suelo, con el largo pelo negro enmarañado y empapado en sangre. Joder, tiene como unos grumos espesos y pegajosos en el pelo... tiene medio puto cerebro pulverizado y enrredado entre el pelo... joder. Está claro que ella tampoco va a mover un músculo.
+* [Mario] regresa desde el maletero y se me queda mirando, esperando a que coja [la sierra]. El muy cabrón. Sé que el otro, [Alberto], no va a mover un músculo. Está ahí, apoyado contra el [@coche, capó] negro, fumando tranquilamente. Y ella... ella es sólo un [@cadaver_Yamileth, bulto] en el suelo, con el largo pelo negro enmarañado y empapado en sangre. Joder, tiene como unos grumos espesos y pegajosos en el pelo... ha acabado con medio puto cerebro pulverizado y y enrredado entre el pelo... joder. Está claro que ella tampoco va a mover un músculo.
 
 * ---Vamos, chico. No tenemos toda la noche.
 
-* Bajo los faros del coche todo es o blanco o negro. Mario mira la sierra impaciente, esperando a que cumpla la orden. El muy cabrón. Está claro que el otro, Alberto, no va a mover un músculo. Está ahí, apoyado contra el capó negro, fumando tranquilamente. Y ella... ella es sólo un bulto en el suelo, con el largo pelo negro enmarañado y empapado en sangre y cubierto de trocitos de cerebro... ella tampoco va a mover un músculo.
+* Bajo los faros [del coche] todo es o blanco o negro. [Mario] mira [la sierra] impaciente, esperando a que cumpla la orden. El muy cabrón. Está claro que el otro, [Alberto], no va a mover un músculo. Está ahí, apoyado contra el capó negro, fumando tranquilamente. Y ella... ella es sólo un [@cadaver_Yamileth, bulto] en el suelo, con el largo pelo negro enmarañado y empapado en sangre y cubierto de trocitos de cerebro... ella tampoco va a mover un músculo.
 
 * Un hijo puta con aires de gángster de película. Zapatos negros, traje negro, camisa blanca manchada en sangre negra, pistola negra. Una pistola de verdad. Loco hijo de puta. ¿Por qué demonios me metería en esta mierda?
 
 * Ya. Por el dinero.
 
-* Alberto está fuera del alcance de los faros, así que es poco más que una silenciosa silueta apoyada contra el coche. El extremo incandescente de su cigarrillo brilla en la oscuridad. Como una luciérnaga.
+* ---Lo... lo siento. Esto... no...
+
+* ---En serio, ¿qué pasa contigo? ¿Estás sordo o es que eres subnormal? COJE - ESA - PUTA - SIERRA / CORTA - A ESA - PUTA.
+
+* Dudo.
+
+* [No puedo hacerlo / No pienso hacerlo / Vale]
+
+* ---Esto es una locura. No puedo hacerlo.
+
+* ---No he oido bien. ¿Qué has dicho?
+
+* [No pienso hacerlo / Nada / *Guardar silencio*]
+
+* ---No pienso hacerlo. No... no pienso demembrarla.
+
+* Veo el movimiento de su mano demasiado tarde. Para cuando quiero reaccionar ya me ha cruzado la cara con el revés del puño en el que empuña la pistola. El hijo de puta.
+
+* ---No voy a volver a repetirlo. Coje [esa sierra] y empieza a cortarla en cachitos. Si no lo haces tú, voy a tener que ponerme yo a cortar, pero no sólo a esa [@cadaver_Yamileth, puta]. Y no me apetece una mierda. Así que espabila, chico.
+
+* [Que te jodan / Vale / *Guardar silencio*]
+
+* ---Que te jodan. Psícopata de -
+
+* Esta vez me esperaba el golpe. Y aún así. Tengo unos reflejos de mierda.
+
+* Noto el dolor, punzante, cuando su puño se me hunde en el estómago. Lo siguiente ocurre a toda velocidad. Me doblo. Sé que su rodilla se está levantando y aún así no puedo evitarlo. Me doblo. Y me como su puta rodilla de lleno.
+
+* Ruedo por el suelo sin aliento y con la boca partida. Hijo de puta.
+
+* ---¿Sabes? Eres un montón de mierda.
+
+* No le veo. Pero escucho el click al quitar el seguro de la pistola.
+
+* ---Ahora vas a pedirme perdón.
+
+[Hijo de puta / Perdón]
+
+* ---Logh...  ---tengo que detenerme. Escupo un gargajo cargado de sangre. Hijo de puta. ---Lo siento.
+
+* ---Señor.
+
+* ---...lo siento, señor.
+
+* ---Bien. Ahora levántate y ponte a cortar a esa [@cadaver_Yamileth, tiraflechas] de una puta vez.
+
+* ---Sí, señor.
+
+* Loco hijo de puta.
+
+* ---High... ---tengo que detenerme. Escupo un gargajo cargado de sangre. ---Hijo de puta.
+
+* Ríe.
+
+* Por favor, que no duela. Que no duela.
+
+* Mamá, lo sie-
+
+* .
+
+* [Alberto] está fuera del alcance de los faros, así que es poco más que una silenciosa silueta apoyada contra [el coche]. El extremo incandescente de su cigarrillo brilla en la oscuridad. Como una luciérnaga.
 
 * ---Coge esa puta sierra de una vez y empieza. No tenemos toda la noche.
 
 * Era una mujer joven y ahora es un cadáver joven. Un cadáver cubierto de sangre y trocitos de cerebro. Me dijo su nombre. Yamileth. Tenía un nombre bonito.
 
-* Mario es un puto psicópata. Hay una película, Saw, en la que aparece un psicópata. Encadena a un tipo del tobillo y le deja una pequeña sierra al alcance de la mano. El tipo intenta cortar el grillete con la sierra, pero es demasiado duro como para cortarlo con esa sierra tan pequeña, así que la tiene que utilizar para cortarse el tobillo. Los guionistas debían ser unos psicópatas buenos. Joder, el mundo está lleno de psicópatas.
+* [Mario] es un puto psicópata. Hay una película, Saw, en la que aparece un psicópata. Encadena a un tipo del tobillo y le deja una pequeña sierra al alcance de la mano. El tipo intenta cortar el grillete con la sierra, pero es demasiado duro como para cortarlo con esa sierra tan pequeña, así que la tiene que utilizar para cortarse el tobillo. Los guionistas debían ser unos psicópatas buenos. Joder, el mundo está lleno de psicópatas.
 
 * No sé cómo coño puedo estar pensando en una puta película ahora.
 
-* Esa sierra es algo más grande que la del psicópata aquel. Tal vez con ella se podría cortar el grillete. Aunque da igual. Aquí no hay grilletes.
+* Esa [sierra] es algo más grande que la del psicópata aquel. Tal vez con ella se podría cortar el grillete. Aunque da igual. Aquí no hay grilletes.
 
-* La sierra es algo más grande que la de la película del psicópata. Tal vez con ella se podría cortar aquel grillete con el que encadenó al protagonista. Aunque da igual. Aquí no hay grilletes.
+* [La sierra] es algo más grande que la de la película del psicópata. Tal vez con ella se podría cortar aquel grillete con el que encadenó al protagonista. Aunque da igual. Aquí no hay grilletes.
 
-* El coche está parado, con las luces puestas para alumbrar el descampado.
+* [El coche] está parado, con las luces puestas para alumbrar el descampado.
 
-Una noche cerrada sin estrellas. Detrás de una loma se aprecia la anaranjada contaminación lumínica de Vigo.
+* Una noche cerrada sin estrellas. Detrás de una loma se aprecia la anaranjada contaminación lumínica de Vigo.
 
 * El aire es gélido y huele a... no sé. A nada especial, en realidad.
 

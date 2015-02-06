@@ -60,7 +60,7 @@
 !!	1)	Limbo
 !!------------------------------------------------------------------------------
 
-Room	limbo "en algún lugar"
+Room	LIMBO "en algún lugar"
  with	name_f	'babia',
 		name_m	'limbo' 'lugar' 'sueno' 'vacio',
 		gender	G_MASCULINO,
@@ -68,12 +68,34 @@ Room	limbo "en algún lugar"
 		clarification 0,
  has	male;
 
-Atrezzo	cielo "cielo"
- with	name_m	'cielo',
-		description [;
-			if (real_location == DESCAMPADO_1 or DESCAMPADO_2)
-				return O__M(self, 1);
-			return O__M(self, 2);
+Atrezzo	cielo_nocturno "cielo"
+ with	found_in DESCAMPADO_1 DESCAMPADO_2,
+		name_f	'contaminacion' 'estrella' 'luna' 'noche',
+		name_m	'astro' 'cielo' 'firmamento',
+		name_fp	'estrellas',
+		gender	G_MASCULINO,
+		adjectives
+			'anaranjada' 'anaranjado' 'cerrada' 'cerrado' 'encapotada' 
+			'encapotado',
+		description [; return O__M(self, 1); ],
+		react_before [;
+			Examine, Search:
+				if (noun == u_obj)
+					<<Examine self>>;
+		],
+ has	male;
+
+Atrezzo	cielo_diurno "cielo"
+ with	found_in TERRAZA,
+		name_f	'atmosfera',
+		name_m	'astro' 'cielo' 'dia' 'firmamento' 'sol',
+		gender	G_MASCULINO,
+		adjectives 'azul' 'brillante',
+		description [; return O__M(self, 1); ],
+		react_before [;
+			Examine, Search:
+				if (noun == u_obj)
+					<<Examine self>>;
 		],
  has	male;
 
@@ -86,9 +108,9 @@ Outdoors	DESCAMPADO_1 "Descampado"
  with	name_m	'descampado',
 		gender	G_MASCULINO,
 		initial [; if (self hasnt visited) {
-			!! Establece la flexión gramatical:
+			!! Establece la flexión gramatical de la librería:
 			SetGrammaticalInflection(FIRST_PERSON_PRESENT);
-			!! Texto inicial de la escena:
+			!! Texto inicial de la Primera Parte:
 			new_line;
 			HorizontalRule();
 			new_line;
@@ -102,9 +124,11 @@ Outdoors	DESCAMPADO_1 "Descampado"
 		],
 		before [;
 			Smell:
-				give cadaver_Yamileth general;
+				self.smelled = true;
 				return O__M(self, 4);
 		],
+		!! Indica si se ha introducido la acción ##Smell en la localidad:
+		smelled false,
  has	male;
 
 !! XXX OBJETO PROTAGONISTA
@@ -136,21 +160,19 @@ Furniture	-> cadaver_Yamileth "cadáver"
 		],
 		before [;
 			Cut:
-				if (indirectlyContains(Chico, sierra)) {
+				if (second == nothing or sierra
+					&& IndirectlyContains(player, sierra)) {
 					O__M(self, 2);
 					new_line;
-					if (self has general) {
-						O__M(self, 3);
-						new_line;
-					}
+					if (DESCAMPADO_1.smelled) { O__M(self, 3); new_line; }
 					PressAnyKey();
-					HorizontalRule();
-					new_line;
-					PressAnyKey();
-					!! XXX - Fin del prólogo
+					!! XXX - Fin de la Primera Parte
 					PlayerTo(TERRAZA);
 					return true;
 				}
+			DefaultAction:
+				if (self has described && IndirectlyContains(player, sierra))
+					<<Cut self>>;
 		],
  has	female;
 
@@ -160,6 +182,11 @@ Item	-> sierra "sierra"
 		description [;
 			if (self hasnt described) return O__M(self, 1);
 			return O__M(self, 2);
+		],
+		before [;
+			DefaultAction:
+				if (self has described && ~~IndirectlyContains(player, self))
+					<<Take self>>;
 		],
 		after [; Take: return O__M(self, 3); ],
  has	concealed female;
@@ -174,6 +201,23 @@ NPC		-> Mario "Mario"
 			new_line;
 			return true;
 		],
+		before [;
+			TalkTo:
+				ConversationManager.start(conversacion_Mario_1);
+				return true;
+		],
+		gets_angry [ i;
+			if (i == 0) i = 1;
+			self.angry = self.angry + i;
+			switch (self.angry) {
+				1:	O__M(self, 3);
+				2:	O__M(self, 4);
+				3:	O__M(self, 5);
+			}
+		],
+ private
+		!! Controla el enfado de Mario con el jugador:
+		angry 0,
  has	concealed male proper;
 
 NPC		-> Alberto "Alberto"
@@ -182,6 +226,117 @@ NPC		-> Alberto "Alberto"
 		gender	G_MASCULINO,
 		description [; return O__M(self, 1); ],
  has	concealed male proper;
+
+Conversation	conversacion_Mario_1 "(conversación con Mario)"
+ with	initial_action [;
+			self.add_topic(cm1_op01);
+			self.add_topic(cm1_op02);
+			self.add_topic(cm1_op03);
+			return O__M(self, 1);
+		],
+		inter_action [;
+			"Inter action.";
+		],
+		final_action [;
+			"Final action.";
+		];
+
+ConversationTopic	cm1_op01
+ with	entry [; CreateLink("No puedo hacerlo"); ],
+		keys 'capaz' 'hacer' 'hacerlo' 'no' 'puedo' 'soy',
+		reply [; O__M(self, 1); ],
+		reaction [;
+			new_line;
+			Mario.gets_angry();
+			if (~~conversacion_Mario_1.has_topic(cm1_op02)) {
+				give cm1_op03 ~visited;
+				conversacion_Mario_1.add_topic(cm1_op03);
+				conversacion_Mario_1.add_topic(cm1_op06);
+				conversacion_Mario_1.remove_topic(cm1_op04);
+			}
+		],
+		relatives	cm1_op03,
+		subtopics	cm1_op04 cm1_op05,
+		append_topic_inventory true;
+
+ConversationTopic	cm1_op02
+ with	entry [; CreateLink("No pienso hacerlo"); ],
+		keys 'hacer' 'hacerlo' 'no' 'pienso' 'quiero',
+		reply [; return O__M(self, 1); ],
+		reaction [;
+			new_line;
+			Mario.gets_angry();
+			if (~~conversacion_Mario_1.has_topic(cm1_op01)) {
+				give cm1_op03 ~visited;
+				conversacion_Mario_1.add_topic(cm1_op03);
+				conversacion_Mario_1.add_topic(cm1_op06);
+				conversacion_Mario_1.remove_topic(cm1_op04);
+			}
+		],
+		relatives	cm1_op03,
+		subtopics	cm1_op04 cm1_op05,
+		append_topic_inventory true;
+
+ConversationTopic	cm1_op03
+ with	entry [; CreateLink("Vale"); ],
+		keys 'acuerdo' 'vale',
+		reply [; return O__M(self, 1); ],
+		append_topic_inventory false;
+
+ConversationTopic	cm1_op04
+ with	entry [; CreateLink("Nada"); ],
+		keys 'nada',
+		reply [; return O__M(self, 1); ],
+		append_topic_inventory false;
+
+ConversationTopic	cm1_op05
+ with	entry [;
+			KeywordStyle(3);
+			CreateLink("Guardar silencio", false, true);
+			RomanStyle();
+		],
+		keys 'guarda' 'guardar' 'silencio',
+		reply [; return O__M(self, 1); ],
+		append_topic_inventory false;
+
+ConversationTopic	cm1_op06
+ with	entry [; CreateLink("Que te jodan"); ],
+		keys 'follen' 'jodan' 'jodete',
+		reply [; return O__M(self, 1); ],
+		reaction [; new_line; Mario.gets_angry(); ],
+		relatives	cm1_op03 cm1_op05,
+		subtopics	cm1_op07 cm1_op08,
+		append_topic_inventory true;
+
+ConversationTopic	cm1_op07
+ with	entry [; CreateLink("Hijo de puta"); ],
+		keys 'hijo' 'hijoputa' 'puta',
+		reply [; return O__M(self, 1); ],
+		reaction [;
+			new_line;
+			PressAnyKey();
+			HorizontalRule();
+			new_line;
+			PressAnyKey();
+			Banner();
+			new_line;
+			PressAnyKey();
+			StartParserStyle();
+			CreateLink("Haz click aquí o pulsa una tecla para acabar");
+			EndParserStyle();
+			PressAnyKey();
+			@restart;
+			L__M(##Restart, 2);
+			return true;
+		],
+		append_topic_inventory false,
+		final_topic true;
+
+ConversationTopic	cm1_op08
+ with	entry [; CreateLink("Perdón"); ],
+		keys 'perdon' 'siento',
+		reply [; return O__M(self, 1); ],
+		final_topic true;
 
 
 !!==============================================================================
@@ -217,7 +372,7 @@ Outdoors	TERRAZA "Terraza"
 		description [;
 			return O__M(self, 2);
 		],
-		w_to	HABITACION
+		w_to	HABITACION,
 		in_to [; return self.w_to(); ],
  has	female;
 

@@ -796,8 +796,7 @@ Attribute described; ! Indica si un objeto ha sido descrito al jugador
 !!	@retorna verdadero
 !!	@sobreescribe parserm.h
 !!------------------------------------------------------------------------------
-[ PSN__ obj
-	st;
+[ PSN__ obj;
 	if (obj == 0) { print (string) NOTHING__TX; rtrue; }
 	switch (metaclass(obj)) {
 		Routine:  print "<routine ", obj, ">"; rtrue;

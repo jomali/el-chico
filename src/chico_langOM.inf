@@ -6,9 +6,31 @@
 	switch (obj) {
 
 
-banno: switch (n) {
+Alberto: switch (n) {
+1:	! description
+print "Alberto está fuera del alcance de los faros, así que es poco más que una silenciosa silueta apoyada contra ", (the) coche, ". El extremo incandescente de su cigarrillo brilla en la oscuridad. Como una luciérnaga.";
+new_line;
+return true;
+}
+
+BANNO: switch (n) {
 1:	! description
 print "Había una tía cagando en el baño.";
+new_line;
+return true;
+}
+
+cadaver_Yamileth: switch (n) {
+1:	! description
+print "Era una mujer joven y ahora es un cadáver joven. Un cadáver cubierto de sangre y trocitos de cerebro. Me dijo su nombre. Yamileth. Tenía un nombre bonito.";
+new_line;
+return true;
+2:	! before: Cut
+print "Por suerte está tirada de espaldas y no la tengo que ver la cara, pero no puedo apartar la mirada de los trocitos amorfos enrredados entre su pelo. Apoyo los dientes de la condenada sierra sobre un brazo... y eso es todo lo lejos que llego antes de notar el flujo desde el estómago, a través del esófago, hasta la boca. Vomito sobre Yamileth.";
+new_line;
+return true;
+3:	! before: Cut
+print "El aire es gélido y huele a pota.";
 new_line;
 return true;
 }
@@ -18,23 +40,44 @@ Chico: switch (n) {
 return L__M(##Miscellany, 19);
 }
 
+cielo_diurno: switch (n) {
+1:	! description
+print "Azul, con una bola brillante en medio. Ya sabes.";
+new_line;
+return true;
+}
+
+cielo_nocturno: switch (n) {
+1:	! description
+print "Una noche cerrada sin estrellas. Detrás de una loma se aprecia la anaranjada contaminación lumínica de Vigo.";
+new_line;
+return true;
+}
+
+coche: switch (n) {
+1:	! description
+print "El coche está parado, con las luces puestas para alumbrar el descampado.";
+new_line;
+return true;
+}
+
 DESCAMPADO_1: switch (n) {
 1:	! introducción
 print "---¿Por qué tenemos que desmembrarla?
 ^^
-Ella es sólo un bulto en el suelo, recortado por los deslumbrantes faros del coche. Es una noche encapotada y sin luna y los faros son la única luz del descampado. Hace frío.
+Ella es sólo un bulto en el suelo, recortado por los deslumbrantes faros del coche. La noche se ha acabado encapotando y sin luna los faros son la única luz en el descampado. Hace frío.
 ^^
----Porque lo he dicho yo.
+---Porque lo he dicho yo. ¿A ti qué cojones te pasa?
 ^^
-Saca algo del maletero y lo lanza hacia aquí. Cae a apenas un paso del cuerpo. Una sierra. En la noche, las manchas que salpican la tierra alrededor del cuerpo parecen negras. Algo más aterriza junto a la sierra con un golpe. Un rollo de bolsas de plástico de basura negras. Bajo los faros del coche todo es o blanco o negro.";
+Saca algo del maletero y lo lanza hacia aquí. Cae a apenas un paso del cuerpo. Una sierra. En la noche, las manchas que salpican la tierra a su alrededor parecen negras. Algo más aterriza junto a la sierra con un golpe. Un rollo de bolsas de basura de plástico negras. Bajo los faros del coche todo es o blanco o negro.";
 new_line;
 return true;
 2:	! description (~~described)
-print "", (name) Mario, " vuelve desde el maletero y mira ", (the) sierra, " impaciente, esperando a que cumpla la orden. El muy cabrón. Sé que el otro, ", (name) Alberto, ", no va a mover un músculo. Está ahí, apoyado contra el ";
+print "", (name) Mario, " regresa desde el maletero y se me queda mirando, esperando a que coja ", (the) sierra, ". El muy cabrón. Sé que el otro, ", (name) Alberto, ", no va a mover un músculo. Está ahí, apoyado contra el ";
 CreateLink(coche, "capó");
 print " negro, fumando tranquilamente. Y ella... ella es sólo un ";
 CreateLink(cadaver_Yamileth, "bulto");
-print " en el suelo, con el largo pelo negro enmarañado y empapado en sangre. Joder, tiene como unos grumos espesos y pegajosos en el pelo... tiene medio puto cerebro pulverizado y enrredado entre el pelo... joder. Está claro que ella tampoco va a mover un músculo.
+print " en el suelo, con el largo pelo negro enmarañado y empapado en sangre. Joder, tiene como unos grumos espesos y pegajosos en el pelo... ha acabado con medio puto cerebro pulverizado y y enrredado entre el pelo... joder. Está claro que ella tampoco va a mover un músculo.
 ^^
 ---Vamos, chico. No tenemos toda la noche.";
 new_line;
@@ -47,69 +90,6 @@ new_line;
 return true;
 4:	! before: Smell
 print "El aire es gélido y huele a... no sé. A nada especial en realidad.";
-new_line;
-return true;
-}
-
-Alberto: switch (n) {
-1:	! description
-print "Alberto está fuera del alcance de los faros, así que es poco más que una silenciosa silueta apoyada contra ", (the) coche, ". El extremo incandescente de su cigarrillo brilla en la oscuridad. Como una luciérnaga.";
-new_line;
-return true;
-}
-
-Mario: switch (n) {
-1:	! description
-print "Un hijo de puta con aires de gángster de película. Zapatos negros, traje negro, camisa blanca manchada de sangre negra, pistola negra. Una pistola de verdad. Loco hijo de puta.";
-return true;
-2:	! description (~~described)
-print " ¿Por qué demonios me metería en esta mierda?
-^^
-Ya. Por el dinero.";
-return true;
-3:
-print "---Coge esa puta ", (name) sierra, " de una vez y empieza. No tenemos toda la noche.";
-new_line;
-return true;
-}
-
-cadaver_Yamileth: switch (n) {
-1:	! description
-print "Era una mujer joven y ahora es un cadáver joven. Un cadáver cubierto de sangre y trocitos de cerebro. Me dijo su nombre. Yamileth. Tenía un nombre bonito.";
-new_line;
-return true;
-2:	! before: Cut
-print "Por suerte está tirada de espaldas y no la tengo que ver la cara, pero no puedo apartar la mirada de los trocitos amorfos enrredados entre su pelo. Apoyo la condenada sierra sobre un brazo... y eso es todo lo lejos que llego antes de notar el flujo desde el estómago, a través del esófago, hasta la boca. Vomito sobre Yamileth.";
-new_line;
-return true;
-3:	! before: Cut
-print "El aire es gélido y huele a pota.";
-new_line;
-return true;
-}
-
-coche: switch (n) {
-1:	! description
-print "El coche está parado, con las luces puestas para alumbrar el descampado.";
-new_line;
-return true;
-}
-
-sierra: switch (n) {
-1:	! description (~described)
-print "", (name) Mario, " es un puto psicópata. Hay una película, Saw, en la que aparece un psicópata. Encadena a un tipo del tobillo y le deja una pequeña sierra al alcance de la mano. El tipo intenta cortar el grillete con la sierra, pero es demasiado duro como para cortarlo con esa sierra tan pequeña, así que la tiene que utilizar para cortarse el tobillo. Los guionistas debían ser unos psicópatas buenos. Joder, el mundo está lleno de psicópatas.
-^^
-No sé cómo coño puedo estar pensando en una puta película ahora.
-^^
-Esa sierra es algo más grande que la del psicópata aquel. Tal vez con ella se podría cortar el grillete. Aunque da igual. Aquí no hay grilletes.";
-new_line;
-return true;
-2:	! description
-print "La sierra es algo más grande que la de la película del psicópata. Tal vez con ella se podría cortar aquel grillete con el que encadenó al protagonista. Aunque da igual. Aquí no hay grilletes.";
-new_line;
-return true;
-3:	! before: Take
-print "Agarro la sierra.";
 new_line;
 return true;
 }
@@ -129,6 +109,131 @@ LIMBO: switch (n) {
 1:	! description
 print "Más allá de la barrera casi insuperable que separa la realidad de todo lo demás. Un lugar etéreo, donde la vida, la materia y la vitalidad no son necesariamente constantes; un lugar donde el tiempo y el espacio no existen tal y como los capta nuestro ser despierto...";
 if (LIMBO hasnt visited) print "^^---¿Qué? ¿Cómo?... ¿cómo he llegado aquí?";
+new_line;
+return true;
+}
+
+Mario: switch (n) {
+1:	! description
+print "Un hijo de puta con aires de gángster de película. Zapatos negros, traje negro, camisa blanca manchada de sangre negra, pistola negra. Una pistola de verdad. Loco hijo de puta.";
+return true;
+2:	! description (~~described)
+print " ¿Por qué demonios me metería en esta mierda?
+^^
+Ya. Por el dinero.";
+return true;
+3:	! gets_angry 1
+print "---No he oido bien. ¿Qué has dicho?";
+new_line;
+return true;
+4:	! gets_angry 2
+print "Veo el movimiento de su mano demasiado tarde. Para cuando quiero reaccionar ya me ha cruzado la cara con el revés del puño en el que empuña la pistola. El hijo de puta.
+^^
+---No voy a volver a repetirlo. Coje esa ", (name) sierra, " y empieza a cortarla en cachitos. Si no lo haces tú, voy a tenerme que poner yo a cortar, pero no sólo a esa ";
+CreateLink(cadaver_Yamileth, "puta");
+print ". Y no me apetece una mierda. Así que espabila, chico.";
+new_line;
+return true;
+5:	! gets_angry 3
+print "Esta vez me esperaba el golpe. Y aún así. Tengo unos reflejos de mierda.
+^^
+Noto el dolor, punzante, cuando su puño se me hunde en el estómago. Lo siguiente ocurre a toda velocidad. Me doblo. Sé que su rodilla se está levantando y aún así no puedo evitarlo. Me doblo. Y me como su puta rodilla de lleno.
+^^
+Ruedo por el suelo sin aliento y con la boca partida. Hijo de puta.
+^^
+---¿Sabes? Eres un montón de mierda.
+^^
+No le veo. Pero escucho el click al quitar el seguro de la pistola.
+^^
+---Ahora vas a pedirme perdón.";
+new_line;
+return true;
+}
+
+conversacion_Mario_1: switch (n) {
+1:	! initial_action
+print "---Lo... lo siento. Esto... no...
+^^
+---En serio, ¿qué pasa contigo? ¿Estás sordo o es que eres subnormal?";
+if (IndirectlyContains(player, sierra)) print " CORTA - A ESA - PUTA.";
+else print " COJE - ESA - PUTA - SIERRA.";
+print "^^Dudo.";
+new_line;
+return true;
+}
+
+cm1_op01: switch (n) {
+1:
+print "---Esto es una locura. No puedo hacerlo.";
+new_line;
+return true;
+}
+
+cm1_op02: switch (n) {
+1:
+print "---No pienso hacerlo. No... no pienso desmembrarla.";
+new_line;
+return true;
+}
+
+cm1_op03: switch (n) {
+1:
+print "---Claro... ahora mismo.";
+new_line;
+return true;
+}
+
+cm1_op04: switch (n) {
+1:
+print "---Nada.";
+new_line;
+return true;
+}
+
+cm1_op05: switch (n) {
+1:
+print "...";
+new_line;
+return true;
+}
+
+cm1_op06: switch (n) {
+1:
+print "---Que te jodan. Psicópata de -";
+new_line;
+return true;
+}
+
+cm1_op07: switch (n) {
+1:
+print "---High... ---tengo que detenerme. Escupo un gargajo cargado de sangre. ---Hijo de puta.
+^^
+Ríe.
+^^
+Por favor, que no duela. Que no duela.
+^^
+Mamá, lo sie-
+^^
+.";
+new_line;
+return true;
+}
+
+cm1_op08: switch (n) {
+1:
+print "Logh... ---tengo que detenerme. Escupo un gargajo cargado de sangre. Hijo de puta. ---Lo siento.
+^^
+---Señor.
+^^
+---...lo siento, señor.
+^^
+Bien. Ahora levántate y ponte a cortar a esa ";
+CreateLink(cadaver_Yamileth, "tiraflechas");
+print " de una puta vez.
+^^
+---...sí, señor.
+^^
+Loco hijo de puta.";
 new_line;
 return true;
 }
@@ -153,9 +258,28 @@ new_line;
 return true;
 }
 
+sierra: switch (n) {
+1:	! description (~described)
+print "", (name) Mario, " es un puto psicópata. Hay una película, Saw, en la que aparece un psicópata. Encadena a un tipo del tobillo y le deja una pequeña sierra al alcance de la mano. El tipo intenta cortar el grillete con la sierra, pero es demasiado duro como para cortarlo con esa sierra tan pequeña, así que la tiene que utilizar para cortarse el tobillo. Los guionistas debían ser unos psicópatas buenos. Joder, el mundo está lleno de psicópatas.
+^^
+No sé cómo coño puedo estar pensando en una puta película ahora.
+^^
+Esa ", (name) sierra, " es algo más grande que la del psicópata aquel. Tal vez con ella se podría cortar el grillete. Aunque da igual. Aquí no hay grilletes.";
+new_line;
+return true;
+2:	! description
+print "La ", (name) sierra, " es algo más grande que la de la película del psicópata. Tal vez con ella se podría cortar aquel grillete con el que encadenó al protagonista. Aunque da igual. Aquí no hay grilletes.";
+new_line;
+return true;
+3:	! before: Take
+print "Agarro la sierra.";
+new_line;
+return true;
+}
+
 TERRAZA: switch (n) {
 1:	! initial
-print "SEIS HORAS ANTES.
+print "OCHO HORAS ANTES.
 ^^
 Alguien vomitaba alcohol y comida a medio digerir en el jardín, apoyado al tronco de un árbol. Era una fiesta en casa de José Freire, y esas fiestas siempre están llenas de gente. Gente que trabajaba para él, gente que quería trabajar con él, y otros muchos que no tengo ni idea de dónde salían y que simplemente parecían interesados en la comida, la bebida y la droga gratis. Al que vomitaba no le conocía. Debía ser de esos últimos.
 ^^
