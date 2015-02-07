@@ -2,8 +2,8 @@
 
 #	Archivo:	preprocesaTexto.pl
 #	Autor(es):	J. Francisco Martín <jfm.lisaso@gmail.com>
-#	Versión:	1.0
-#	Fecha:		2014/09/20
+#	Versión:	1.1
+#	Fecha:		2015/02/07
 #
 #	Script Perl para preprocesar un archivo de texto. Sustituye ciertas 
 #	etiquetas (como '*', '**', '[', ']') por funciones definidas dentro del 
@@ -52,6 +52,10 @@ for (@lines) {
 	# Imprime el nombre corto del objeto con el artículo indeterminado adecuado:
 	s/\[\s*(un|una|unos|unas)\s+(.+?)\s*\]/", (a) \2, "/g;
 	s/\[\s*(Un|Una|Unos|Unas)\s+(.+?)\s*\]/", (A) \2, "/g;
+	# Igual, con los pronombres demostrativos adecuados:
+	s/\[\s*(este|esta|estos|estas)\s+(.+?)\s*\]/", (_este) \2, "/g;
+	s/\[\s*(ese|esa|esos|esas)\s+(.+?)\s*\]/", (_ese) \2, "/g;
+	s/\[\s*(aquel|aquella|aquellos|aquellas)\s+(.+)\s*\]/", (_aquel) \2, "/g;
 
 	# Imprime la terminación adecuada:
 	s/\[\s*n\s+(.+?)\s*\]/", (n) \1, "/g;

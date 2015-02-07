@@ -12,13 +12,15 @@
 !!	Language:		ES (Castellano)
 !!	System:			Inform-INFSP 6
 !!	Platform:		Máquina-Z / GLULX
-!!	Version:		1.0
-!!	Release:		2015/01/29
+!!	Version:		1.1
+!!	Release:		2015/02/07
 !!
 !!------------------------------------------------------------------------------
 !!
 !!	# HISTORIAL DE VERSIONES
 !!
+!!	1.1: 2015/02/07 Añadidas funciones _este(), _ese(), _aquel() para imprimir 
+!!					los determinantes demostrativos adecuados para un obj.
 !!	1.0: 2015/01/29	Versión original.
 !!
 !!------------------------------------------------------------------------------
@@ -45,6 +47,9 @@
 !!	# RUTINAS IMPLEMENTADAS:
 !!
 !!	 -	_o()
+!!	 -	_este()
+!!	 -	_ese()
+!!	 -	_aquel()
 !!	 -	AttemptToTakeObject()
 !!	 -	Banner()
 !!		 -	PrintVersionNumber()
@@ -105,6 +110,51 @@ Global _grammatical_inflection	= SECOND_PERSON_PRESENT;
 		1, 7:			print "a";
 		3, 5, 9, 11:	print "os";
 		4, 10:			print "as";
+	}
+];
+
+!!==============================================================================
+!! Funciones para imprimir los deternimantes demostrativos adecuados para el 
+!! objeto pasado como parámetro.
+!!
+!!	@params obj:Object
+!!		objeto para el que se imprime el determinante demostrativo apropiado
+!!	@retorna nada
+!!------------------------------------------------------------------------------
+
+[ _este obj
+	gna;
+	gna = GetGNAOfObject(obj, true);
+	switch (gna) {
+		0, 6:			print "este";
+		1, 7:			print "esta";
+		2, 8:			print "esto";
+		3, 5, 9, 11:	print "estos";
+		4, 10:			print "estas";
+	}
+];
+
+[ _ese obj
+	gna;
+	gna = GetGNAOfObject(obj, true);
+	switch (gna) {
+		0, 6:			print "ese";
+		1, 7:			print "esa";
+		2, 8:			print "eso";
+		3, 5, 9, 11:	print "esos";
+		4, 10:			print "esas";
+	}
+];
+
+[ _aquel obj
+	gna;
+	gna = GetGNAOfObject(obj, true);
+	switch (gna) {
+		0, 6:			print "aquel";
+		1, 7:			print "aquella";
+		2, 8:			print "aquello";
+		3, 5, 9, 11:	print "aquellos";
+		4, 10:			print "aquellas";
 	}
 ];
 
