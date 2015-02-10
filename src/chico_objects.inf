@@ -12,13 +12,14 @@
 !!	Idioma:			ES (Castellano)
 !!	Sistema:		Inform-INFSP 6
 !!	Plataforma:		GLULX
-!!	Versión:		0.0
+!!	Versión:		B1.0
 !!	Fecha:			2015/01/29
 !!
 !!------------------------------------------------------------------------------
 !!
 !!	# HISTORIAL DE VERSIONES
 !!
+!!	B1.0: 2015/02/10 Versión BETA de la primera parte.
 !!	0.0: 2015/01/29 Inicio del desarrollo.
 !!
 !!------------------------------------------------------------------------------
@@ -99,13 +100,151 @@ Atrezzo	cielo_diurno "cielo"
 		],
  has	male;
 
+Conversation	conversacion_Mario_1 "(conversación con Mario)"
+ with	initial_action [;
+			self.add_topic(cm1_op01);
+			self.add_topic(cm1_op02);
+			self.add_topic(guardar_silencio);
+			return O__M(self, 1);
+		],
+		inter_action [;
+			switch (Mario.state) {
+				0:	self.add_topic(guardar_silencio);
+					return O__M(self, 2);
+				1:	return O__M(self, 3);
+				2:	self.add_topic(guardar_silencio);
+					return O__M(self, 4);
+				default: return O__M(self, 5);
+			}
+		],
+		final_action [; return O__M(self, 2); ];
+
+ConversationTopic	guardar_silencio
+ with	entry [ st;
+			st = _current_style;
+			KeywordStyle(3);
+			CreateLink("Guardar silencio", false, true);
+			switch (st) {
+				_IST_:		ItalicStyle();
+				_BST_:		BoldStyle();
+				_MST_:		MonospacedStyle();
+				default:	RomanStyle();
+			}
+		],
+		keys 'guarda' 'guardar' 'silencio',
+		reply [; "..."; ],
+		!! El controlador de conversaciones trata el tema y lo elimina de la 
+		!! conversación. Al quitarle aquí la propiedad 'visited' podemos 
+		!! reutilizarlo y añadirlo más adelante a la misma conversación o a 
+		!! otra conversación diferente:
+		reaction [; give self ~visited; ],
+		append_topic_inventory false;
+
+ConversationTopic	cm1_op01
+ with	entry [; CreateLink("No puedo hacerlo"); ],
+		keys 'capaz' 'hacer' 'hacerlo' 'no' 'puedo' 'soy',
+		reply [; return O__M(self, 1); ],
+		reaction [;
+			new_line;
+			Mario.gets_angry(1);
+			if (Mario.state == 1) {
+				!! [No pienso hacerlo / ¿Estás sordo? / Nada]
+				conversacion_Mario_1.add_topic(cm1_op03);
+				conversacion_Mario_1.add_topic(cm1_op04);
+				conversacion_Mario_1.remove_topic(guardar_silencio);
+			}
+			else {
+				!! [Hijo de puta / Guardar silencio]
+				conversacion_Mario_1.add_topic(cm1_op05);
+				conversacion_Mario_1.add_topic(guardar_silencio);
+				conversacion_Mario_1.remove_topic(cm1_op03);
+				conversacion_Mario_1.remove_topic(cm1_op04);
+			}
+		],
+		append_topic_inventory true;
+
+ConversationTopic	cm1_op02
+ with	entry [; CreateLink("No pienso hacerlo"); ],
+		keys 'hacer' 'hacerlo' 'no' 'pienso' 'quiero',
+		reply [; return O__M(self, 1); ],
+		reaction [;
+			new_line;
+			Mario.gets_angry(1);
+			if (Mario.state == 1) {
+				!! [No puedo hacerlo / ¿Estás sordo? / Nada]
+				conversacion_Mario_1.add_topic(cm1_op03);
+				conversacion_Mario_1.add_topic(cm1_op04);
+				conversacion_Mario_1.remove_topic(guardar_silencio);
+			}
+			else {
+				!! [Hijo de puta / Guardar silencio]
+				conversacion_Mario_1.add_topic(cm1_op05);
+				conversacion_Mario_1.add_topic(guardar_silencio);
+				conversacion_Mario_1.remove_topic(cm1_op03);
+				conversacion_Mario_1.remove_topic(cm1_op04);
+			}
+		],
+		append_topic_inventory true;
+
+ConversationTopic	cm1_op03
+ with	entry [; CreateLink("¿Estás sordo?"); ],
+		keys '¿estas' 'estas' 'sordo' 'sordo?' 'subnormal',
+		reply [; return O__M(self, 1); ],
+		reaction [;
+			Mario.gets_angry(2);
+		],
+		relatives	cm1_op01 cm1_op02 cm1_op04,
+		subtopics	cm1_op06 cm1_op07,
+		append_topic_inventory true;
+
+ConversationTopic	cm1_op04
+ with	entry [; CreateLink("Nada"); ],
+		keys 'importa' 'nada' 'no',
+		reply [; return O__M(self, 1); ],
+		reaction [; Mario.state = 0; ],
+		relatives	cm1_op01 cm1_op02 cm1_op03,
+		subtopics	cm1_op05 guardar_silencio,
+		append_topic_inventory false;
+
+ConversationTopic	cm1_op05
+ with	entry [; CreateLink("Hijo de puta"); ],
+		keys 'hijo' 'hijoputa' 'puta',
+		reply [; return O__M(self, 1); ],
+		reaction [;
+			Mario.gets_angry(3);
+		],
+		relatives	guardar_silencio,
+		subtopics	cm1_op06 cm1_op07,
+		append_topic_inventory true;
+
+ConversationTopic	cm1_op06
+ with	entry [; CreateLink("Perdón"); ],
+		keys 'perdon' 'siento',
+		reply [; return O__M(self, 1); ],
+		reaction [; return DESCAMPADO_1.end_scene(); ],
+		relatives	cm1_op07,
+		append_topic_inventory false,
+		final_topic true;
+
+ConversationTopic	cm1_op07
+ with	entry [; CreateLink("Que te jodan"); ],
+		keys 'follen' 'jodan' 'jodete',
+		reply [; return O__M(self, 1); ],
+		reaction [;
+			give TERRAZA general;
+			return cm1_op06.reaction();
+		],
+		append_topic_inventory false,
+		final_topic true;
+
 
 !!==============================================================================
 !!	2)	Descampado 1
 !!------------------------------------------------------------------------------
 
 Outdoors	DESCAMPADO_1 "Descampado"
- with	name_m	'descampado',
+ with	name_f	'llanura' 'planicie',
+		name_m	'descampado' 'paramo',
 		gender	G_MASCULINO,
 		initial [; if (self hasnt visited) {
 			!! Establece la flexión gramatical de la librería:
@@ -129,6 +268,28 @@ Outdoors	DESCAMPADO_1 "Descampado"
 		],
 		!! Indica si se ha introducido la acción ##Smell en la localidad:
 		smelled false,
+		end_scene [;
+			new_line;
+			PressAnyKey();
+			HorizontalRule();
+			new_line;
+			PressAnyKey();
+			#Ifdef BETA_RELEASE;
+			print (strong) "EL CHICO - Fin de la Primera Parte^";
+			print "Por J. Francisco Martín^";
+			new_line;
+			PressAnyKey();
+			StartParserStyle();
+			CreateLink("Haz click aquí o pulsa una tecla para acabar");
+			EndParserStyle();
+			PressAnyKey();
+			@restart;
+			L__M(##Restart, 2);
+			#Ifnot;
+			PlayerTo(TERRAZA);
+			#Endif; ! BETA_RELEASE;
+			return true;
+		],
  has	male;
 
 !! XXX OBJETO PROTAGONISTA
@@ -139,36 +300,88 @@ Object	-> Chico "chico"
 		description [; return O__M(self, 1); ],
  has	animate male proper;
 
-Atrezzo	-> coche "coche"
- with	name_m	'audi' 'coche' 'vehiculo',
+Atrezzo	-> "faros"
+ with	name_f	'lampara' 'linterna' 'luz',
+		name_fp	'lamparas' 'linternas' 'luces',
+		name_m	'faro' 'foco',
+		name_mp	'faros' 'focos',
+		gender	G_MASCULINO + G_PLURAL,
+		adjectives
+			'encendida' 'encendidas' 'encendido' 'encendidos' 
+			'puesta' 'puestas' 'puesto' 'puestos',
+		before [;
+			Examine, Look:
+				<<Examine coche>>;
+		],
+ has	male pluralname;
+
+Atrezzo	-> "cerebro"
+ with	name_f	'cabellera' 'melena' 'sesera',
+		name_fp	'seseras',
+		name_m	'cabello' 'cerebro' 'pelo' 'seso',
+		name_mp	'cabellos' 'pelos' 'sesos',
 		gender	G_MASCULINO,
+		adjectives
+			'enrredada' 'enrredadas' 'enrredado' 'enrredados' 'ensangrentada' 
+			'ensangrentadas' 'ensangrentado' 'ensangrentados' 'negra' 'negro' 
+			'negros',
+		before [;
+			Examine, Look:
+				<<Examine cadaver_Yamileth>>;
+		],
+ has	male;
+
+Atrezzo	-> "pistola"
+ with	name_f	'arma' 'pistola',
+		gender	G_FEMENINO,
+		adjectives 'negra',
+		before [;
+			Examine, Look:
+				<<Examine cadaver_Yamileth>>;
+		],
+ has	female;
+
+Atrezzo	-> "cigarrillo"
+ with	name_m	'cigarrillo' 'cigarro' 'pitillo' 'tabaco',
+		gender	G_MASCULINO,
+		adjectives 'ardiente' 'encendido' 'incandescente',
+		before [;
+			Examine, Look:
+				<<Examine Alberto>>;
+		],
+ has	male;
+
+Atrezzo	-> coche "coche"
+ with	name_m	'audi' 'auto' 'automovil' 'carro' 'coche' 'vehiculo',
+		gender	G_MASCULINO,
+		adjectives 'negro',
 		description [; return O__M(self, 1); ],
  has	male;
 
 Atrezzo	-> bolsas "bolsas de basura"
- with	name_fp	'bolsas',
+ with	name_f	'bolsa',
+		name_fp	'bolsas',
+		name_m	'saco',
+		name_mp	'sacos',
 		gender	G_FEMENINO + G_PLURAL,
-		adjectives	'basura',
+		adjectives 'basura' 'negra' 'negras' 'negro' 'negros',
+		description [; return O__M(self, 1); ],
  has	female pluralname;
 
 Furniture	-> cadaver_Yamileth "cadáver"
- with	name_f	'mujer' 'persona' 'yamileth',
-		name_m	'bulto' 'cadaver' 'cuerpo',
+ with	name_f	'chica' 'dama' 'difunta' 'gente' 'joven' 'machupichu' 'moza' 
+				'muchacha' 'muerta' 'mujer' 'persona' 'senora' 'senorita' 
+				'tiraflechas' 'yamileth',
+		name_m	'bulto' 'cadaver' 'cuerpo' 'fiambre' 'npc' 'personaje' 'pnj',
 		gender	G_FEMENINO,
-		description [;
-			return O__M(self, 1);
-		],
+		description [; return O__M(self, 1); ],
 		before [;
 			Cut:
 				if (second == nothing or sierra
 					&& IndirectlyContains(player, sierra)) {
 					O__M(self, 2);
-					new_line;
-					if (DESCAMPADO_1.smelled) { O__M(self, 3); new_line; }
-					PressAnyKey();
-					!! XXX - Fin de la Primera Parte
-					PlayerTo(TERRAZA);
-					return true;
+					if (DESCAMPADO_1.smelled) { new_line; O__M(self, 3); }
+					DESCAMPADO_1.end_scene();
 				}
 			DefaultAction:
 				if (self has described && IndirectlyContains(player, sierra))
@@ -177,7 +390,8 @@ Furniture	-> cadaver_Yamileth "cadáver"
  has	female;
 
 Item	-> sierra "sierra"
- with	name_f	'sierra',
+ with	name_f	'segueta' 'serreta' 'sierra',
+		name_m	'serrucho',
 		gender	G_FEMENINO,
 		description [;
 			if (self hasnt described) return O__M(self, 1);
@@ -192,8 +406,8 @@ Item	-> sierra "sierra"
  has	concealed female;
 
 NPC		-> Mario "Mario"
- with	name_f	'persona',
-		name_m	'hombre' 'mario',
+ with	name_f	'gente' 'persona',
+		name_m	'hombre' 'mario' 'npc' 'personaje' 'pnj',
 		gender	G_MASCULINO,
 		description [; 
 			O__M(self, 1);
@@ -201,142 +415,49 @@ NPC		-> Mario "Mario"
 			new_line;
 			return true;
 		],
+		react_before [;
+			NPCTalk, TalkTo:
+				return false;
+			default:
+				if (self.state >= 3)
+					<<TalkTo self>>;
+		],
 		before [;
+			Attack:
+				return O__M(self, 6);
+			DefaultAction:
+				if (self.talked) <<TalkTo self>>;
 			TalkTo:
+				self.talked = true;
 				ConversationManager.start(conversacion_Mario_1);
 				return true;
 		],
+		!! Incrementa el enfado de Mario con el jugador:
 		gets_angry [ i;
 			if (i == 0) i = 1;
-			self.angry = self.angry + i;
-			switch (self.angry) {
+			self.state = self.state + i;
+			switch (self.state) {
 				1:	O__M(self, 3);
 				2:	O__M(self, 4);
-				3:	O__M(self, 5);
+				default: O__M(self, 5);
 			}
 		],
- private
-		!! Controla el enfado de Mario con el jugador:
-		angry 0,
+		!! Controla el estado del enfado de Mario con el jugador:
+		state 0,
+		!! Indica si el jugador a hablado o no con Mario:
+		talked false,
  has	concealed male proper;
 
 NPC		-> Alberto "Alberto"
- with	name_f	'persona',
-		name_m	'hombre' 'alberto',
+ with	name_f	'gente' 'persona',
+		name_m	'alberto' 'berto' 'hombre' 'npc' 'personaje' 'pnj',
 		gender	G_MASCULINO,
 		description [; return O__M(self, 1); ],
+		before [;
+			TalkTo:
+				return O__M(self, 2);
+		],
  has	concealed male proper;
-
-Conversation	conversacion_Mario_1 "(conversación con Mario)"
- with	initial_action [;
-			self.add_topic(cm1_op01);
-			self.add_topic(cm1_op02);
-			self.add_topic(cm1_op03);
-			return O__M(self, 1);
-		],
-		inter_action [;
-			"Inter action.";
-		],
-		final_action [;
-			"Final action.";
-		];
-
-ConversationTopic	cm1_op01
- with	entry [; CreateLink("No puedo hacerlo"); ],
-		keys 'capaz' 'hacer' 'hacerlo' 'no' 'puedo' 'soy',
-		reply [; O__M(self, 1); ],
-		reaction [;
-			new_line;
-			Mario.gets_angry();
-			if (~~conversacion_Mario_1.has_topic(cm1_op02)) {
-				give cm1_op03 ~visited;
-				conversacion_Mario_1.add_topic(cm1_op03);
-				conversacion_Mario_1.add_topic(cm1_op06);
-				conversacion_Mario_1.remove_topic(cm1_op04);
-			}
-		],
-		relatives	cm1_op03,
-		subtopics	cm1_op04 cm1_op05,
-		append_topic_inventory true;
-
-ConversationTopic	cm1_op02
- with	entry [; CreateLink("No pienso hacerlo"); ],
-		keys 'hacer' 'hacerlo' 'no' 'pienso' 'quiero',
-		reply [; return O__M(self, 1); ],
-		reaction [;
-			new_line;
-			Mario.gets_angry();
-			if (~~conversacion_Mario_1.has_topic(cm1_op01)) {
-				give cm1_op03 ~visited;
-				conversacion_Mario_1.add_topic(cm1_op03);
-				conversacion_Mario_1.add_topic(cm1_op06);
-				conversacion_Mario_1.remove_topic(cm1_op04);
-			}
-		],
-		relatives	cm1_op03,
-		subtopics	cm1_op04 cm1_op05,
-		append_topic_inventory true;
-
-ConversationTopic	cm1_op03
- with	entry [; CreateLink("Vale"); ],
-		keys 'acuerdo' 'vale',
-		reply [; return O__M(self, 1); ],
-		append_topic_inventory false;
-
-ConversationTopic	cm1_op04
- with	entry [; CreateLink("Nada"); ],
-		keys 'nada',
-		reply [; return O__M(self, 1); ],
-		append_topic_inventory false;
-
-ConversationTopic	cm1_op05
- with	entry [;
-			KeywordStyle(3);
-			CreateLink("Guardar silencio", false, true);
-			RomanStyle();
-		],
-		keys 'guarda' 'guardar' 'silencio',
-		reply [; return O__M(self, 1); ],
-		append_topic_inventory false;
-
-ConversationTopic	cm1_op06
- with	entry [; CreateLink("Que te jodan"); ],
-		keys 'follen' 'jodan' 'jodete',
-		reply [; return O__M(self, 1); ],
-		reaction [; new_line; Mario.gets_angry(); ],
-		relatives	cm1_op03 cm1_op05,
-		subtopics	cm1_op07 cm1_op08,
-		append_topic_inventory true;
-
-ConversationTopic	cm1_op07
- with	entry [; CreateLink("Hijo de puta"); ],
-		keys 'hijo' 'hijoputa' 'puta',
-		reply [; return O__M(self, 1); ],
-		reaction [;
-			new_line;
-			PressAnyKey();
-			HorizontalRule();
-			new_line;
-			PressAnyKey();
-			Banner();
-			new_line;
-			PressAnyKey();
-			StartParserStyle();
-			CreateLink("Haz click aquí o pulsa una tecla para acabar");
-			EndParserStyle();
-			PressAnyKey();
-			@restart;
-			L__M(##Restart, 2);
-			return true;
-		],
-		append_topic_inventory false,
-		final_topic true;
-
-ConversationTopic	cm1_op08
- with	entry [; CreateLink("Perdón"); ],
-		keys 'perdon' 'siento',
-		reply [; return O__M(self, 1); ],
-		final_topic true;
 
 
 !!==============================================================================
@@ -365,7 +486,8 @@ Outdoors	TERRAZA "Terraza"
 			!! Establece la flexión gramatical:
 			SetGrammaticalInflection(FIRST_PERSON_PAST);
 			!! Texto inicial de la escena:
-			O__M(self, 1);
+			if (self hasnt general) O__M(self, 1);
+			else O__M(self, 1); !! TODO
 			new_line;
 			return true;
 		}],

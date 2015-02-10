@@ -50,7 +50,11 @@
 !!------------------------------------------------------------------------------
 Alberto: switch (n) {
 1:	! description
-print "Alberto está fuera del alcance de los faros, así que es poco más que una silenciosa silueta apoyada contra [el coche]. El extremo incandescente de su cigarrillo brilla en la oscuridad. Como una luciérnaga.";
+print "[Alberto] está fuera del alcance de los faros, así que es poco más que una silenciosa silueta apoyada contra [el coche]. El extremo incandescente de su cigarrillo brilla en la oscuridad. Como una luciérnaga.";
+new_line;
+return true;
+2:	! before: ##TalkTo
+print "No parece interesado en hablar con nadie. Se limita a fumar en silencio, como si nada de esto fuese con él. A decir verdad siempre es así. Ya puede caerse el cielo que a [Alberto] parece sudársela completamente todo.";
 new_line;
 return true;
 }
@@ -59,6 +63,14 @@ return true;
 BANNO: switch (n) {
 1:	! description
 print "Había una tía cagando en el baño.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+bolsas: switch (n) {
+1:	! description
+print "Un rollo de [bolsas] negras.";
 new_line;
 return true;
 }
@@ -166,40 +178,52 @@ print " ¿Por qué demonios me metería en esta mierda?
 ^^
 Ya. Por el dinero.";
 return true;
-3:	! gets_angry 1
+3:	! angry: 1
 print "---No he oido bien. ¿Qué has dicho?";
 new_line;
 return true;
-4:	! gets_angry 2
-print "Veo el movimiento de su mano demasiado tarde. Para cuando quiero reaccionar ya me ha cruzado la cara con el revés del puño en el que empuña la pistola. El hijo de puta.
+4:	! angry: 2
+print "Veo el movimiento de su mano demasiado tarde. Para cuando quiero reaccionar tengo ya la cara cruzada de un revés con el puño con el que empuña la pistola. El muy cabrón.
 ^^
----No voy a volver a repetirlo. Coje esa [sierra] y empieza a cortarla en cachitos. Si no lo haces tú, voy a tenerme que poner yo a cortar, pero no sólo a esa [@cadaver_Yamileth, puta]. Y no me apetece una mierda. Así que espabila, chico.";
+---No voy a volver a repetirlo. O cojes [esa sierra] y empiezas a cortarla en cachitos o te meto una bala en esa cara de gilipollas que tienes. Espabila, chico.";
 new_line;
 return true;
-5:	! gets_angry 3
-print "Esta vez me esperaba el golpe. Y aún así. Tengo unos reflejos de mierda.
+5:	! angry: 3
+print "Noto el dolor, punzante, cuando su puño se me hunde en el estómago. Lo siguiente ocurre a toda velocidad. Me doblo. Sé que mientras lo hago su pierna se está levantando también, y aún así no puedo evitarlo. Me doblo. Y me como su puta rodilla de lleno.
 ^^
-Noto el dolor, punzante, cuando su puño se me hunde en el estómago. Lo siguiente ocurre a toda velocidad. Me doblo. Sé que su rodilla se está levantando y aún así no puedo evitarlo. Me doblo. Y me como su puta rodilla de lleno.
+Ruedo por el suelo sin aliento y con la boca partida.
 ^^
-Ruedo por el suelo sin aliento y con la boca partida. Hijo de puta.
-^^
----¿Sabes? Eres un montón de mierda.
-^^
-No le veo. Pero escucho el click al quitar el seguro de la pistola.
-^^
----Ahora vas a pedirme perdón.";
+---Y tú eres un montón de mierda. ---Tumbado en el suelo no puedo verlo, pero escucho el click al quitar el seguro de la pistola. ---Ahora vas a disculparte.";
+new_line;
+return true;
+6:	! before: ##Attack
+print "Tiene un arma en la mano y acabo de ver como metía una bala en la cabeza a una persona... no me atrevo a intentar algo así.";
 new_line;
 return true;
 }
 
 conversacion_Mario_1: switch (n) {
 1:	! initial_action
-print "---Lo... lo siento. Esto... no...
-^^
----En serio, ¿qué pasa contigo? ¿Estás sordo o es que eres subnormal?";
+print "---En serio, ¿qué pasa contigo? ¿Estás sordo o es que eres subnormal?";
 if (IndirectlyContains(player, sierra)) print " CORTA - A ESA - PUTA.";
 else print " COJE - ESA - PUTA - SIERRA.";
 print "^^Dudo.";
+new_line;
+return true;
+2:	! angry: 0
+print "[Mario] mira [la sierra] impaciente, esperando a que cumpla la orden.";
+new_line;
+return true;
+3:	! angry: 1
+print "---¿Habías dicho algo, chico?";
+new_line;
+return true;
+4:	! angry: 2
+print "---¿Qué? No me apetece una mierda tener que ponerme yo a haceros cachitos a los dos. ¿A qué esperas?";
+new_line;
+return true;
+5:	! angry: 3
+print "---Ahí quieto, chico. Pídeme perdón.";
 new_line;
 return true;
 }
@@ -220,60 +244,62 @@ return true;
 
 cm1_op03: switch (n) {
 1:
-print "---Claro... ahora mismo.";
-new_line;
+print "---¿Estás sordo o es que eres subnormal?
+^^
+Veo el movimiento de su mano demasiado tarde para apartarme. ";
 return true;
 }
 
 cm1_op04: switch (n) {
 1:
-print "---Nada.";
+print "Que estás loco. Que eres un puto psicópata enfermo. Que ojalá fueses tú el [@cadaver_Yamileth, cadáver] tirado en el suelo con medio puto cerebro esparcido por todas partes...
+^^
+---Nada.
+^^
+---Bien. Eso pensaba.";
 new_line;
 return true;
 }
 
 cm1_op05: switch (n) {
 1:
-print "...";
+print "---Hijo de puta. Eres un puto psicópa-";
 new_line;
+if (Mario.state > 1)
+print "^Esta vez me esperaba el golpe. Y aún así. Tengo unos reflejos de mierda.^^";
+else
+print "^Veo el movimiento de su mano demasiado tarde para apartarme. ";
 return true;
 }
 
 cm1_op06: switch (n) {
 1:
-print "---Que te jodan. Psicópata de -";
+print "---Logh... ---tengo que detenerme. Escupo un gargajo cargado de sangre. El muy hijo de puta. ---Lo siento.
+^^
+---Señor.
+^^
+---...lo siento, señor.
+^^
+---Por ser un puto montón de mierda.
+^^
+---...por ser un puto montón de mierda.
+^^
+---¡Claro, hombre! Si me lo pides con tanta educación te perdono. Ahora levántate y ponte a cortar a esa [@cadaver_Yamileth, tiraflechas] de una puta vez.
+^^
+Cabrón enfermo.";
 new_line;
 return true;
 }
 
 cm1_op07: switch (n) {
 1:
-print "---High... ---tengo que detenerme. Escupo un gargajo cargado de sangre. ---Hijo de puta.
+print "---Quegh... ---tengo que detenerme. Escupo un gargajo cargado de sangre. ---Que te jodan.
 ^^
 Ríe.
 ^^
-Por favor, que no duela. Que no duela.
+Que no duela, por favor. Que no duela...
 ^^
-Mamá, lo sie-
-^^
-.";
-new_line;
-return true;
-}
-
-cm1_op08: switch (n) {
-1:
-print "Logh... ---tengo que detenerme. Escupo un gargajo cargado de sangre. Hijo de puta. ---Lo siento.
-^^
----Señor.
-^^
----...lo siento, señor.
-^^
-Bien. Ahora levántate y ponte a cortar a esa [@cadaver_Yamileth, tiraflechas] de una puta vez.
-^^
----...sí, señor.
-^^
-Loco hijo de puta.";
+Mamá, lo sie-.";
 new_line;
 return true;
 }

@@ -279,13 +279,13 @@ Global _grammatical_inflection	= SECOND_PERSON_PRESENT;
 		new_line;
 	}
 	#Ifdef DEBUG;
+	print "ALFA ";
+	#Ifnot;
 	#Ifdef BETA_RELEASE;
 	print "BETA ";
 	#Ifnot;
-	print "ALFA ";
-	#Endif; ! BETA_RELEASE;
-	#Ifnot;
 	print "Versión ";
+	#Endif; ! BETA_RELEASE;
 	#Endif; ! DEBUG;
 	PrintVersionNumber();
 	print " / Núm. de serie ";
@@ -300,9 +300,6 @@ Global _grammatical_inflection	= SECOND_PERSON_PRESENT;
 	#Ifdef INFIX;
 	print "X";
 	#Endif; ! INFIX
-!	#Ifdef DEBUG;
-!	print "D";
-!	#Endif; ! DEBUG
 	new_line;
 ];
 
@@ -1022,7 +1019,7 @@ Verb	meta 'gramatica' 'grammar'
 !!	@returna nada
 !!------------------------------------------------------------------------------
 [ SpanishNominativePronoun obj;
-	switch (GetGNAOfObject (obj, true)) {
+	switch (GetGNAOfObject (obj, false)) {
 		0, 6:	print "él";
 		1, 7:	print "ella";
 		2, 8:	print "ello";

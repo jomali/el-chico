@@ -1,4 +1,4 @@
-!% -SD
+!% -~S~D
 !% +language_name=Spanish
 !% $MAX_LABELS=2000
 !% $MAX_ZCODE_SIZE=45000
@@ -16,13 +16,14 @@
 !!	Idioma:			ES (Castellano)
 !!	Sistema:		Inform-INFSP 6
 !!	Plataforma:		GLULX
-!!	Versión:		0.0
-!!	Fecha:			2015/01/29
+!!	Versión:		B1.0
+!!	Fecha:			2015/02/10
 !!
 !!------------------------------------------------------------------------------
 !!
-!!	# HISTORIAL DE VERSIONES
+!!	# HISTORIAL DE VERSIONES:
 !!
+!!	B1.0: 2015/02/10 Versión BETA de la primera parte.
 !!	0.0: 2015/01/29	Inicio del desarrollo.
 !!
 !!------------------------------------------------------------------------------
@@ -71,15 +72,23 @@ Constant Story
 "EL CHICO - Primera Parte";
 
 Constant Headline
-"Un pulp interactivo por J. Francisco Martín, (c) 2015";
+"Una ficción pulp interactiva, Copyright (C) 2015^
+Por J. Francisco Martín";
 
-#Ifdef DEBUG;					! Fase de desarrollo
-Constant Checking 1;
+Constant BETA_RELEASE;
+
+#Ifdef DEBUG;
+Constant Checking 1;			! Alfa
 Release 0;
-#Ifnot;							! Versión publicable
-Constant Checking 0;
+#Ifnot;
+#Ifdef BETA_RELEASE;
+Constant Checking 1;			! Beta
 Release 0;
-#Endif; ! DEBUG;
+#Ifnot;
+Constant Checking 1;			! Versión final publicable
+Release 0;
+#Endif; ! BETA_RELEASE;
+#Endif; ! DEBUT;
 
 !! Constantes de la librería Inform:
 

@@ -264,11 +264,6 @@ Class	NPC
 				print_ret (parser) "Para iniciar una conversación usa 
 				simplemente la orden HABLA (a/con) PERSONAJE.";
 		],
-		before [;
-			DefaultAction:
-				if (self has described)
-					<<TalkTo self>>;
-		],
  has	animate;
 
 
