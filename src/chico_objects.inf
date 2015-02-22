@@ -108,13 +108,17 @@ Conversation	conversacion_Mario_1 "(conversación con Mario)"
 			return O__M(self, 1);
 		],
 		inter_action [;
-			switch (Mario.state) {
-				0:	self.add_topic(guardar_silencio);
+			switch (Mario.anger) {
+				0, 3:
+					self.add_topic(guardar_silencio);
 					return O__M(self, 2);
-				1:	return O__M(self, 3);
-				2:	self.add_topic(guardar_silencio);
+				1:
+					return O__M(self, 3);
+				2:
+					self.add_topic(guardar_silencio);
 					return O__M(self, 4);
-				default: return O__M(self, 5);
+				default:
+					return O__M(self, 5);
 			}
 		],
 		final_action [; return O__M(self, 2); ];
@@ -146,8 +150,8 @@ ConversationTopic	cm1_op01
 		reply [; return O__M(self, 1); ],
 		reaction [;
 			new_line;
-			Mario.gets_angry(1);
-			if (Mario.state == 1) {
+			Mario.gets_angry();
+			if (Mario.anger == 1) {
 				!! [No pienso hacerlo / ¿Estás sordo? / Nada]
 				conversacion_Mario_1.add_topic(cm1_op03);
 				conversacion_Mario_1.add_topic(cm1_op04);
@@ -169,8 +173,8 @@ ConversationTopic	cm1_op02
 		reply [; return O__M(self, 1); ],
 		reaction [;
 			new_line;
-			Mario.gets_angry(1);
-			if (Mario.state == 1) {
+			Mario.gets_angry();
+			if (Mario.anger == 1) {
 				!! [No puedo hacerlo / ¿Estás sordo? / Nada]
 				conversacion_Mario_1.add_topic(cm1_op03);
 				conversacion_Mario_1.add_topic(cm1_op04);
@@ -190,9 +194,7 @@ ConversationTopic	cm1_op03
  with	entry [; CreateLink("¿Estás sordo?"); ],
 		keys '¿estas' 'estas' 'sordo' 'sordo?' 'subnormal',
 		reply [; return O__M(self, 1); ],
-		reaction [;
-			Mario.gets_angry(2);
-		],
+		reaction [; Mario.gets_angry(4); ],
 		relatives	cm1_op01 cm1_op02 cm1_op04,
 		subtopics	cm1_op06 cm1_op07,
 		append_topic_inventory true;
@@ -201,7 +203,7 @@ ConversationTopic	cm1_op04
  with	entry [; CreateLink("Nada"); ],
 		keys 'importa' 'nada' 'no',
 		reply [; return O__M(self, 1); ],
-		reaction [; Mario.state = 0; ],
+		reaction [; Mario.anger = 3; ],
 		relatives	cm1_op01 cm1_op02 cm1_op03,
 		subtopics	cm1_op05 guardar_silencio,
 		append_topic_inventory false;
@@ -210,9 +212,7 @@ ConversationTopic	cm1_op05
  with	entry [; CreateLink("Hijo de puta"); ],
 		keys 'hijo' 'hijoputa' 'puta',
 		reply [; return O__M(self, 1); ],
-		reaction [;
-			Mario.gets_angry(3);
-		],
+		reaction [; Mario.gets_angry(5); ],
 		relatives	guardar_silencio,
 		subtopics	cm1_op06 cm1_op07,
 		append_topic_inventory true;
@@ -221,7 +221,10 @@ ConversationTopic	cm1_op06
  with	entry [; CreateLink("Perdón"); ],
 		keys 'perdon' 'siento',
 		reply [; return O__M(self, 1); ],
-		reaction [; return DESCAMPADO_1.end_scene(); ],
+		reaction [;
+			give TERRAZA general;
+			return DESCAMPADO_1.end_scene();
+		],
 		relatives	cm1_op07,
 		append_topic_inventory false,
 		final_topic true;
@@ -231,8 +234,7 @@ ConversationTopic	cm1_op07
 		keys 'follen' 'jodan' 'jodete',
 		reply [; return O__M(self, 1); ],
 		reaction [;
-			give TERRAZA general;
-			return cm1_op06.reaction();
+			return DESCAMPADO_1.end_scene();
 		],
 		append_topic_inventory false,
 		final_topic true;
@@ -262,6 +264,10 @@ Outdoors	DESCAMPADO_1 "Descampado"
 			return O__M(self, 3);
 		],
 		before [;
+			Jump:
+				return O__M(self, 6);
+			Listen:
+				return O__M(self, 5);
 			Smell:
 				self.smelled = true;
 				return O__M(self, 4);
@@ -274,24 +280,30 @@ Outdoors	DESCAMPADO_1 "Descampado"
 			HorizontalRule();
 			new_line;
 			PressAnyKey();
+
 			#Ifdef BETA_RELEASE;
+			!! Mensaje final:
 			print (strong) "EL CHICO - Fin de la Primera Parte^";
 			print "Por J. Francisco Martín^";
 			new_line;
 			PressAnyKey();
+			!! Escribe las decisiones en un archivo externo y reinicia:
 			StartParserStyle();
 			CreateLink("Haz click aquí o pulsa una tecla para acabar");
 			EndParserStyle();
+			WriteDecisionsFile();
 			PressAnyKey();
 			@restart;
 			L__M(##Restart, 2);
+
 			#Ifnot;
 			PlayerTo(TERRAZA);
-			#Endif; ! BETA_RELEASE;
 			return true;
+			#Endif; ! BETA_RELEASE;
 		],
  has	male;
 
+#Ifdef PART_ONE;
 !! XXX OBJETO PROTAGONISTA
 Object	-> Chico "chico"
  with	name_m	'personaje' 'protagonista',
@@ -299,6 +311,7 @@ Object	-> Chico "chico"
 		adjectives 'principal',
 		description [; return O__M(self, 1); ],
  has	animate male proper;
+#Endif; ! PART_ONE;
 
 Atrezzo	-> "faros"
  with	name_f	'lampara' 'linterna' 'luz',
@@ -337,7 +350,7 @@ Atrezzo	-> "pistola"
 		adjectives 'negra',
 		before [;
 			Examine, Look:
-				<<Examine cadaver_Yamileth>>;
+				<<Examine Mario>>;
 		],
  has	female;
 
@@ -352,7 +365,7 @@ Atrezzo	-> "cigarrillo"
  has	male;
 
 Atrezzo	-> coche "coche"
- with	name_m	'audi' 'auto' 'automovil' 'carro' 'coche' 'vehiculo',
+ with	name_m	'audi' 'auto' 'automovil' 'capo' 'carro' 'coche' 'vehiculo',
 		gender	G_MASCULINO,
 		adjectives 'negro',
 		description [; return O__M(self, 1); ],
@@ -377,11 +390,13 @@ Furniture	-> cadaver_Yamileth "cadáver"
 		description [; return O__M(self, 1); ],
 		before [;
 			Cut:
+				!! TODO Mensaje cuando el jugador no tiene la sierra
 				if (second == nothing or sierra
 					&& IndirectlyContains(player, sierra)) {
 					O__M(self, 2);
 					if (DESCAMPADO_1.smelled) { new_line; O__M(self, 3); }
 					DESCAMPADO_1.end_scene();
+					return true;
 				}
 			DefaultAction:
 				if (self has described && IndirectlyContains(player, sierra))
@@ -419,7 +434,7 @@ NPC		-> Mario "Mario"
 			NPCTalk, TalkTo:
 				return false;
 			default:
-				if (self.state >= 3)
+				if (self.anger > 3)
 					<<TalkTo self>>;
 		],
 		before [;
@@ -432,18 +447,30 @@ NPC		-> Mario "Mario"
 				ConversationManager.start(conversacion_Mario_1);
 				return true;
 		],
-		!! Incrementa el enfado de Mario con el jugador:
-		gets_angry [ i;
-			if (i == 0) i = 1;
-			self.state = self.state + i;
-			switch (self.state) {
+		!! La reacciones de Mario variarán en función del enfado del personaje, 
+		!! que se registra a través del atributo 'anger'. Esta función se 
+		!! encarga de modificar el valor del enfado. Acepta un parámetro 
+		!! opcional. Si no se indica ninguno, el enfado de Mario se incrementa 
+		!! en una unidad. Si se indica, el estado de enfado toma el valor 
+		!! pasado como parámetro. Los valores de enfado posibles son:
+		!!
+		!!	0)	Estado inicial.
+		!!	1)	El chico ha dicho que no puede/quiere desmembrar el cadáver.
+		!!	2)	El chico ha repetido que no puede/quiere desmembrar el cadáver.
+		!!	3)	El chico no ha seguido protestando después del estado #1.
+		!!	4)	El chico le ha preguntado a Mario si estaba sordo.
+		!!	5)	El chico ha llamado hijo de puta a Mario.
+		gets_angry [ arg;
+			if (arg == 0) self.anger = self.anger + 1;
+			else self.anger = arg;
+			switch (self.anger) {
 				1:	O__M(self, 3);
 				2:	O__M(self, 4);
 				default: O__M(self, 5);
 			}
 		],
-		!! Controla el estado del enfado de Mario con el jugador:
-		state 0,
+		!! Registra el estado del enfado de Mario con el chico:
+		anger 0,
 		!! Indica si el jugador a hablado o no con Mario:
 		talked false,
  has	concealed male proper;
@@ -454,6 +481,8 @@ NPC		-> Alberto "Alberto"
 		gender	G_MASCULINO,
 		description [; return O__M(self, 1); ],
 		before [;
+			Attack:
+				return O__M(self, 3);
 			TalkTo:
 				return O__M(self, 2);
 		],
@@ -483,30 +512,49 @@ Outdoors	TERRAZA "Terraza"
 		name_m	'patio',
 		gender	G_FEMENINO,
 		initial [; if (self hasnt visited) {
+			!! Lee las decisiones tomadas por el jugador previamente:
+			ReadDecisionsFile();
 			!! Establece la flexión gramatical:
 			SetGrammaticalInflection(FIRST_PERSON_PAST);
 			!! Texto inicial de la escena:
 			if (self hasnt general) O__M(self, 1);
-			else O__M(self, 1); !! TODO
+			else O__M(self, 2);
 			new_line;
 			return true;
 		}],
 		description [;
-			return O__M(self, 2);
+			return O__M(self, 3);
 		],
-		w_to	HABITACION,
+		w_to	SALA_LECTURA,
 		in_to [; return self.w_to(); ],
  has	female;
 
+#Ifdef PART_TWO;
+!! XXX OBJETO PROTAGONISTA
+Object	-> Chico "chico"
+ with	name_m	'personaje' 'protagonista',
+		gender	G_MASCULINO,
+		adjectives 'principal',
+		description [; return O__M(self, 1); ],
+ has	animate male proper;
+#Endif; ! PART_TWO;
+
+Furniture	-> puertas_cristal "puertas de cristal"
+ with	name_f	'entrada' 'puerta' 'salida',
+		name_fp	'puertas',
+		gender	G_FEMENINO + G_PLURAL,
+		adjectives 'cristal',
+ has	female pluralname;
+
 
 !!==============================================================================
-!!	5)	Habitación
+!!	5)	Sala de lectura
 !!------------------------------------------------------------------------------
 
-Indoors	HABITACION "Pequeña habitación"
- with	name_f	'habitacion',
+Indoors	SALA_LECTURA "Sala de lectura"
+ with	name_f	'habitacion' 'sala',
 		name_m	'cuarto',
-		adjectives	'pequena' 'pequeno',
+		adjectives	'lectura' 'pequena' 'pequeno',
 		gender	G_FEMENINO,
 		description [;
 			O__M(self, 1);
@@ -531,9 +579,23 @@ Indoors	PASILLO "Pasillo"
 		description [;
 			return O__M(self, 1);
 		],
-		s_to	HABITACION,
+		s_to	SALA_LECTURA,
 		e_to	BANNO,
  has	male;
+
+Furniture	-> puerta_banno "puerta del baño"
+ with	name_m	'bano',
+		name_f	'puerta',
+		gender	G_FEMENINO,
+		adjectives 'abierta' 'cerrada',
+ has	female;
+
+Furniture	-> puerta_despacho "puerta del despacho"
+ with	name_m	'despacho',
+		name_f	'puerta',
+		gender	G_FEMENINO,
+		adjectives 'abierta' 'cerrada',
+ has	female;
 
 
 !!==============================================================================
@@ -560,7 +622,7 @@ Indoors	SALON "Salón"
 		description [;
 			return O__M(self, 1);
 		],
-		e_to	HABITACION,
+		e_to	SALA_LECTURA,
  has	male;
 
 

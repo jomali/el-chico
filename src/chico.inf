@@ -1,4 +1,4 @@
-!% -~S~D
+!% -SD
 !% +language_name=Spanish
 !% $MAX_LABELS=2000
 !% $MAX_ZCODE_SIZE=45000
@@ -16,8 +16,8 @@
 !!	Idioma:			ES (Castellano)
 !!	Sistema:		Inform-INFSP 6
 !!	Plataforma:		GLULX
-!!	Versión:		B1.0
-!!	Fecha:			2015/02/10
+!!	Versión:		B2.0
+!!	Fecha:			2015/02/11
 !!
 !!------------------------------------------------------------------------------
 !!
@@ -69,26 +69,34 @@
 !! Información bibliográfica:
 
 Constant Story
-"EL CHICO - Primera Parte";
+"EL CHICO";
 
 Constant Headline
 "Una ficción pulp interactiva, Copyright (C) 2015^
 Por J. Francisco Martín";
 
-Constant BETA_RELEASE;
+Constant PART_ONE;
 
-#Ifdef DEBUG;
-Constant Checking 1;			! Alfa
-Release 0;
-#Ifnot;
-#Ifdef BETA_RELEASE;
-Constant Checking 1;			! Beta
-Release 0;
-#Ifnot;
-Constant Checking 1;			! Versión final publicable
-Release 0;
-#Endif; ! BETA_RELEASE;
-#Endif; ! DEBUT;
+#Ifdef PART_ONE;				! Primera Parte
+Constant Checking 1;
+!Release 0; Serial "150210";	! v1.0
+Release 1;						! v1.1
+#Endif; ! PART_ONE;
+
+#Ifdef PART_TWO;				! Segunda Parte
+Constant Checking 1;
+Release 0;						! v1.0
+#Endif; ! PART_TWO;
+
+#Ifdef PART_THREE;				! Tercera Parte
+Constant Checking 1;
+Release 0;						! v1.0
+#Endif; ! PART_THREE;
+
+#Ifdef COMPLETE_VERSION;		! Relato completo
+Constant Checking 1;
+Release 0;						! v1.0
+#Endif; ! COMPLETE_VERSION;
 
 !! Constantes de la librería Inform:
 
@@ -302,16 +310,6 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 	!! Pantalla de inicio ------------------------------------------------------
 	Banner();
 	new_line;
-
-	!! Advertencia de la demostración:
-	#Ifdef DEMO_RELEASE;
-	print (strong) "ADVERTENCIA:", " Esta es una demostración de un relato 
-	interactivo en estado de desarrollo. Los contenidos (en especial los 
-	textos) mostrados a continuación no deben ser considerados en ningún 
-	momento ejemplo del resultado de la versión final del relato.^";
-	new_line;
-	#Endif; ! DEMO_RELEASE;
-
 	StartParserStyle();
 	CreateLink("Haz click aquí o pulsa una tecla para empezar");
 	EndParserStyle();
@@ -425,7 +423,9 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 !!	 -	EraseWindow()
 !!	 -	HorizontalRule()
 !!	 -	PressAnyKey()
+!!	 -	ReadDecisionsFile()
 !!	 -	TopHolder()
+!!	 -	WriteDecisionsFile()
 !!------------------------------------------------------------------------------
 
 !!------------------------------------------------------------------------------
@@ -617,6 +617,44 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 ];
 
 !!------------------------------------------------------------------------------
+!! Lee las decisiones hechas durante una partida previa de un fichero externo.
+!!
+!!	@retorna boolean
+!!		verdadero si lee el archivo con éxito. Falso en caso contrario.
+!!------------------------------------------------------------------------------
+#Ifdef TARGET_GLULX;
+Array Decisions_File_Name -> $E0 'D' 'E' 'C' 'I' 'S' 'I' 'O' 'N' 'S';
+#Endif; ! TARGET_GLULX;
+
+[ ReadDecisionsFile
+	file_ref str ch;
+	#Ifdef TARGET_GLULX;
+	file_ref = glk_fileref_create_by_name(fileusage_Data + 
+		fileusage_BinaryMode, ChangeAnyToCString(Decisions_File_Name), 0);
+	if (file_ref ~= 0) {
+		str = glk_stream_open_file(file_ref, filemode_Read, 0);
+		glk_fileref_destroy(file_ref);
+		!! Lee el estado de la relación con Mario:
+		do ch = glk_get_char_stream(str);
+		!! 48 es el código de '0', 49 de '1',... 57 de '9':
+		until ((ch == null) || (ch >= 48 && ch <= 57));
+		if (ch == null) jump ReadDecisionsFileEnd;
+		Mario.anger = (ch - 48);
+		!! Lee el texto inicial de la segunda parte:
+		do ch = glk_get_char_stream(str);
+		until ((ch == null) || (ch >= 48 && ch <= 57));
+		if (ch == null) jump ReadDecisionsFileEnd;
+		if ((ch - 48) == 1) give TERRAZA general;
+		!! Cierra el archivo y termina la operación:
+		.ReadDecisionsFileEnd;
+		glk_stream_close(str, 0);
+		return true;
+	}
+	#Endif; ! TARGET_GLULX;
+	return false;
+];
+
+!!------------------------------------------------------------------------------
 !! Dado un objeto como parámetro, retorna su antecesor más lejano en el árbol 
 !! de objetos del modelo del mundo.
 !!
@@ -633,6 +671,36 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 		obj = aux;
 	}
 	return obj;
+];
+
+!!------------------------------------------------------------------------------
+!! Guarda un registro de las decisiones tomadas por el jugador durante la 
+!! partida en un fichero externo.
+!!
+!!	@retorna boolean
+!!		verdadero si el archivo se escribe con éxito. Falso en caso contrario.
+!!------------------------------------------------------------------------------
+[ WriteDecisionsFile
+	file_ref str;
+	#Ifdef TARGET_GLULX;
+	!! Crea el fichero externo y redirige el flujo de salida a él:
+	file_ref = glk_fileref_create_by_name(fileusage_Data + 
+		fileusage_BinaryMode, ChangeAnyToCString(Decisions_File_Name), 0);
+	if (file_ref ~= 0) {
+		str = glk_stream_open_file(file_ref, filemode_Write, 0);
+		glk_fileref_destroy(file_ref);
+		glk_stream_set_current(str);
+		!! Escribe las decisiones tomadas por el jugador durante la partida:
+		print Mario.anger, " # RELACIÓN CON MARIO^";
+		if (TERRAZA has general) print "1 # INICIO DE LA SEGUNDA PARTE^";
+		else print "0 # INICIO DE LA SEGUNDA PARTE^";
+		!! Cierra el archivo y termina la operación:
+		glk_set_window(gg_mainwin);
+		glk_stream_close(str, 0);
+		return true;
+	}
+	#Endif; ! TARGET_GLULX;
+	return false;
 ];
 
 

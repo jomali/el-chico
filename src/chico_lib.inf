@@ -12,13 +12,15 @@
 !!	Language:		ES (Castellano)
 !!	System:			Inform-INFSP 6
 !!	Platform:		Máquina-Z / GLULX
-!!	Version:		1.1
-!!	Release:		2015/02/07
+!!	Version:		1.2
+!!	Release:		2015/02/11
 !!
 !!------------------------------------------------------------------------------
 !!
 !!	# HISTORIAL DE VERSIONES
 !!
+!!	1.2: 2015/02/11	Añadidas funciones complementarias para los determinantes 
+!!					demostrativos: _Este(), _Ese() y _Aquel().
 !!	1.1: 2015/02/07 Añadidas funciones _este(), _ese(), _aquel() para imprimir 
 !!					los determinantes demostrativos adecuados para un obj.
 !!	1.0: 2015/01/29	Versión original.
@@ -48,8 +50,11 @@
 !!
 !!	 -	_o()
 !!	 -	_este()
+!!	 -	_Este()
 !!	 -	_ese()
+!!	 -	_Ese()
 !!	 -	_aquel()
+!!	 -	_Aquel()
 !!	 -	AttemptToTakeObject()
 !!	 -	Banner()
 !!		 -	PrintVersionNumber()
@@ -122,7 +127,7 @@ Global _grammatical_inflection	= SECOND_PERSON_PRESENT;
 !!	@retorna nada
 !!------------------------------------------------------------------------------
 
-[ _este obj
+[ este obj
 	gna;
 	gna = GetGNAOfObject(obj, true);
 	switch (gna) {
@@ -134,7 +139,19 @@ Global _grammatical_inflection	= SECOND_PERSON_PRESENT;
 	}
 ];
 
-[ _ese obj
+[ _este obj
+	gna;
+	gna = GetGNAOfObject(obj, true);
+	switch (gna) {
+		0, 6:			print "Este";
+		1, 7:			print "Esta";
+		2, 8:			print "Esto";
+		3, 5, 9, 11:	print "Estos";
+		4, 10:			print "Estas";
+	}
+];
+
+[ ese obj
 	gna;
 	gna = GetGNAOfObject(obj, true);
 	switch (gna) {
@@ -146,7 +163,19 @@ Global _grammatical_inflection	= SECOND_PERSON_PRESENT;
 	}
 ];
 
-[ _aquel obj
+[ _ese obj
+	gna;
+	gna = GetGNAOfObject(obj, true);
+	switch (gna) {
+		0, 6:			print "Ese";
+		1, 7:			print "Esa";
+		2, 8:			print "Eso";
+		3, 5, 9, 11:	print "Esos";
+		4, 10:			print "Esas";
+	}
+];
+
+[ aquel obj
 	gna;
 	gna = GetGNAOfObject(obj, true);
 	switch (gna) {
@@ -155,6 +184,18 @@ Global _grammatical_inflection	= SECOND_PERSON_PRESENT;
 		2, 8:			print "aquello";
 		3, 5, 9, 11:	print "aquellos";
 		4, 10:			print "aquellas";
+	}
+];
+
+[ _aquel obj
+	gna;
+	gna = GetGNAOfObject(obj, true);
+	switch (gna) {
+		0, 6:			print "Aquel";
+		1, 7:			print "Aquella";
+		2, 8:			print "Aquello";
+		3, 5, 9, 11:	print "Aquellos";
+		4, 10:			print "Aquellas";
 	}
 ];
 
@@ -265,11 +306,16 @@ Global _grammatical_inflection	= SECOND_PERSON_PRESENT;
 		#Ifdef TARGET_ZCODE;
 		#IfV5; style bold; #Endif;
 		print (string) Story;
+		#Ifdef PART_ONE; print " - Primera Parte"; #Endif;
+		#Ifdef PART_TWO; print " - Segunda Parte"; #Endif;
+		#Ifdef PART_THREE; print " - Tercera Parte"; #Endif;	
 		#IfV5; style roman; #Endif;
-		print (emph) " - ed. reducida";
 		#Ifnot; ! TARGET_GLULX;
 		glk($0086, 3); ! set header style
 		print (string) Story;
+		#Ifdef PART_ONE; print " - Primera Parte"; #Endif;
+		#Ifdef PART_TWO; print " - Segunda Parte"; #Endif;
+		#Ifdef PART_THREE; print " - Tercera Parte"; #Endif;	
 		glk($0086, 0); ! set normal style
 		#Endif; ! TARGET_
 		new_line;
@@ -281,16 +327,15 @@ Global _grammatical_inflection	= SECOND_PERSON_PRESENT;
 	#Ifdef DEBUG;
 	print "ALFA ";
 	#Ifnot;
-	#Ifdef BETA_RELEASE;
-	print "BETA ";
-	#Ifnot;
 	print "Versión ";
-	#Endif; ! BETA_RELEASE;
 	#Endif; ! DEBUG;
 	PrintVersionNumber();
 	print " / Núm. de serie ";
 	PrintSerialNumber();
 	print " / Creado con Inform "; inversion;
+	#Ifdef TARGET_ZCODE;
+	print " Z";
+	#Endif; ! TARGET_ZCODE;
 	#Ifdef DEBUG;
 	print " ";
 	#Endif; ! DEBUG;

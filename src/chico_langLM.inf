@@ -14,6 +14,8 @@
 !!	Plataforma:		Máquina-Z / GLULX
 !!	Versión:		1.0
 !!	Fecha:			2015/01/29
+!!	Notas:			Se han personalizado los siguientes mensajes:
+!!					 -	##Pray
 !!
 !!------------------------------------------------------------------------------
 !!
@@ -1681,13 +1683,12 @@ Default _grammatical_inflection 2;
 			2:  print ".^";
 		}
 
-!! TODO - cambiar mensaje
-	Pray:
+	Pray:	!! XXX Personalizado
 		switch (_grammatical_inflection) {
-		1:	"No obtengo nada práctico de mis oraciones.";
+		1:	"Como si hubiese alguien que me fuera a escuchar...";
 		2:	"No obtienes nada práctico de tus oraciones.";
 		3:	"No obtiene nada práctico de sus oraciones.";
-		4:	"No obtuve nada práctico de mis oraciones.";
+		4:	"Como si hubiese alguien que me fuera a escuchar...";
 		5:	"No obtuviste nada práctico de tus oraciones.";
 		6:	"No obtuvo nada práctico de sus oraciones.";
 		}

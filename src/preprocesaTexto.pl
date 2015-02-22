@@ -53,9 +53,12 @@ for (@lines) {
 	s/\[\s*(un|una|unos|unas)\s+(.+?)\s*\]/", (a) \2, "/g;
 	s/\[\s*(Un|Una|Unos|Unas)\s+(.+?)\s*\]/", (A) \2, "/g;
 	# Igual, con los pronombres demostrativos adecuados:
-	s/\[\s*(este|esta|estos|estas)\s+(.+?)\s*\]/", (_este) \2, "/g;
-	s/\[\s*(ese|esa|esos|esas)\s+(.+?)\s*\]/", (_ese) \2, "/g;
-	s/\[\s*(aquel|aquella|aquellos|aquellas)\s+(.+)\s*\]/", (_aquel) \2, "/g;
+	s/\[\s*(este|esta|estos|estas)\s+(.+?)\s*\]/", (este) \2, "/g;
+	s/\[\s*(Este|Esta|Estos|Estas)\s+(.+?)\s*\]/", (_este) \2, "/g;
+	s/\[\s*(ese|esa|esos|esas)\s+(.+?)\s*\]/", (ese) \2, "/g;
+	s/\[\s*(Ese|Esa|Esos|Esas)\s+(.+?)\s*\]/", (_ese) \2, "/g;
+	s/\[\s*(aquel|aquella|aquellos|aquellas)\s+(.+)\s*\]/", (aquel) \2, "/g;
+	s/\[\s*(Aquel|Aquella|Aquellos|Aquellas)\s+(.+)\s*\]/", (_aquel) \2, "/g;
 
 	# Imprime la terminación adecuada:
 	s/\[\s*n\s+(.+?)\s*\]/", (n) \1, "/g;
