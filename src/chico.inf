@@ -1,4 +1,4 @@
-!% -SD
+!% -~S~D
 !% +language_name=Spanish
 !% $MAX_LABELS=2000
 !% $MAX_ZCODE_SIZE=45000
@@ -16,14 +16,15 @@
 !!	Idioma:			ES (Castellano)
 !!	Sistema:		Inform-INFSP 6
 !!	Plataforma:		GLULX
-!!	Versión:		B2.0
-!!	Fecha:			2015/02/11
+!!	Versión:		1.2.0
+!!	Fecha:			2015/02/23
 !!
 !!------------------------------------------------------------------------------
 !!
 !!	# HISTORIAL DE VERSIONES:
 !!
-!!	B1.0: 2015/02/10 Versión BETA de la primera parte.
+!!	1.2.0: 2015/02/23 Añade escritura/lectura de decisiones de la Primera Parte.
+!!	1.1.0: 2015/02/10 Versión inicial de la Primera Parte.
 !!	0.0: 2015/01/29	Inicio del desarrollo.
 !!
 !!------------------------------------------------------------------------------
@@ -76,11 +77,13 @@ Constant Headline
 Por J. Francisco Martín";
 
 Constant PART_ONE;
+!Constant COMPLETE_VERSION;
 
 #Ifdef PART_ONE;				! Primera Parte
-Constant Checking 1;
+!Constant Checking 1;
 !Release 0; Serial "150210";	! v1.0
-Release 1;						! v1.1
+Constant Checking 2;
+Release 0; Serial "150223";		! v2.0
 #Endif; ! PART_ONE;
 
 #Ifdef PART_TWO;				! Segunda Parte
@@ -291,7 +294,8 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 !!		aplicación, que de otra manera se imprimirían inmediatamente después de 
 !!		llamar a la rutina.
 !!------------------------------------------------------------------------------
-[ Initialise;
+[ Initialise
+	flag;
 	EraseWindow();
 
 	!! Comprobaciones del intérprete -------------------------------------------
@@ -315,6 +319,15 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 	EndParserStyle();
 	PressAnyKey();
 	EraseWindow();
+
+	!! Lectura de archivo externo de decisiones --------------------------------
+	#Ifdef PART_TWO;   flag = true; #Endif;
+	#Ifdef PART_THREE; flag = true; #Endif;
+	if (flag && ReadDecisionsFile()) {
+		print (parser) "Se han leido las decisiones tomadas en una partida 
+		anterior. Estas decisiones influirán en el desarrollo de la historia.";
+		new_line;
+	}
 
 	!! Inicializaciones del relato ---------------------------------------------
 	!! Es importante realizar las inicializaciones del relato después de 
@@ -441,7 +454,9 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 		real, pero tu intérprete GLULX no los soporta. Para ejecutar la 
 		aplicación necesitarás un intérprete adecuado.^";
 		new_line;
-		print (parser) "Pulsa una tecla para salir.";
+		StartParserStyle();
+		CreateLink("Pulsa una tecla para salir.");
+		EndParserStyle();
 		PressAnyKey();
 		quit;
 	}
@@ -453,7 +468,9 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 		adecuadamente. El programa se iniciará con parte o la totalidad de sus
 		recursos multimedia desactivados.^";
 		new_line;
-		print (parser) "Pulsa una tecla para continuar.";
+		StartParserStyle();
+		CreateLink("Pulsa una tecla para continuar.");
+		EndParserStyle();
 		PressAnyKey();
 		EraseWindow();
 	}
@@ -634,13 +651,17 @@ Array Decisions_File_Name -> $E0 'D' 'E' 'C' 'I' 'S' 'I' 'O' 'N' 'S';
 	if (file_ref ~= 0) {
 		str = glk_stream_open_file(file_ref, filemode_Read, 0);
 		glk_fileref_destroy(file_ref);
-		!! Lee el estado de la relación con Mario:
+		!! Lee el código de verificación del archivo de decisiones:
+		!! (48 es el código de '0', 49 de '1',... 57 de '9':
 		do ch = glk_get_char_stream(str);
-		!! 48 es el código de '0', 49 de '1',... 57 de '9':
+		until ((ch == null) || (ch >= 48 && ch <= 57));
+		if (ch == null) return false;
+		!! Lee el estado del enfado de Mario con el jugador:
+		do ch = glk_get_char_stream(str);
 		until ((ch == null) || (ch >= 48 && ch <= 57));
 		if (ch == null) jump ReadDecisionsFileEnd;
 		Mario.anger = (ch - 48);
-		!! Lee el texto inicial de la segunda parte:
+		!! Lee el código del texto inicial de la segunda parte:
 		do ch = glk_get_char_stream(str);
 		until ((ch == null) || (ch >= 48 && ch <= 57));
 		if (ch == null) jump ReadDecisionsFileEnd;
@@ -690,11 +711,15 @@ Array Decisions_File_Name -> $E0 'D' 'E' 'C' 'I' 'S' 'I' 'O' 'N' 'S';
 		str = glk_stream_open_file(file_ref, filemode_Write, 0);
 		glk_fileref_destroy(file_ref);
 		glk_stream_set_current(str);
-		!! Escribe las decisiones tomadas por el jugador durante la partida:
-		print Mario.anger, " # RELACIÓN CON MARIO^";
-		if (TERRAZA has general) print "1 # INICIO DE LA SEGUNDA PARTE^";
-		else print "0 # INICIO DE LA SEGUNDA PARTE^";
+		!! Código de verificación del archivo de decisiones:
+		print "1";
+		!! Enfado de Mario con el jugador:
+		print Mario.anger;
+		!! Código de inicio de la segunda parte:
+		if (TERRAZA has general) print "1";
+		else print "0";
 		!! Cierra el archivo y termina la operación:
+		new_line;
 		glk_set_window(gg_mainwin);
 		glk_stream_close(str, 0);
 		return true;
@@ -708,6 +733,7 @@ Array Decisions_File_Name -> $E0 'D' 'E' 'C' 'I' 'S' 'I' 'O' 'N' 'S';
 !!	8)	Gramática estándar y extendida
 !!------------------------------------------------------------------------------
 !!	Acciones añadidas o modificadas:
+!!	 -	##Cut
 !!	 -	##DefaultAction
 !!	 -	##Highlight
 !!		 -	##HighlightOn
@@ -723,6 +749,15 @@ Array Decisions_File_Name -> $E0 'D' 'E' 'C' 'I' 'S' 'I' 'O' 'N' 'S';
 
 Include "SpanishG.h";			! Gramática española
 Include "SpanishEG.h";			! Gramática española extendida
+
+!!------------------------------------------------------------------------------
+!! ##Cut
+!!------------------------------------------------------------------------------
+
+Extend 'corta' last
+	* 'a' noun						-> Cut
+	* 'a' noun 'con' held			-> Cut
+;
 
 !!------------------------------------------------------------------------------
 !! ##DefaultAction

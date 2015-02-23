@@ -275,14 +275,13 @@ Outdoors	DESCAMPADO_1 "Descampado"
 		!! Indica si se ha introducido la acción ##Smell en la localidad:
 		smelled false,
 		end_scene [;
-			new_line;
 			PressAnyKey();
+
+			#Ifdef PART_ONE;
+			new_line;
 			HorizontalRule();
 			new_line;
 			PressAnyKey();
-
-			#Ifdef BETA_RELEASE;
-			!! Mensaje final:
 			print (strong) "EL CHICO - Fin de la Primera Parte^";
 			print "Por J. Francisco Martín^";
 			new_line;
@@ -312,6 +311,16 @@ Object	-> Chico "chico"
 		description [; return O__M(self, 1); ],
  has	animate male proper;
 #Endif; ! PART_ONE;
+
+#Ifdef COMPLETE_VERSION;
+!! XXX OBJETO PROTAGONISTA
+Object	-> Chico "chico"
+ with	name_m	'personaje' 'protagonista',
+		gender	G_MASCULINO,
+		adjectives 'principal',
+		description [; return O__M(self, 1); ],
+ has	animate male proper;
+#Endif; ! COMPLETE_VERSION;
 
 Atrezzo	-> "faros"
  with	name_f	'lampara' 'linterna' 'luz',
@@ -390,7 +399,6 @@ Furniture	-> cadaver_Yamileth "cadáver"
 		description [; return O__M(self, 1); ],
 		before [;
 			Cut:
-				!! TODO Mensaje cuando el jugador no tiene la sierra
 				if (second == nothing or sierra
 					&& IndirectlyContains(player, sierra)) {
 					O__M(self, 2);
@@ -398,6 +406,7 @@ Furniture	-> cadaver_Yamileth "cadáver"
 					DESCAMPADO_1.end_scene();
 					return true;
 				}
+				return O__M(self, 4);
 			DefaultAction:
 				if (self has described && IndirectlyContains(player, sierra))
 					<<Cut self>>;
@@ -512,11 +521,12 @@ Outdoors	TERRAZA "Terraza"
 		name_m	'patio',
 		gender	G_FEMENINO,
 		initial [; if (self hasnt visited) {
-			!! Lee las decisiones tomadas por el jugador previamente:
-			ReadDecisionsFile();
 			!! Establece la flexión gramatical:
 			SetGrammaticalInflection(FIRST_PERSON_PAST);
-			!! Texto inicial de la escena:
+			!! Escribe el texto inicial de la Segunda Parte:
+			new_line;
+			HorizontalRule();
+			new_line;
 			if (self hasnt general) O__M(self, 1);
 			else O__M(self, 2);
 			new_line;

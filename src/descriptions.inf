@@ -94,6 +94,10 @@ return true;
 print "El aire es gélido y huele a pota.";
 new_line;
 return true;
+4:	! before: ##Cut
+print "Necesito [la sierra] para hacerlo.";
+new_line;
+return true;
 }
 
 !!------------------------------------------------------------------------------
