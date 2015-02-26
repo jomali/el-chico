@@ -101,6 +101,14 @@ return true;
 }
 
 !!------------------------------------------------------------------------------
+camarero: switch (n) {
+1:	! description
+print "[Un camarero] servía bebidas desde detrás de la barra. Bebidas gratis. ¿Y a que no sabes qué?... exacto; la barra estaba abarrotada.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
 Chico: switch (n) {
 1:	! description
 return L__M(##Miscellany, 19);
@@ -167,12 +175,50 @@ return true;
 }
 
 !!------------------------------------------------------------------------------
-SALA_LECTURA: switch (n) {
+dj: switch (n) {
 1:	! description
-print "Una pequeña sala de lectura que servía de paso entre el gran [@SALON, salón], un [@PASILLO, pasillo] y la [@TERRAZA, terraza] trasera. Tenía una de las paredes tapada por completo por estanterías desde el suelo al techo. Llenas de libros. Lo que resultaba divertido, ya que era arriesgado afirmar que alguno de los que estaban por allí sentados hubiesen leido un libro en los últimos veinte años. Desde aquellos de Teo, en la escuela.";
+print "Aquel tipo tenía los ojos desorbitados y la mandíbula desencajada. Y se agitaba siguiendo la música desde detrás de la mesa de mezclas y su portátil como si estuviese dispuesto a desencajar también el resto del cuerpo.";
+new_line;
 return true;
-2:	! description (~visited)
-print " La cara de un par de ellos empujaba a preguntarse si sabrían leer siquiera.";
+}
+
+!!------------------------------------------------------------------------------
+estanterias: switch (n) {
+1:	! description
+print "Quizá Freire fuese un gran lector. O quizá no fuese más que una forma como cualquier otra de decorar la habitación. En cualquier caso tenía allí una colección importante de libros.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+invitados_sala_lectura: switch (n) {
+1:	! description
+print "Los que iban y venían del [@SALON, salón] a la [@TERRAZA, terraza] lo hacían agitando sus maracas de cristal y cubitos de hielo. A los premios Pultizer sentados por allí, los hielos parecían haberles congelado el cerebro.";
+new_line;
+return true;
+2:	! before: ##TalkTo (~~talkTo_flag)
+print "¿De qué iba a hablar con aquella gente? Pensé que podría ser gracioso preguntarles por la sensibilidad de Faulkner y el sentido del humor de Joyce. Sólo por ver cómo me miraban. Pero, con la suerte que tenía, seguro que a pesar de esas caras de imbécil alguno resultaba ser catedrático de literatura inglesa y acababa riéndose de mi por ir de listo.";
+new_line;
+return true;
+3:	! before: ##TalkTo
+print "No tenía nada que hablar con esa gente.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+invitados_salon: switch (n) {
+1:	! description
+print "A esas alturas, los que bailaban lo hacían mucho peor que al inicio de la tarde. Y había unos cuantos acodados en la barra dispuestos a bailar aún peor en unos momentos.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+invitados_terraza: switch (n) {
+1:	! description
+print "Practicamente todos tenían la mano pegada a un vaso de tubo lleno de hielos que tintineaban cuando se movían. Aquello parecía una puta convención de músicos expertos en maracas.";
+new_line;
 return true;
 }
 
@@ -338,9 +384,75 @@ return true;
 }
 
 !!------------------------------------------------------------------------------
+piscina: switch (n) {
+1:	! description
+print "Un puñado de tías en bikini jugaban en la piscina ante la mirada ensimismada de [los invitados_terraza]. Ante la de los hombres, al menos. Aquel era uno de los entretenimientos habituales que solía pagar Freire cuando montaba una fiesta.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+puertas_cristal: switch (n) {
+1:	! description (en la terraza)
+print "Dos [puertas_cristal] llevaban dentro.";
+new_line;
+return true;
+2:	! description (en la sala de lectura)
+print "Dos [puertas_cristal] llevaban a la terraza.";
+new_line;
+return true;
+3:	! before: ##Enter
+print "Entré en la casa.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+putas: switch (n) {
+1:	! description
+print "Sería machista, sin duda, pero no quitaba para que hiciesenn su trabajo con una profesionalidad fascinante: chapoteaban entre risas y se tiraban chorritos de agua unas a otras y exhibían como por casualidad unas tetas enormes y artificiales.";
+return true;
+2:	! description (~~described)
+print " Soy idiota, joder. No tenía que haberme movido de allí.";
+return true;
+3:	! before: ##TalkTo
+print "Estaban trabajando y no quería molestarlas.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
+SALA_LECTURA: switch (n) {
+1:	! description
+print "Una pequeña sala de lectura que comunicaba con el gran [@SALON, salón] y la [@TERRAZA, terraza] trasera, y con el resto de la planta baja a través de un [@PASILLO, corredor]. Tenía una de las paredes cubierta por completo por estanterías desde el suelo al techo. Llenas de libros. Lo que resultaba divertido ya que era arriesgado afirmar que alguno de los que estaban allí sentados hubiera leido un libro en los últimos veinte años. Desde aquellos de Teo, en la escuela.";
+return true;
+2:	! description (~~visited)
+print " La cara de un par de ellos empujaba a preguntarse si sabrían leer siquiera.";
+return true;
+3:	! before: ##Listen (~~listen_flag)
+print "Cogí este trozo suelto de conversación:
+^^
+---Vaya pila de libros que tiene el tío, ¿eh?
+^^
+---Bah. Los libros pal que los escribe y pa su puta madre.
+^^
+No quise enterarme de más.";
+new_line;
+return true;
+4:	! before: ##Listen
+print "Había varios críticos literarios charlando en la habitación, pero prefería no escucharles. No fuese que la gilipollez se pegase.";
+new_line;
+return true;
+}
+
+!!------------------------------------------------------------------------------
 SALON: switch (n) {
 1:	! description
-print "Grande y abarrotado y bullicioso. Había un puñado de sillones que estaban ocupados, dos grandes sofás ocupados, y unas cuantas sillas plegables repartidas aquí y allá. Ocupadas. Resultaba igualmente difícil encontrar un sitio libre en el resto del salón. Había gente por todas partes. Bailando, o en mitad de un ataque epiléptico. Era imposible saberlo con seguridad. Tenías que luchar para abrirte paso desde la [@SALA_LECTURA, sala de lectura] hasta la barra.";
+print "Grande y abarrotado y bullicioso. En el salón había [un dj] encargado de poner música y [un camarero] encargado de poner bebida. Y [los invitados_salon] bailaban y se emborrachaban. Por cómo bailaban era evidente que [el camarero] estaba haciendo mejor su trabajo que el [@dj, pinchadiscos]. Tuve que pelearme para conseguir llegar desde la puerta a la [@SALA_LECTURA, sala de lectura] hasta la barra.";
+new_line;
+return true;
+2:	! description
+print "Grande y abarrotado y bullicioso. Había [un dj] encargado de poner música y [un camarero] encargado de poner bebida. Y [los invitados_salon] bailaban y se emborrachaban. Por cómo bailaban era evidente que [el camarero] estaba haciendo mejor su trabajo que el [@dj, pinchadiscos]. Iba a tener que pelearme de nuevo para llegar desde la barra hasta la puerta a la [@SALA_LECTURA, sala de lectura].";
 new_line;
 return true;
 }
@@ -370,21 +482,35 @@ TERRAZA: switch (n) {
 1:	! initial (1)
 print "OCHO HORAS ANTES.
 ^^
-Alguien vomitaba alcohol y comida a medio digerir en el jardín, apoyado al tronco de un árbol. Era una fiesta en casa de José Freire, y en esas fiestas siempre había montones de gente. Gente que trabajaba para él, gente que quería hacer algún trabajo con él, y otros muchos que no tengo ni idea de dónde salían y que simplemente parecían interesados en la comida, la bebida y la droga gratis. Al que vomitaba no le había visto en mi vida. Debía ser de esos últimos.
+Alguien vomitaba alcohol y comida a medio digerir en el jardín, apoyado al tronco de un árbol. Estaba en una fiesta en casa de José Freire, y en esas fiestas siempre había montones de gente. Gente que trabajaba para él, gente que quería hacer algún trabajo con él, y otros muchos que no tengo ni idea de dónde salían y que simplemente parecían interesados en la comida, la bebida y la droga gratis. Al que vomitaba no le había visto en mi vida. Debía ser de esos últimos.
 ^^
-Yo, por supuesto, era de los que trabajaban para él. Bueno, para gente que trabajaba para él. Es lo mismo. Y estaba allí porque se suponía que debía estar allí, pero no me lo estaba pasando bien en absoluto.
+Yo, por supuesto, era de los que trabajaban para él. Bueno, para gente que trabajaba para él, que viene a ser lo mismo. Y estaba allí porque se suponía que debía estar allí, pero no me lo estaba pasando bien en absoluto. Al llegar había cogido una bebida, casi por obligación, porque en alguna parte está escrito que eso es lo que tienes que hacer cuando vas a una fiesta. No estoy seguro de si llegué a darle un sorbo antes de dejármela olvidada en alguna parte.
 ^^
-Al llegar había cogido una bebida, casi por obligación, porque en fin, eso es lo que se supone que tienes que hacer en una fiesta. No recuerdo si llegué a darle un sorbo antes de perderla en alguna parte. En aquel momento simplemente trataba de matar el tiempo hasta que pudiese largarme de allí. El plan inicial era sentarme al sol y entretenerme observando a las tías que se bañaban en bikini en la piscina ---todas estaban improbablemente buenas---. Sin embargo, ¡oh, sorpresa! aquello no había salido bien. En vez de a las tías, al que había acabado mirando era a mister vomitona.
+En aquel momento simplemente trataba de matar el tiempo hasta que pudiese largarme de allí, sentado solo en una silla de la terraza. El plan inicial era disfrutar del sol y del panorama de tías bañándose en bikini en la piscina ---todas estaban improbablemente buenas---. Sin embargo, ¡oh, sorpresa! aquello no había salido bien. En vez de a las tías, al que había acabado mirando era a mister vomitona.
 ^^
-Me gustaría saber cuándo coño se había convertido en costumbre eso de que nada me salga bien.";
+Me pregunto cuándo coño se había convertido en costumbre eso de que nada me salga bien.";
 new_line;
 return true;
 2:	! initial (2)
-print "OCHO HORAS ANTES.";
+print "OCHO HORAS ANTES.
+^^
+---Aquí tiene, señor.
+^^
+El camarero me puso la copa delante y se olvidó de mi para atender a alguno de los demás invitados, sin esperar a que le pagase. Era gratis. Y la barra estaba abarrotada, claro. Estaba en una fiesta en casa de José Freire, y en esas fiestas siempre había montones de gente. Gente que trabajaba para él, gente que quería hacer algún trabajo con él, y otros muchos que no tengo ni idea de dónde salían y que simplemente parecían interesados en la comida, la bebida y la droga gratis. Ese camarero iba a estar muy ocupado.
+^^
+Yo, por supuesto, era de los que trabajaban para él. Bueno, para gente que trabajaba para él, que viene a ser lo mismo. Y estaba allí porque se suponía que debía estar allí, pero no me lo estaba pasando bien en absoluto. Había pedido esa copa casi por obligación, porque en alguna parte está escrito que eso es lo que tienes que hacer cuando vas a una fiesta. Le di un sorbo. Y esa es la última vez que recuerdo tenerla en la mano. No sé dónde demonios la dejaría después.
+^^
+En aquel momento simplemente trataba de matar el tiempo hasta que pudiese largarme de allí, sentado solo en una silla de la terraza. El plan inicial era disfrutar del solo y del panorama de tías bañándose en bikini en la piscina ---todas estaban improbablemente buenas---. Sin embargo, ¡oh, sorpresa! aquello no había salido bien. En vez de en las tías, en los que no podía dejar de fijarme era en los payasos que rondaban borrachos a mi alrededor. El camarero se estaba ganando el sueldo.
+^^
+Me pregunto cuándo coño se había convertido en costumbre eso de que nada me salga bien.";
 new_line;
 return true;
 3:	! description
-print "[Unas puertas_cristal] se abrían a aquella terraza llena de gente, en la parte de atrás de la enorme casa de Freire. Muchos eran habituales de esas fiestas a los que conocía de vista. Ninguno era amigo mío. Ni siquiera los del pequeño grupo reunido alrededor de una de las mesas junto a la piscina, entre los que estaban los tíos con los que trabajaba. Por lo que a mi respectaba, hubiese preferido con mucho no conocer a aquellos tipos y sí a cualquiera de las fulanas que chapoteaban en el agua.";
+print "[Unas puertas_cristal] se abrían a aquella terraza llena de [@invitados_terraza, gente], en la parte de atrás de la enorme casa de Freire. Muchos eran habituales de esas fiestas a los que conocía de vista. Ninguno era amigo mío. Ni siquiera los del pequeño grupo reunido alrededor de una de las mesas junto a la piscina, entre los que estaban los tíos con los que trabajaba. Por lo que a mi respectaba, hubiese preferido con mucho no conocer a aquellos tipos y sí a cualquiera de las [@putas, fulanas] que chapoteaban en el agua.";
+new_line;
+return true;
+4:	! before: ##Go west
+print "Entré en la casa.";
 new_line;
 return true;
 }

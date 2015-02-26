@@ -1,4 +1,4 @@
-!% -~S~D
+!% -SD
 !% +language_name=Spanish
 !% $MAX_LABELS=2000
 !% $MAX_ZCODE_SIZE=45000
@@ -76,7 +76,7 @@ Constant Headline
 "Una ficción pulp interactiva, Copyright (C) 2015^
 Por J. Francisco Martín";
 
-Constant PART_ONE;
+Constant PART_TWO;
 !Constant COMPLETE_VERSION;
 
 #Ifdef PART_ONE;				! Primera Parte

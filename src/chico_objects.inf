@@ -535,7 +535,13 @@ Outdoors	TERRAZA "Terraza"
 		description [;
 			return O__M(self, 3);
 		],
-		w_to	SALA_LECTURA,
+		w_to [;
+			if (~~keep_silent) {
+				O__M(self, 4);
+				new_line;
+			}
+			return SALA_LECTURA;
+		],
 		in_to [; return self.w_to(); ],
  has	female;
 
@@ -549,12 +555,54 @@ Object	-> Chico "chico"
  has	animate male proper;
 #Endif; ! PART_TWO;
 
-Furniture	-> puertas_cristal "puertas de cristal"
- with	name_f	'entrada' 'puerta' 'salida',
+Atrezzo	-> invitados_terraza "invitados"
+ with	name_f	'gente',
+		name_fp	'personas',
+		name_mp	'invitados',
+		gender	G_MASCULINO + G_PLURAL,
+		description [; return O__M(self, 1); ],
+ has	male pluralname;
+
+Atrezzo	-> piscina "piscina"
+ with	name_f	'piscina',
+		gender	G_FEMENINO,
+		description [; return O__M(self, 1); ],
+ has	female;
+
+Atrezzo	-> putas "putas"
+ with	name_f	'fulana' 'puta',
+		name_fp	'fulanas' 'putas',
+		gender	G_FEMENINO + G_PLURAL,
+		description [;
+			O__M(self, 1);
+			if (self hasnt described) O__M(self, 2);
+			new_line;
+			return true;
+		],
+		before [;
+			TalkTo:
+				return O__M(self, 3);
+		],
+ has	female pluralname;
+
+Atrezzo	puertas_cristal "puertas de cristal"
+ with	found_in TERRAZA SALA_LECTURA,
+		name_f	'entrada' 'puerta' 'salida',
 		name_fp	'puertas',
 		gender	G_FEMENINO + G_PLURAL,
 		adjectives 'cristal',
- has	female pluralname;
+		description [;
+			if (self in TERRAZA) return O__M(self, 1);
+			else return O__M(self, 2);
+		],
+		before [;
+			DefaultAction:
+				<<Enter self>>;
+			Enter:
+				if (self in TERRAZA) <<Go w_obj>>;
+				else <<Go e_obj>>;
+		],
+ has	door female pluralname;
 
 
 !!==============================================================================
@@ -572,11 +620,54 @@ Indoors	SALA_LECTURA "Sala de lectura"
 			new_line;
 			return true;
 		],
+		before [;
+			Listen:
+				if (noun == self or nothing && ~~self.listen_flag) {
+					self.listen_flag = true;
+					return O__M(self, 3);
+				}
+				if (noun == self or nothing) {
+					return O__M(self, 4);
+				}
+		],
+		!! Indica si el jugador a introducido la acción ##Listen:
+		listen_flag false,
 		n_to	PASILLO,
 		e_to	TERRAZA,
 		w_to	SALON,
 		out_to [; return self.e_to(); ],
  has	female;
+
+Atrezzo	-> estanterias "estanterías"
+ with	name_f	'balda' 'estanteria',
+		name_fp	'baldas' 'estanterias',
+		name_m	'estante' 'libro',
+		name_mp	'estantes' 'libros',
+		gender	G_FEMENINO + G_PLURAL,
+		description [; return O__M(self, 1); ],
+ has	female pluralname;
+
+Atrezzo	-> invitados_sala_lectura "invitados"
+ with	name_f	'gente',
+		name_fp	'personas',
+		name_mp	'invitados',
+		gender	G_MASCULINO + G_PLURAL,
+		description [;
+			if (invitados_terraza has described) return O__M(self, 1);
+			else return O__M(invitados_terraza, 1);
+		],
+		before [;
+			Listen:
+				<<Listen>>;
+			TalkTo:
+				if (self.talkTo_flag) return O__M(self, 2);
+				else {
+					self.talkTo_flag = true;
+					return O__M(self, 3);
+				}
+		],
+		talkTo_flag false,
+ has	male pluralname;
 
 
 !!==============================================================================
@@ -630,9 +721,35 @@ Indoors	SALON "Salón"
 		name_m	'cuarto' 'salon',
 		gender	G_MASCULINO,
 		description [;
+			if (self hasnt general) return O__M(self, 2);
+			give self ~general;
 			return O__M(self, 1);
 		],
+		after [; Go: if (noun == w_obj) give self general; ],
 		e_to	SALA_LECTURA,
  has	male;
+
+Atrezzo	-> camarero "camarero"
+ with	name_f	'gente' 'persona',
+		name_m	'camarero' 'hombre',
+		gender	G_MASCULINO,
+		description [; return O__M(self, 1); ],
+ has	male;
+
+Atrezzo	-> dj "dj"
+ with	name_f	'gente' 'persona',
+		name_m	'dj' 'disc' 'discjockey' 'jockey' 'pinchadiscos',
+		gender	G_MASCULINO,
+		description [; return O__M(self, 1); ],
+ has	male;
+
+Atrezzo	-> invitados_salon "invitados"
+ with	name_f	'gente' 'persona',
+		name_fp	'personas',
+		name_m	'invitado',
+		name_mp	'invitados',
+		gender	G_MASCULINO + G_PLURAL,
+		description [; return O__M(self, 1); ],
+ has	male pluralname;
 
 
