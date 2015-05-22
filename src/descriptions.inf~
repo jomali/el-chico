@@ -103,15 +103,7 @@ return true;
 !!------------------------------------------------------------------------------
 camarero: switch (n) {
 1:	! description
-print "[Un camarero] servía bebidas gratis desde detrás de la barra. Gratis. Y adivina qué... exacto. La barra estaba hasta los cojones.";
-new_line;
-return true;
-2:
-print "Al llegar le había pedido una bebida, casi por obligación. Está escrito en alguna parte que eso es lo que tienes que hacer cuando vas a una fiesta. No estoy seguro de si llegué a darle un sorbo antes de dejármela olvidada en alguna parte.";
-new_line;
-return true;
-3:
-print "No tenía ganas de pasarme tres horas en la barra esperando a que me atendiera para pedir otra copa que en realidad no me apetecía.";
+print "[Un camarero] servía bebidas desde detrás de la barra. Bebidas gratis. ¿Y a que no sabes qué?... exacto; la barra estaba abarrotada.";
 new_line;
 return true;
 }
