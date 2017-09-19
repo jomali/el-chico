@@ -23,7 +23,7 @@ Object GWin_Core "GWindows Core"
       init_reason INIT_REASON_SYSSTART;
 Class GWin_Module;
 
-!! XXX - v1.3
+!! XXX - v1.2x
 ![ AnnounceModule x;
 ! print (name) x;
 ! if (x provides number)
@@ -43,7 +43,7 @@ Class GWin_Module;
  give GWin_Core general;
 ];
 
-!! XXX - v1.3
+!! XXX - v1.2x
 ![ Banner i j;
 !   InstallCore();
 !   if (Story ~= 0)

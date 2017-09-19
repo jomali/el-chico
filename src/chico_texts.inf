@@ -1,5 +1,46 @@
 
 
+!!==============================================================================
+!!
+!!	EL CHICO
+!!	Definición de mensajes de los objetos
+!!
+!!==============================================================================
+!!
+!!	Archivo:		chico_texts.inf
+!!	Autor(es):		J. Francisco Martín <jfm.lisaso@gmail.com>
+!!	Idioma:			ES (Castellano)
+!!	Sistema:		Inform-INFSP 6
+!!	Plataforma:		Máquina-Z / GLULX
+!!	Versión:		0.0
+!!	Fecha:			2017/09/18
+!!
+!!------------------------------------------------------------------------------
+!!
+!!	# HISTORIAL DE VERSIONES
+!!
+!!	0.0: 2015/01/29 Inicio del desarrollo.
+!!
+!!------------------------------------------------------------------------------
+!!
+!!	This program is free software; you can redistribute it and/or modify
+!!	it under the terms of the GNU General Public License as published by
+!!	the Free Software Foundation; either version 2 of the License, or
+!!	(at your option) any later version.
+!!
+!!	This program is distributed in the hope that it will be useful,
+!!	but WITHOUT ANY WARRANTY; without even the implied warranty of
+!!	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+!!	GNU General Public License for more details.
+!!
+!!	You should have received a copy of the GNU General Public License along
+!!	with this program; if not, write to the Free Software Foundation, Inc.,
+!!	51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. Or see
+!!	<http://www.gnu.org/licenses/>.
+!!
+!!	Copyright (C) 2017, J. Francisco Martín
+!!
+!!------------------------------------------------------------------------------
 
 
 [ LanguageOM obj n
@@ -7,42 +48,53 @@
 	switch (obj) {
 
 
+!!==============================================================================
+!!	#A
+!!------------------------------------------------------------------------------
 
+!!------------------------------------------------------------------------------
 Alberto_1: switch (n) {
 1:	! description
-print "", (name) Alberto_1, " está fuera del alcance de los faros, así que es poco más que una silueta silenciosa ahí plantada de pie. El extremo incandescente de su cigarrillo brilla en la oscuridad. Como una luciérnaga.";
+print "[Alberto_1] está fuera del alcance de los faros, así que es poco más que una silueta silenciosa ahí plantada de pie. El extremo incandescente de su cigarrillo brilla en la oscuridad. Como una luciérnaga.";
 new_line;
 return true;
 2:	! before: ##TalkTo
-print "Este pasa de hablar con nadie. Se limita a fumar en silencio, como si nada de esto fuese con él. Siempre es así el tío. Ya puede caerse el cielo que a ", (name) Alberto_1, " parece sudársela todo completamente.";
+print "Este pasa de hablar con nadie. Se limita a fumar en silencio, como si nada de esto fuese con él. Siempre es así el tío. Ya puede caerse el cielo que a [Alberto_1] parece sudársela todo completamente.";
 new_line;
 return true;
 3:	! before: ##Attack
-print "He visto a ese hijoputa pelear. La semana pasada le reventó la cara a un mazas de gimnasio que le tiró los tejos en un bar. Sé muy bien qué peleas puedo empezar y cuáles no. Esta: ", (strong) "NO", ".";
+print "He visto a ese hijoputa pelear. La semana pasada le reventó la cara a un mazas de gimnasio que le tiró los tejos en un bar. Sé muy bien qué peleas puedo empezar y cuáles no. Esta: **NO**.";
 new_line;
 return true;
 }
 
+!!==============================================================================
+!!	#B
+!!------------------------------------------------------------------------------
 
+!!------------------------------------------------------------------------------
 BANNO: switch (n) {
 1:	! description
-print "Otro puñado más de la historia esa de decoración minimalista del ";
-CreateLink(PASILLO, "pasillo", 0);
-print ". Muebles negros de líneas rectas y angulosas entremezclados con porcelanas blancas de forma ovalada e irregular para el retrete y la pila del lavamanos. Aquello casi podía pasar antes por una nave espacial que por un baño. Si no fuese por la peste a mierda. Algún benefactor preocupado por la posible confusión en cuanto a su funcionalidad se había encargado de dejar claro que no se trataba de una nave espacial.
+print "Otro puñado más de la historia esa de decoración minimalista del [PASILLO](pasillo). Muebles negros de líneas rectas y angulosas entremezclados con porcelanas blancas de forma ovalada e irregular para el retrete y la pila del lavamanos. Aquello casi podía pasar antes por una nave espacial que por un baño. Si no fuese por la peste a mierda. Algún benefactor preocupado por la posible confusión en cuanto a su funcionalidad se había encargado de dejar claro que no se trataba de una nave espacial.
 ^^
 Completando la decoración había unos cuantos vasos más o menos vacíos, y junto al lavamanos un espejito manchado con restos de polvo.";
 new_line;
 return true;
 }
 
+!!------------------------------------------------------------------------------
 bolsas: switch (n) {
 1:	! description
-print "Un rollo de ", (name) bolsas, " negras.";
+print "Un rollo de [bolsas] negras.";
 new_line;
 return true;
 }
 
+!!==============================================================================
+!!	#C
+!!------------------------------------------------------------------------------
 
+!!------------------------------------------------------------------------------
 cadaver_Yamileth: switch (n) {
 1:	! description
 print "Era una mujer joven. Ahora... ahora es un cadáver joven. Un cadáver joven cubierto de sangre y trocitos de cerebro. Me dijo su nombre. Yamileth. Tenía un nombre bonito.";
@@ -59,14 +111,15 @@ print "El aire es gélido y huele a pota.";
 new_line;
 return true;
 4:	! before: ##Cut
-print "Necesito ", (the) sierra, " para hacerlo.";
+print "Necesito [la sierra] para hacerlo.";
 new_line;
 return true;
 }
 
+!!------------------------------------------------------------------------------
 camarero: switch (n) {
 1:	! description
-print "", (A) camarero, " servía bebidas gratis desde detrás de la barra. Gratis. Y adivina qué... exacto. La barra estaba hasta los cojones.";
+print "[Un camarero] servía bebidas gratis desde detrás de la barra. Gratis. Y adivina qué... exacto. La barra estaba hasta los cojones.";
 new_line;
 return true;
 2:
@@ -79,11 +132,13 @@ new_line;
 return true;
 }
 
+!!------------------------------------------------------------------------------
 Chico: switch (n) {
 1:	! description
 return L__M(##Miscellany, 19);
 }
 
+!!------------------------------------------------------------------------------
 cielo_diurno: switch (n) {
 1:	! description
 print "El cielo estaba despejado y el sol calentaba. Incluso en Galicia salían uno o dos días así al año.";
@@ -91,6 +146,7 @@ new_line;
 return true;
 }
 
+!!------------------------------------------------------------------------------
 cielo_nocturno: switch (n) {
 1:	! description
 print "Una noche cerrada sin estrellas. Detrás de una loma se aprecia la anaranjada contaminación lumínica de Vigo.";
@@ -98,6 +154,7 @@ new_line;
 return true;
 }
 
+!!------------------------------------------------------------------------------
 coche_descampado: switch (n) {
 1:	! description
 print "El coche está parado, con las luces puestas para alumbrar el descampado.";
@@ -105,20 +162,20 @@ new_line;
 return true;
 }
 
+!!==============================================================================
+!!	#D
+!!------------------------------------------------------------------------------
 
+!!------------------------------------------------------------------------------
 DESCAMPADO_1: switch (n) {
 1:	! description (~~described)
-print "", (name) Mario_1, " regresa desde el maletero, se apoya contra el capó negro, y se me queda mirando, esperando a que empiece a hacer lo que me ha ordenado. El muy cabrón. Sé que el otro, ", (name) Alberto_1, ", no va a mover un músculo. Está ahí plantado, fumando tranquilamente como si nada de todo esto fuera con él. Y ella... ella es sólo un ";
-CreateLink(cadaver_Yamileth, "bulto", 0);
-print " en el suelo, con el largo pelo negro enmarañado y empapado en sangre. Tiene como unos grumos espesos y pegajosos en el pelo... ¡joder! tiene medio puto cerebro pulverizado y enredado entre el pelo... joder. Está claro que ella tampoco va a mover un músculo.
+print "[Mario_1] regresa desde el maletero, se apoya contra el capó negro, y se me queda mirando, esperando a que empiece a hacer lo que me ha ordenado. El muy cabrón. Sé que el otro, [Alberto_1], no va a mover un músculo. Está ahí plantado, fumando tranquilamente como si nada de todo esto fuera con él. Y ella... ella es sólo un [cadaver_Yamileth](bulto) en el suelo, con el largo pelo negro enmarañado y empapado en sangre. Tiene como unos grumos espesos y pegajosos en el pelo... ¡joder! tiene medio puto cerebro pulverizado y enredado entre el pelo... joder. Está claro que ella tampoco va a mover un músculo.
 ^^
 ---Vamos, chico. No tenemos toda la noche.";
 new_line;
 return true;
 2:	! description
-print "Bajo los faros ", (del) coche, " todo es o blanco o negro. ", (name) Mario_1, " mira ", (the) sierra, " impaciente, esperando a que cumpla la orden. El muy cabrón. Está claro que el otro, ", (name) Alberto_1, ", no va a mover un músculo. Está ahí plantado, fumando tranquilamente como si nada de todo esto fuera con él. Y ella... ella es sólo un ";
-CreateLink(cadaver_Yamileth, "bulto", 0);
-print " en el suelo, con el largo pelo negro enmarañado y empapado en sangre y cubierto de trocitos de cerebro... ella tampoco va a mover un músculo.";
+print "Bajo los faros [del coche] todo es o blanco o negro. [Mario_1] mira [la sierra] impaciente, esperando a que cumpla la orden. El muy cabrón. Está claro que el otro, [Alberto_1], no va a mover un músculo. Está ahí plantado, fumando tranquilamente como si nada de todo esto fuera con él. Y ella... ella es sólo un [cadaver_Yamileth](bulto) en el suelo, con el largo pelo negro enmarañado y empapado en sangre y cubierto de trocitos de cerebro... ella tampoco va a mover un músculo.";
 new_line;
 return true;
 3:	! before: ##Smell
@@ -135,6 +192,7 @@ new_line;
 return true;
 }
 
+!!------------------------------------------------------------------------------
 dj: switch (n) {
 1:	! description
 print "Aquel tipo parecía un chiste. Tenía los ojos desorbitados y la mandíbula desencajada. Y se agitaba con la música desde detrás de la mesa de mezclas y su portátil como si intentase desencajar también el resto del cuerpo.";
@@ -142,6 +200,7 @@ new_line;
 return true;
 }
 
+!!------------------------------------------------------------------------------
 DungeonMaster: switch (n) {
 1:	! Texto inicial: Primera Escena
 print "---¿Por qué tenemos que desmembrarla?
@@ -150,7 +209,7 @@ Ella es sólo un bulto en el suelo, recortado por los deslumbrantes faros del coc
 ^^
 ---Porque lo he dicho yo. ¿A ti qué cojones te pasa?
 ^^
-Saca algo del maletero y lo lanza hacia aquí. Cae a apenas un paso del cuerpo. ", (A) sierra, ". En la noche, las manchas que salpican la tierra a su alrededor parecen negras. Algo más aterriza junto a ", (the) sierra, " con un golpe. Esta vez es un rollo de bolsas de basura de plástico negras. Bajo los faros del coche todo es o blanco o negro.";
+Saca algo del maletero y lo lanza hacia aquí. Cae a apenas un paso del cuerpo. [Una sierra]. En la noche, las manchas que salpican la tierra a su alrededor parecen negras. Algo más aterriza junto a [la sierra] con un golpe. Esta vez es un rollo de bolsas de basura de plástico negras. Bajo los faros del coche todo es o blanco o negro.";
 new_line;
 return true;
 2:	! Texto inicial: Segunda Escena A
@@ -169,7 +228,11 @@ new_line;
 return true;
 }
 
+!!==============================================================================
+!!	#E
+!!------------------------------------------------------------------------------
 
+!!------------------------------------------------------------------------------
 estanterias: switch (n) {
 1:	! description
 print "Quizá Freire fuese un gran lector. O quizá no fuese más que una forma como cualquier otra de decorar la habitación. En cualquier caso tenía allí una gran colección de libros.";
@@ -177,34 +240,33 @@ new_line;
 return true;
 }
 
+!!==============================================================================
+!!	#F
+!!------------------------------------------------------------------------------
 
+!!==============================================================================
+!!	#G
+!!------------------------------------------------------------------------------
 
+!!------------------------------------------------------------------------------
 grupo: switch (n) {
 1:	! description
-print "De aquel grupo, al único que conocía desde hacía tiempo era ";
-CreateLink(grupo, "Berto", 0);
-print ". Le pillábamos porros en el barrio de vez en cuando, hace ya un montón de años. Fue él el que me ofreció empezar a hacer trabajos para Freire. A los demás los conocí después.";
+print "De aquel grupo, al único que conocía desde hacía tiempo era [grupo](Berto). Le pillábamos porros en el barrio de vez en cuando, hace ya un montón de años. Fue él el que me ofreció empezar a hacer trabajos para Freire. A los demás los conocí después.";
 new_line;
 return true;
 2:
 new_line;
-print "---¡Eh, chico! ---";
-CreateLink(grupo, "Mario", 0);
-print " seguía empeñado en que no pudiese disfrutar del sol y las tetas de silicona de la ", (name) piscina, ". ---¡Ven aquí!";
+print "---¡Eh, chico! ---[grupo](Mario) seguía empeñado en que no pudiese disfrutar del sol y las tetas de silicona de la [piscina]. ---¡Ven aquí!";
 new_line;
 return true;
 3:
 new_line;
-print "No tenía ni idea de qué demonios querría aquel tipo, pero el caso es que ";
-CreateLink(grupo, "Mario", 0);
-print " seguía haciendo gestos para que me acercase a ellos.";
+print "No tenía ni idea de qué demonios querría aquel tipo, pero el caso es que [grupo](Mario) seguía haciendo gestos para que me acercase a ellos.";
 new_line;
 return true;
 4:
 new_line;
-print "";
-CreateLink(grupo, "Mario", 0);
-print " voceó de nuevo. ---¿Es que estás sordo? Ven aquí.
+print "[grupo](Mario) voceó de nuevo. ---¿Es que estás sordo? Ven aquí.
 ^^
 Ese cabrón... Estaba claro que no iba a rendirse así que era mejor ir a ver qué demonios quería. ";
 return true;
@@ -339,16 +401,21 @@ new_line;
 return true;
 }
 
+!!==============================================================================
+!!	#H
+!!------------------------------------------------------------------------------
 
+!!==============================================================================
+!!	#I
+!!------------------------------------------------------------------------------
 
+!!------------------------------------------------------------------------------
 invitados: switch (n) {
 1:	! description 1
 print "Prácticamente todos tenían la mano pegada a un vaso de tubo lleno de cubitos de hielo que tintineaban cuando se movían. Aquello parecía una puta convención de virtuosos de las maracas.";
 return true;
 2:	! description 1 (location == TERRAZA)
-print " Salvo los tipos reunidos en ";
-CreateLink(grupo, "Mario", 0);
-print " junto a la piscina. Esos habían venido para asistir a su propia convención de hijos de puta.";
+print " Salvo los tipos reunidos en [grupo](Mario) junto a la piscina. Esos habían venido para asistir a su propia convención de hijos de puta.";
 return true;
 3:
 print "Confiaba en que si los dejaba en paz ellos me dejarían en paz a mi. De momento había funcionado.";
@@ -356,13 +423,10 @@ new_line;
 return true;
 }
 
+!!------------------------------------------------------------------------------
 invitados_sala_lectura: switch (n) {
 1:	! description
-print "Los que iban y venían del ";
-CreateLink(SALON, "salón", 0);
-print " a la ";
-CreateLink(TERRAZA, "terraza", 0);
-print " lo hacían agitando sus maracas de cristal y cubitos de hielo. A los premios Pulitzer sentados por allí, los hielos parecían haberles congelado el cerebro.";
+print "Los que iban y venían del [SALON](salón) a la [TERRAZA](terraza) lo hacían agitando sus maracas de cristal y cubitos de hielo. A los premios Pulitzer sentados por allí, los hielos parecían haberles congelado el cerebro.";
 new_line;
 return true;
 2:	! before: ##TalkTo
@@ -373,6 +437,7 @@ new_line;
 return true;
 }
 
+!!------------------------------------------------------------------------------
 invitados_salon: switch (n) {
 1:	! description
 print "A esas alturas, los que bailaban lo hacían mucho peor que al principio de la tarde. Y había una muchedumbre acodada en la barra dispuesta a bailar aún peor en unos momentos.";
@@ -383,9 +448,19 @@ print "Confiaba en que si los dejaba en paz, ellos me dejarían en paz a mi. De m
 }
 
 
+!!==============================================================================
+!!	#J
+!!------------------------------------------------------------------------------
 
+!!==============================================================================
+!!	#K
+!!------------------------------------------------------------------------------
 
+!!==============================================================================
+!!	#L
+!!------------------------------------------------------------------------------
 
+!!------------------------------------------------------------------------------
 LIMBO: switch (n) {
 1:	! description
 print "Más allá de la barrera casi insuperable que separa la realidad de todo lo demás. Un lugar etéreo, donde la vida, la materia y la vitalidad no son necesariamente constantes; un lugar donde el tiempo y el espacio no existen tal y como los capta nuestro ser despierto...";
@@ -394,7 +469,11 @@ new_line;
 return true;
 }
 
+!!==============================================================================
+!!	#M
+!!------------------------------------------------------------------------------
 
+!!------------------------------------------------------------------------------
 Mario_1: switch (n) {
 1:	! description
 print "Un hijo de puta con aires de gángster de película. Zapatos negros, traje negro, camisa blanca manchada de sangre negra, pistola negra. Una pistola de verdad. Loco hijo de puta.";
@@ -411,7 +490,7 @@ return true;
 4:	! angry: 2
 print "Veo el movimiento de su mano demasiado tarde. Para cuando quiero reaccionar tengo ya la cara cruzada de un revés con la mano con la que empuña la pistola. El muy cabrón.
 ^^
----No voy a volver a repetirlo. O coges esa ", (name) sierra, " y empiezas a cortarla en cachitos o te meto una bala en esa cara de gilipollas que tienes. Espabila, chico.";
+---No voy a volver a repetirlo. O coges esa [sierra] y empiezas a cortarla en cachitos o te meto una bala en esa cara de gilipollas que tienes. Espabila, chico.";
 new_line;
 return true;
 5:	! angry: 3
@@ -438,7 +517,7 @@ print "^^Dudo.";
 new_line;
 return true;
 2:	! angry: 0
-print "", (name) Mario_1, " mira ", (the) sierra, " impaciente, esperando a que cumpla la orden.";
+print "[Mario_1] mira [la sierra] impaciente, esperando a que cumpla la orden.";
 new_line;
 return true;
 3:	! angry: 1
@@ -479,9 +558,7 @@ return true;
 
 cm1_op04: switch (n) {
 1:
-print "Que estás loco. Que eres un puto psicópata enfermo. Que ojalá fueses tú el ";
-CreateLink(cadaver_Yamileth, "cadáver", 0);
-print " tirado en el suelo con medio puto cerebro esparcido por todas partes...
+print "Que estás loco. Que eres un puto psicópata enfermo. Que ojalá fueses tú el [cadaver_Yamileth](cadáver) tirado en el suelo con medio puto cerebro esparcido por todas partes...
 ^^
 ---Nada.
 ^^
@@ -513,9 +590,7 @@ Otra patada, otra punzada de dolor en el costado. ---Por ser un puto montón de m
 ^^
 ---...por... por ser un puto montón... de mierda.
 ^^
----¡Claro, hombre! Si me lo pides con tanta educación te perdono. Ahora levántate y ponte a cortar a esa ";
-CreateLink(cadaver_Yamileth, "tiraflechas", 0);
-print " de una puta vez.
+---¡Claro, hombre! Si me lo pides con tanta educación te perdono. Ahora levántate y ponte a cortar a esa [cadaver_Yamileth](tiraflechas) de una puta vez.
 ^^
 Cabrón enfermo.";
 new_line;
@@ -535,21 +610,25 @@ new_line;
 return true;
 }
 
+!!==============================================================================
+!!	#N
+!!------------------------------------------------------------------------------
 
+!!==============================================================================
+!!	#O
+!!------------------------------------------------------------------------------
 
+!!==============================================================================
+!!	#P
+!!------------------------------------------------------------------------------
 
+!!------------------------------------------------------------------------------
 PASILLO: switch (n) {
 1:	! description
-print "El pasillo no era más que una extensión de la ";
-CreateLink(SALA_LECTURA, "sala de lectura", 0);
-print " sin nada interesante. Paredes blancas sin adornos. Alguna de esas historias minimalistas que se han puesto de moda con Apple, supongo. Había una ";
-CreateLink(puerta_banno, "puerta", 0);
-print "";
+print "El pasillo no era más que una extensión de la [SALA_LECTURA](sala de lectura) sin nada interesante. Paredes blancas sin adornos. Alguna de esas historias minimalistas que se han puesto de moda con Apple, supongo. Había una [puerta_banno](puerta)";
 if (puerta_banno has open) { i = true; print " abierta"; }
 else print " cerrada";
-print " a un lado, con un cartelito improvisado en el que se leía @<<BAÑO@>>. Y otra ";
-CreateLink(puerta_despacho, "puerta", 0);
-print " en el extremo final del pasillo, ésta sin cartelitos,";
+print " a un lado, con un cartelito improvisado en el que se leía @<<BAÑO@>>. Y otra [puerta_despacho](puerta) en el extremo final del pasillo, ésta sin cartelitos,";
 if (puerta_despacho has open && i == true) print " abierta también.";
 else if (puerta_despacho has open && i == false) print " abierta.";
 else if (puerta_despacho hasnt open && i == true) print " cerrada.";
@@ -558,17 +637,19 @@ new_line;
 return true;
 }
 
+!!------------------------------------------------------------------------------
 puertas_cristal: switch (n) {
 1:	! description (en la terraza)
-print "Dos ", (name) puertas_cristal, " llevaban dentro.";
+print "Dos [puertas_cristal] llevaban dentro.";
 new_line;
 return true;
 2:	! description (en la sala de lectura)
-print "Dos ", (name) puertas_cristal, " llevaban a la terraza.";
+print "Dos [puertas_cristal] llevaban a la terraza.";
 new_line;
 return true;
 }
 
+!!------------------------------------------------------------------------------
 putas: switch (n) {
 1:	! description (~~described)
 print "Como era tradición en aquellas fiestas, la piscina estaba ocupada por unas cuántas mujeres cuyos bikinis parecían a punto de estallar por culpa de la tensión. Mi plan original al llegar a la terraza había sido tumbarme al sol y matar el tiempo disfrutando del espectáculo. Era un buen plan. Sin embargo ---¡oh, sorpresa!--- aquello no había salido bien. En vez de bikinis demasiado tirantes, al que había acabado mirando era al míster vomitona del jardín.
@@ -592,28 +673,28 @@ new_line;
 return true;
 }
 
+!!==============================================================================
+!!	#Q
+!!------------------------------------------------------------------------------
 
+!!==============================================================================
+!!	#R
+!!------------------------------------------------------------------------------
 
+!!==============================================================================
+!!	#S
+!!------------------------------------------------------------------------------
 
+!!------------------------------------------------------------------------------
 SALA_LECTURA: switch (n) {
 1:	! description
-print "Entre el ";
-CreateLink(SALON, "salón", 0);
-print " principal donde habían colocado la barra y la ";
-CreateLink(TERRAZA, "terraza", 0);
-print " trasera estaba esta espaciosa sala de grandes cristaleras. Había unas altas estanterías llenas de libros y varias butacas desperdigadas en un rincón. Curiosamente, salvo por aquellos pocos que ocupaban las butacas, la sala de lectura esa era el sitio menos abarrotado de toda la casa. Conociendo el perfil de los invitados";
+print "Entre el [SALON](salón) principal donde habían colocado la barra y la [TERRAZA](terraza) trasera estaba esta espaciosa sala de grandes cristaleras. Había unas altas estanterías llenas de libros y varias butacas desperdigadas en un rincón. Curiosamente, salvo por aquellos pocos que ocupaban las butacas, la sala de lectura esa era el sitio menos abarrotado de toda la casa. Conociendo el perfil de los invitados";
 if (SALA_LECTURA hasnt visited) {
 print " ---sería arriesgado asegurar que la mitad de ellos hubiese leído un libro en los últimos veinte años, desde aquellos de Teo en la escuela. Qué coño, la cara de alguno te hacía preguntarte si sabría leer siquiera---";
 }
 print ", probablemente la presencia de los libros los estuviese ahuyentando de allí.
 ^^
-Además de las puertas al ";
-CreateLink(SALON, "salón", 0);
-print " y a la ";
-CreateLink(TERRAZA, "terraza", 0);
-print ", la habitación estaba comunicada con un ";
-CreateLink(PASILLO, "corredor", 0);
-print " que conducía al resto de la planta baja.";
+Además de las puertas al [SALON](salón) y a la [TERRAZA](terraza), la habitación estaba comunicada con un [PASILLO](corredor) que conducía al resto de la planta baja.";
 new_line;
 return true;
 2:	! before: ##Go (e_obj)
@@ -622,34 +703,30 @@ new_line;
 return true;
 }
 
+!!------------------------------------------------------------------------------
 SALON: switch (n) {
 1:	! description
-print "Aquello era un caos de cuerpos, luces de colorines y música latina a todo volumen. Junto a la puerta a la ";
-CreateLink(SALA_LECTURA, "sala de lectura", 0);
-print " habían puesto una plataforma con un dj encargado de pinchar el ruido ese que estaba sonando, y habían puesto también una barra con bebida al fondo del salón para que cualquiera se pudiese servir libremente. Los invitados, por su parte, bailaban y se emborrachaban.";
+print "Aquello era un caos de cuerpos, luces de colorines y música latina a todo volumen. Junto a la puerta a la [SALA_LECTURA](sala de lectura) habían puesto una plataforma con un dj encargado de pinchar el ruido ese que estaba sonando, y habían puesto también una barra con bebida al fondo del salón para que cualquiera se pudiese servir libremente. Los invitados, por su parte, bailaban y se emborrachaban.";
 new_line;
 return true;
 2:	! description
-print "Grande y abarrotado y bullicioso. Había un dj encargado de poner música y un camarero encargado de poner bebida. Y  ", (the) invitados_salon, " bailaban y se emborrachaban. A juzgar por cómo bailaban, era evidente que ", (the) camarero, " estaba haciendo mejor su trabajo que el ";
-CreateLink(dj, "pinchadiscos", 0);
-print ". Iba a tener que luchar de nuevo para abrirme paso desde la barra hasta la puerta a la ";
-CreateLink(SALA_LECTURA, "sala de lectura", 0);
-print ".";
+print "Grande y abarrotado y bullicioso. Había un dj encargado de poner música y un camarero encargado de poner bebida. Y  [los invitados_salon] bailaban y se emborrachaban. A juzgar por cómo bailaban, era evidente que [el camarero] estaba haciendo mejor su trabajo que el [dj](pinchadiscos). Iba a tener que luchar de nuevo para abrirme paso desde la barra hasta la puerta a la [SALA_LECTURA](sala de lectura).";
 new_line;
 return true;
 }
 
+!!------------------------------------------------------------------------------
 sierra: switch (n) {
 1:	! description (~described)
-print "", (name) Mario_1, " es un puto psicópata. Hay una película, Saw. La ha visto todo el mundo. Sale un psicópata en la peli, con una máscara de payaso o algo así. Todo el mundo sabe de quién hablo. El payaso este encadena a un tipo del tobillo y le deja una pequeña sierra al alcance de la mano. Entonces el tipo intenta cortar el grillete con la sierra, pero es demasiado duro como para cortarlo con una sierra tan pequeña, así que la tiene que utilizar para cortarse el tobillo... ahá, los guionistas debían ser también unos psicópatas buenos. El mundo entero está lleno de ellos. Deberían hacer un club.
+print "[Mario_1] es un puto psicópata. Hay una película, Saw. La ha visto todo el mundo. Sale un psicópata en la peli, con una máscara de payaso o algo así. Todo el mundo sabe de quién hablo. El payaso este encadena a un tipo del tobillo y le deja una pequeña sierra al alcance de la mano. Entonces el tipo intenta cortar el grillete con la sierra, pero es demasiado duro como para cortarlo con una sierra tan pequeña, así que la tiene que utilizar para cortarse el tobillo... ahá, los guionistas debían ser también unos psicópatas buenos. El mundo entero está lleno de ellos. Deberían hacer un club.
 ^^
 ¿Cómo coño puedo estar pensando en una puta película ahora?
 ^^
-Esa ", (name) sierra, " es algo más grande que la que sale en Saw, creo. Tal vez con ella se podría cortar el grillete. Bueno, da igual. Aquí no hay grilletes.";
+Esa [sierra] es algo más grande que la que sale en Saw, creo. Tal vez con ella se podría cortar el grillete. Bueno, da igual. Aquí no hay grilletes.";
 new_line;
 return true;
 2:	! description
-print "", (The) sierra, " es algo más grande que la del payaso aquel de Saw. Tal vez con esta sierra sí se podría cortar aquel grillete que aparece en la peli. Aunque da igual. Aquí no hay ningún grillete.";
+print "[La sierra] es algo más grande que la del payaso aquel de Saw. Tal vez con esta sierra sí se podría cortar aquel grillete que aparece en la peli. Aunque da igual. Aquí no hay ningún grillete.";
 new_line;
 return true;
 3:	! before: Take
@@ -658,29 +735,27 @@ new_line;
 return true;
 }
 
+!!==============================================================================
+!!	#T
+!!------------------------------------------------------------------------------
 
+!!------------------------------------------------------------------------------
 TERRAZA: switch (n) {
 1:	! description
-print "", (A) puertas_cristal, " se abrían a aquella terraza llena de gente, en la parte de atrás de la enorme casa de Freire. Muchos de los que andaban por allí eran habituales a los que conocía de vista, aunque ninguno era amigo mío.";
+print "[Unas puertas_cristal] se abrían a aquella terraza llena de gente, en la parte de atrás de la enorme casa de Freire. Muchos de los que andaban por allí eran habituales a los que conocía de vista, aunque ninguno era amigo mío.";
 return true;
 2:	! description (~~visited)
-print " Tampoco los del pequeño ";
-CreateLink(grupo, "grupo", 0);
-print " reunido alrededor de una de las mesas junto a la ", (name) piscina, ", a unos treinta metros de mi tumbona, entre los que estaban los tíos con los que trabajaba.";
+print " Tampoco los del pequeño [grupo](grupo) reunido alrededor de una de las mesas junto a la [piscina], a unos treinta metros de mi tumbona, entre los que estaban los tíos con los que trabajaba.";
 return true;
 3:	! description
-print " Tampoco los del pequeño ";
-CreateLink(grupo, "grupo", 0);
-print " reunido alrededor de una de las mesas junto a la ", (name) piscina, ", entre los que estaban los tíos con los que trabajaba.";
+print " Tampoco los del pequeño [grupo](grupo) reunido alrededor de una de las mesas junto a la [piscina], entre los que estaban los tíos con los que trabajaba.";
 return true;
 4:	! description (visited)
 print " Por lo que a mí respectaba hubiese preferido mil veces no conocer a ninguno de ellos, ni siquiera de vista, y sí a cualquiera de las mujeres de atrezzo que chapoteaban en el agua. Pero el mundo no es un lugar feliz.";
 new_line;
 return true;
 5:	! description (~~visited)
-print "Justo en ese momento crucé la mirada con uno de aquellos tíos. ";
-CreateLink(grupo, "Mario", 0);
-print " me hizo un gesto para que me acercara a ellos. Para variar, al final no había tenido suerte e iba a tener que levantarme de mi tumbona. Joder.";
+print "Justo en ese momento crucé la mirada con uno de aquellos tíos. [grupo](Mario) me hizo un gesto para que me acercara a ellos. Para variar, al final no había tenido suerte e iba a tener que levantarme de mi tumbona. Joder.";
 new_line;
 return true;
 6:	! before: ##Go w_obj
@@ -697,6 +772,7 @@ new_line;
 return true;
 }
 
+!!------------------------------------------------------------------------------
 tumbona: switch (n) {
 1:	! description
 print "Con lo bien que había estado yo allí sentado hasta entonces viendo vomitar al personal. Joder.";
@@ -716,18 +792,46 @@ new_line;
 return true;
 }
 
+!print "OCHO HORAS ANTES.
+!^^
+!---Aquí tiene, señor.
+!^^
+!El camarero me puso la copa delante y se olvidó de mi para atender a alguno de los demás invitados, sin esperar a que le pagase. Era gratis. Y la barra estaba abarrotada, claro. Era una fiesta en casa de José Freire, y como era habitual en aquellas fiestas, había gente por todas partes. Gente que trabajaba para él, gente que quería hacer algún trabajo con él, y otros muchos que no tengo ni idea de dónde salían y que simplemente parecían interesados en la comida, la bebida y la droga gratis. Ese camarero iba a estar muy ocupado.
+!^^
+!Yo, por supuesto, era de los que trabajaban para él. Y estaba allí porque se suponía que debía estar allí, pero no me lo estaba pasando bien en absoluto. Había pedido esa bebida casi por obligación, porque en alguna parte está escrito que eso es lo que tienes que hacer cuando vas a una fiesta. Le di un sorbo. Y esa es la última vez que recuerdo tenerla en la mano antes de perderla en alguna parte. En aquel momento simplemente trataba de matar el tiempo hasta que pudiese largarme de allí, sentado solo en una silla de la terraza.";
 
+!!==============================================================================
+!!	#U
+!!------------------------------------------------------------------------------
 
+!!==============================================================================
+!!	#V
+!!------------------------------------------------------------------------------
 
+!!==============================================================================
+!!	#W
+!!------------------------------------------------------------------------------
 
+!!==============================================================================
+!!	#X
+!!------------------------------------------------------------------------------
 
+!!==============================================================================
+!!	#Y
+!!------------------------------------------------------------------------------
 
+!!==============================================================================
+!!	#Z
+!!------------------------------------------------------------------------------
 
 
 	}
 ];
 
 
+!!==============================================================================
+!!	Rutina para imprimir los mensajes de los objetos
+!!------------------------------------------------------------------------------
 
 [ O__M obj n x1;
 	if (n == 0) n = 1;

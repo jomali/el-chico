@@ -5,7 +5,6 @@ system_file;
 Constant GW_GCDEFS_H;
 Include "infglk";
 Replace DrawStatusLine;
-!! XXX - v1.3
+!! XXX - v1.2x
 !Replace Banner;
 endif;
-

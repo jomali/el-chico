@@ -3,8 +3,7 @@
 
   <> <> <> <> <> <> <> <> <> <> <> <> <> <> <> <> <> <> <> <> <> <> <> <>
 
- Distribucion DA-Gwindows v1.2*  /  Por: Eliuk Blau (DreamBytes Adventures)
-                                        J. Francisco Martín
+ Distribucion DA-Gwindows v1.2x  /	Por: Eliuk Blau (DreamBytes Adventures)
 ===========================================================================
 
 ---------------------------------------------------------------------------
@@ -15,10 +14,13 @@ LISTA DE CAMBIOS:
   <> Pueden verse los cambios efectuados en cada archivo buscando
      'NOTA DE ELIUK BLAU' luego del comentario de cabecera y tambien
      en los comentarios dentro del codigo concreto, encabezados por
-     el nombre "Eliuk".
+     el nombre "Eliuk". Además, se han introducido algunos cambios mínimos
+	 sobre la versión 1.2 original para evitar conflictos con diferentes
+	 implementaciones de la rutina Banner(). Estos cambios están marcados
+	 con la anotación XXX en los comentarios de código.
 
-  * Version 1.2* - Eliminación de la Banner(), porque puede entrar en 
-    (2014/01/21)   conflicto con otras implementaciones de la función. 
+  * Version 1.2x - Eliminación de la rutina Banner(), porque puede entrar  
+    (2014/01/21)   en conflicto con otras implementaciones de la función.
                    Archivos modificados: gcdefs.h, gcore.h
 
   * Version 1.2  - Actualizacion "tonta" :) No se actualiza realmente

@@ -12,45 +12,48 @@
 !!	Language:		ES (Castellano)
 !!	System:			Inform-INFSP 6
 !!	Platform:		Máquina-Z / GLULX
-!!	Version:		4.2
-!!	Released:		2014/08/12
+!!	Version:		4.4
+!!	Released:		2017/08/04
 !!
 !!------------------------------------------------------------------------------
 !!
 !!	# HISTORIAL DE VERSIONES
 !!
-!!	4.2: 2014/08/12	Añadida rutina get_status_window_width() al controlador del 
+!!	4.4: 2017/08/04	Revisión y formateo de comentarios de la extensión.
+!!	4.3: 2016/10/04	Añadidas funciones para obtener y establecer distancias
+!!					de las guías centrales del sistema de apuntado.
+!!	4.2: 2014/08/12	Añadida rutina get_status_window_width() al controlador del
 !!					sistema de apuntado.
-!!	4.1: 2014/07/28	Modificación del comportamiento del controlador para 
-!!					evitar interferencias con otros comportamientos que hagan 
+!!	4.1: 2014/07/28	Modificación del comportamiento del controlador para
+!!					evitar interferencias con otros comportamientos que hagan
 !!					uso del temporizador glk.
-!!	4.0: 2014/03/19	El objeto controlador ahora permite al usuario especificar 
-!!					diferentes parámetros, como la ventana en que imprimir la 
-!!					animación de apuntado y el tipo de movimiento de la 
+!!	4.0: 2014/03/19	El objeto controlador ahora permite al usuario especificar
+!!					diferentes parámetros, como la ventana en que imprimir la
+!!					animación de apuntado y el tipo de movimiento de la
 !!					retícula, por ejemplo.
 !!	3.1: 2014/02/06	Modo de depuración.
-!!	3.0: 2012/07/05	Versión preliminar de la rutina updateGridPosition_SHM() 
-!!					para mover la retícula con las ecuaciones del Movimiento 
+!!	3.0: 2012/07/05	Versión preliminar de la rutina updateGridPosition_SHM()
+!!					para mover la retícula con las ecuaciones del Movimiento
 !!					Armónico Simple (Simple Harmonic Motion). Ver NOTA #1.
-!!	2.0: 2012		Refactorización del código, correcciones a la lógica y 
+!!	2.0: 2012		Refactorización del código, correcciones a la lógica y
 !!					adición de comentarios.
 !!	1.0: 2012		Versión original de la librería.
 !!
 !!------------------------------------------------------------------------------
 !!
-!!	Copyright (c) 2012, 2014, J. Francisco Martín
+!!	Copyright (c) 2012, 2017, J. Francisco Martín
 !!
-!!	Este programa es software libre: usted puede redistribuirlo y/o 
-!!	modificarlo bajo los términos de la Licencia Pública General GNU 
-!!	publicada por la Fundación para el Software Libre, ya sea la versión 
+!!	Este programa es software libre: usted puede redistribuirlo y/o
+!!	modificarlo bajo los términos de la Licencia Pública General GNU
+!!	publicada por la Fundación para el Software Libre, ya sea la versión
 !!	3 de la Licencia, o (a su elección) cualquier versión posterior.
 !!
-!!	Este programa se distribuye con la esperanza de que sea útil, pero 
-!!	SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita MERCANTIL o 
-!!	de APTITUD PARA UN PROPÓSITO DETERMINADO. Consulte los detalles de 
+!!	Este programa se distribuye con la esperanza de que sea útil, pero
+!!	SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita MERCANTIL o
+!!	de APTITUD PARA UN PROPÓSITO DETERMINADO. Consulte los detalles de
 !!	la Licencia Pública General GNU para más información.
 !!
-!!	Debería haber recibido una copia de la Licencia Pública General GNU 
+!!	Debería haber recibido una copia de la Licencia Pública General GNU
 !!	junto a este programa. En caso contrario, consulte
 !!	<http://www.gnu.org/licenses/>.
 !!
@@ -58,11 +61,11 @@
 !!
 !!	# INSTRUCCIONES DE INSTALACIÓN
 !!
-!!	Para utilizar las funciones de tiempo real de la librería se debe incluir 
-!!	el siguiente punto de entrada glk en el código del relato interactivo (las 
+!!	Para utilizar las funciones de tiempo real de la librería se debe incluir
+!!	el siguiente punto de entrada glk en el código del relato interactivo (las
 !!	funciones de tiempo real funcionan únicamente en GLULX):
 !!
-!!		[ HandleGlkEvent ev; 
+!!		[ HandleGlkEvent ev;
 !!			if (ev-->0 == 1) ! evtype_Timer
 !!				 AimingManager.run();
 !!		];
@@ -80,56 +83,70 @@ Constant SIMPLE_HARMONIC_MOTION 2;
 
 !!==============================================================================
 !!	Objeto gestor del sistema de apuntado. Implementa la siguiente interfaz:
-!!	 *	get_delay_value(): return integer
-!!	 *	get_motion_type(): return integer
-!!	 *	get_status_window(): return status_window
-!!	 *	get_timer_frequency(): return integer
-!!	 *	run()
-!!	 *	set_delay_value(delay:integer)
-!!	 *	set_motion_type(motion_type:integer)
-!!	 *	set_status_window(status_win)
-!!	 *	set_timer_frequency(freq:integer)
-!!	 *	start(flag:boolean)
-!!	 *	stop(): return integer
+!!
+!!	 -	get_delay_value(): retorna entero
+!!	 -	get_is_distance(): retorna entero
+!!	 -	get_motion_type(): retorna entero
+!!	 -	get_status_window(): retorna status_window
+!!	 -	get_timer_frequency(): retorna entero
+!!	 -	run()
+!!	 -	set_delay_value(delay:entero)
+!!	 -	set_is_distance(d:entero))
+!!	 -	set_motion_type(motion_type:entero)
+!!	 -	set_status_window(status_win)
+!!	 -	set_timer_frequency(freq:entero)
+!!	 -	start(flag:boolean)
+!!	 -	stop(): retorna entero
 !!------------------------------------------------------------------------------
-
 #Ifdef TARGET_GLULX;
 Object	AimingManager "(Aiming Manager)"
  with	!!----------------------------------------------------------------------
-		!! Retorna la cantidad de milisegundos que se sigue mostrando la 
-		!! posición final de la retícula después de que el jugador haya 
+		!! Retorna la cantidad de milisegundos que se sigue mostrando la
+		!! posición final de la retícula después de que el jugador haya
 		!! detenido la animación:
 		!!
-		!!	@return integer
-		!!		milisegundos de espera tras detener la animación
+		!!	@returns {integer} Milisegundos de espera tras detener la animación
 		!!----------------------------------------------------------------------
 		get_delay_value [;
 			return self.delay_value;
 		],
 		!!----------------------------------------------------------------------
-		!! Retorna el tipo de movimiento de la animación establecido.
+		!! Retorna la distancia hasta el centro de la ventana de estado a la
+		!! que se imprimen las guías centrales (iron sights). El sistema
+		!! utiliza dos guías; una colocada a una distancia positiva (en el eje
+		!! x) y otra a una distancia negativa del centro de la ventana de
+		!! estado.
 		!!
-		!!	@return integer
-		!!		código del tipo de movimiento
+		!!	@returns {integer} Distancia del centro de la ventana de estado a la
+		!!		que se imprimen las guías centrales del sistema de apuntado
+		!!----------------------------------------------------------------------
+		get_is_distance [;
+			return self.is_distance;
+		],
+		!!----------------------------------------------------------------------
+		!! Retorna el tipo de movimiento de la animación establecido. Los
+		!! posibles valores son [1-2], asociados a los movimientos rectilíneo
+		!! uniforme y armónico simple respectivamente (este último no se usa).
+		!!
+		!!	@returns {integer} Código del tipo de movimiento [1-2]
 		!!----------------------------------------------------------------------
 		get_motion_type [;
 			return self.motion_type;
 		],
 		!!----------------------------------------------------------------------
-		!! Retorna la ventana de estado sobre la que se dibuja la animación de 
+		!! Retorna la ventana de estado sobre la que se dibuja la animación de
 		!! apuntado.
 		!!
-		!!	@return status_window
+		!!	@returns {Object} status_window
 		!!----------------------------------------------------------------------
 		get_status_window [;
 			return self.status_window;
 		],
 		!!----------------------------------------------------------------------
-		!! Retorna el ancho de la ventana de estado sobre la que se dibuja la 
+		!! Retorna el ancho de la ventana de estado sobre la que se dibuja la
 		!! animación de apuntado.
 		!!
-		!!	@return integer
-		!!		status_window_width
+		!!	@returns {integer} status_window_width
 		!!----------------------------------------------------------------------
 		get_status_window_width [;
 			glk($0025, self.status_window, gg_arguments, gg_arguments + 4);
@@ -137,18 +154,17 @@ Object	AimingManager "(Aiming Manager)"
 			return self.status_window_width;
 		],
 		!!----------------------------------------------------------------------
-		!! Retorna la frecuencia con la que el gestor activa el temporizador 
+		!! Retorna la frecuencia con la que el gestor activa el temporizador
 		!! glk (valor en milisegundos).
 		!!
-		!!	@return integer
-		!!		frecuencia (en milisegundos)
+		!!	@returns {integer} Frecuencia (en milisegundos)
 		!!----------------------------------------------------------------------
 		get_timer_frequency [;
 			return self.timer_frequency;
 		],
 		!!----------------------------------------------------------------------
-		!! Operación principal del controlador. Invocada en cada ciclo del 
-		!! temporizador glk. Imprime la animación de la retícula de apuntado y 
+		!! Operación principal del controlador. Invocada en cada ciclo del
+		!! temporizador glk. Imprime la animación de la retícula de apuntado y
 		!! su posición final una vez detenida por el jugador.
 		!!----------------------------------------------------------------------
 		run [;
@@ -159,8 +175,8 @@ Object	AimingManager "(Aiming Manager)"
 				glk(214, 0); ! glk_request_timer_events(0);
 				return false;
 			}
-			!! Se calcula el ancho de la ventana de estado (debe calcularse a 
-			!! cada evento del temporizador por si la ventana ha sido 
+			!! Se calcula el ancho de la ventana de estado (debe calcularse a
+			!! cada evento del temporizador por si la ventana ha sido
 			!! redimensionada por el jugador):
 			self.get_status_window_width();
 			!! Mientras la animación no sea detenida, se imprime:
@@ -168,7 +184,7 @@ Object	AimingManager "(Aiming Manager)"
 				self.update_grid_position(self.motion_type);
 				self.draw_aiming_line();
 			}
-			!! Tras ser detenida, la posición final de la retícula aún se 
+			!! Tras ser detenida, la posición final de la retícula aún se
 			!! muestra en la ventana de estado durante unos instantes:
 			else {
 				self.draw_aiming_line();
@@ -185,54 +201,64 @@ Object	AimingManager "(Aiming Manager)"
 		!!----------------------------------------------------------------------
 		!! Establece los milisegundos de espera tras detener la animación.
 		!!
-		!!	@param delay:integer
-		!!		milisegundos de espera tras detener la animación
+		!!	@param {integer} delay - Milisegundos de espera tras detener la
+		!!		animación
 		!!----------------------------------------------------------------------
 		set_delay_value [ delay;
 			self.delay_value = delay;
 		],
 		!!----------------------------------------------------------------------
+		!! Establece la distancia hasta el centro de la ventana de estado a la
+		!! que se imprimen las guías centrales. El valor pasado es absoluto y
+		!! será utilizado por las dos guías; en positivo y negativo
+		!! respectivamente.
+		!!
+		!!	@param {integer} distance - Distancia absoluta hasta el centro de
+		!!		la ventana de estado
+		!!----------------------------------------------------------------------
+		set_is_distance [ distance;
+			self.is_distance = distance;
+		],
+		!!----------------------------------------------------------------------
 		!! Establece el tipo de movimiento de la animación de apuntado.
 		!!
-		!!	@param type:integer
-		!!		código del tipo de movimiento
+		!!	@param {integer} type - Código del tipo de movimiento [1-2]
 		!!----------------------------------------------------------------------
 		set_motion_type [ type;
 			self.motion_type = type;
 		],
 		!!----------------------------------------------------------------------
-		!! Establece la ventana de estado sobre la que se dibuja la animación 
+		!! Establece la ventana de estado sobre la que se dibuja la animación
 		!! de apuntado.
 		!!
-		!!	@param status_win
-		!!		ventana de estado sobre la que dibujar la animación de apuntado
+		!!	@param {Object} status_win - Ventana de estado sobre la que dibujar
+		!!		la animación de apuntado
 		!!----------------------------------------------------------------------
 		set_status_window [ status_win;
 			self.status_window = status_win;
 		],
 		!!----------------------------------------------------------------------
-		!! Establece la frecuencia con la que el gestor activa el temporizador 
+		!! Establece la frecuencia con la que el gestor activa el temporizador
 		!! glk (valor en milisegundos).
 		!!
-		!!	@param freq:integer
-		!!		frecuencia (en milisegundos)
+		!!	@param {integer} freq - Frecuencia (en milisegundos)
 		!!----------------------------------------------------------------------
 		set_timer_frequency [ freq;
 			self.timer_frequency = freq;
 		],
 		!!----------------------------------------------------------------------
-		!! Inicia una operación de apuntado. Se encarga de inicializar los 
-		!! atributos del sistema y lanzar los eventos del temporizador glk. 
-		!! Puede invocarse con un parámetro opcional *flag*, que permite 
-		!! establecer el punto de inicio de la retícula en la animación de 
-		!! apuntado; si es falso la retícula comienza a moverse hacia la 
-		!! derecha desde el extremo izquierdo de la ventana de estado, en caso 
-		!! contrario, la retícula empieza desde el lugar y en el sentido que 
+		!! Inicia una operación de apuntado. Se encarga de inicializar los
+		!! atributos del sistema y lanzar los eventos del temporizador glk.
+		!! Puede invocarse con un parámetro opcional *flag*, que permite
+		!! establecer el punto de inicio de la retícula en la animación de
+		!! apuntado; si es falso la retícula comienza a moverse hacia la
+		!! derecha desde el extremo izquierdo de la ventana de estado, en caso
+		!! contrario, la retícula empieza desde el lugar y en el sentido que
 		!! tenía al detener la animación la última vez que se invocó el sistema.
 		!!
-		!!	@param flag:boolean (opcional)
-		!!		establece el punto de inicio y sentido del movimiento de la 
-		!!		retícula en la animación de apuntado
+		!!	@param {boolean} [flag=false] - Establece el punto de inicio y
+		!!		sentido del movimiento de la retícula en la animación de
+		!!		apuntado
 		!!----------------------------------------------------------------------
 		start [ flag;
 			!! Establece el punto de inicio y sentido del movimiento de la ret.:
@@ -240,7 +266,7 @@ Object	AimingManager "(Aiming Manager)"
 				self.grid_direction = 0;
 				self.grid_position = 0;
 			}
-			!! Se asegura que los otros atributos del gestor estén 
+			!! Se asegura que los otros atributos del gestor estén
 			!! correctamente inicializados:
 			self.counter = 0;
 			self.end_flag = false;
@@ -252,11 +278,11 @@ Object	AimingManager "(Aiming Manager)"
 		!!----------------------------------------------------------------------
 		!! Detiene la animación de apuntado y retorna el resultado.
 		!!
-		!!	@return result:int
-		!!		distancia entre el centro de la ventana de estado y el punto en 
-		!!		el que se detiene la retícula
+		!!	@returns {integer} Distancia entre el centro de la ventana de
+		!!		estado y el punto en el que se detiene la retícula
 		!!----------------------------------------------------------------------
-		stop [ result;
+		stop [
+			result;
 			self.end_flag = true;
 			result = self.grid_position + 1 - (self.status_window_width / 2);
 			if (result < 0) result = -result;
@@ -287,10 +313,12 @@ Object	AimingManager "(Aiming Manager)"
 			glk($002A, self.status_window);
 			!! Se imprimen las guías:
 			! window_move_cursor
-			glk($002B, self.status_window, (self.status_window_width/2)-3, 0);
+			glk($002B, self.status_window,
+				(self.status_window_width/2)-self.is_distance, 0);
 			print "·";
 			! window_move_cursor
-			glk($002B, self.status_window, (self.status_window_width/2)+3, 0);
+			glk($002B, self.status_window,
+				(self.status_window_width/2)+self.is_distance, 0);
 			print "·";
 			!! Se imprime la retícula:
 			! window_move_cursor
@@ -300,7 +328,10 @@ Object	AimingManager "(Aiming Manager)"
 			glk($002F, gg_mainwin);
 		],
 		!!----------------------------------------------------------------------
-		!! Actualiza la posición de la retícula.
+		!! Actualiza la posición de la retícula de acuerdo al tipo de
+		!! movimiento que tiene.
+		!!
+		!!	@param {integer} [motion_type=LINEAR_MOTION]
 		!!----------------------------------------------------------------------
 		update_grid_position [ motion_type;
 			switch (motion_type) {
@@ -316,7 +347,7 @@ Object	AimingManager "(Aiming Manager)"
 		update_grid_position_LM [; ! Linear Motion
 			!! Sentido del movimiento: hacia la derecha
 			if (self.grid_direction == 0) {
-				if (self.grid_position < self.status_window_width 
+				if (self.grid_position < self.status_window_width
 					- (self.grid_length + 1)) {
 					self.grid_position++;
 				}
@@ -337,14 +368,15 @@ Object	AimingManager "(Aiming Manager)"
 			}
 		],
 		!!----------------------------------------------------------------------
-		!! Actualiza la pos. de la retícula (Movimiento Armónico Simple). 
-		!! XXX - NOTA #1: NO USAR. La lógica de la rutina está programada a 
-		!! modo de prueba y no produce una animación adecuada. Además utiliza 
-		!! operaciones de coma flotante que requieren un compilador GLULX 
-		!! que las soporte (por esta razón se ha decidido dejar el código 
+		!! Actualiza la pos. de la retícula (Movimiento Armónico Simple).
+		!! XXX - NOTA #1: NO USAR. La lógica de la rutina está programada a
+		!! modo de prueba y no produce una animación adecuada. Además utiliza
+		!! operaciones de coma flotante que requieren un compilador GLULX
+		!! que las soporte (por esta razón se ha decidido dejar el código
 		!! comentado).
 		!!----------------------------------------------------------------------
-		update_grid_position_SHM [ i ini sini aux gp; ! Simple Harmonic Motion
+		update_grid_position_SHM [ ! Simple Harmonic Motion
+			i ini sini aux gp;
 			i = ini + sini + aux + gp;
 !			aux = WIN_WIDTH/2;
 !			@numtof aux ini; ! ini: centro de la ventana
@@ -368,7 +400,7 @@ Object	AimingManager "(Aiming Manager)"
 		!!----------------------------------------------------------------------
 		!! Contador:
 		counter 0,
-		!! Cantidad de milisegundos que se sigue mostrando la posición final de 
+		!! Cantidad de milisegundos que se sigue mostrando la posición final de
 		!! la retícula después de haber sido detenida la animación:
 		delay_value 100,
 		!! Indica que el jugador ha detenido la animación de la retícula:
@@ -381,6 +413,9 @@ Object	AimingManager "(Aiming Manager)"
 		grid_length 3,
 		!! Posición de la retícula:
 		grid_position 0,
+		!! Distancia del centro de la ventana de estado a la que se imprimirán
+		!! las guías centrales (o iron sights):
+		is_distance 3,
 		!! Código del tipo de movimiento de la animación de apuntado:
 		motion_type 0,
 		!! Ventana de estado sobre la que se dibuja la animación de apuntado:
@@ -393,21 +428,22 @@ Object	AimingManager "(Aiming Manager)"
 #Endif; ! TARGET_GLULX;
 
 !!==============================================================================
-!!	Rutina encargada de lanzar el sistema de apuntado y disparo. Puede 
-!!	invocarse con el siguiente parámetro opcional:
+!! Rutina encargada de lanzar el sistema de apuntado y disparo. Puede invocarse
+!! con el siguiente parámetro opcional de tipo booleano para controlar el punto
+!! inicial de la animación dentro de la ventana de estado.
 !!
-!!	 *	flag: (true/false) si se invoca con el parámetro activado, la animación 
-!!		comenzará desde el extremo izquierdo de la ventana de estado, y 
-!!		moviéndose hacia la derecha. En caso contrario, la animación comenzará 
-!!		desde el punto y con el sentido que tenía en el último momento en que 
-!!		fue invocada.
-!!
-!!	Retorna la distancia entre la retícula, una vez se haya detenido, y el 
-!!	centro de la ventana de estado, -2 si se invoca desde Máquina-Z, y -1 en 
-!!	caso de producirse algún error.
+!!	@param {boolean} [flag=false] - Si se invoca con el parámetro verdadero, la
+!!		animación comenzará desde el extremo izquierdo de la ventana de estado
+!!		y moviéndose hacia la derecha. En caso contrario, la animación
+!!		comenzará desde el punto y con el sentido de movimiento que tenía en el
+!!		último momento en que fue invocada
+!!	@returns {integer} La distancia entre la retícula, una vez se haya
+!!		detenido, y el centro de la ventana de estado. -2 si se invoca la
+!!		rutina desde la máquina virtual Máquina-Z (en lugar de GLULX), y -1 en
+!!		caso de producirse algún error durante la ejecución
 !!------------------------------------------------------------------------------
-
-[ AimAndFire flag		result;
+[ AimAndFire flag
+	result;
 	#Ifdef TARGET_ZCODE;
 
 	#Ifdef DEBUG_AIMANDFIRE;
@@ -436,5 +472,3 @@ Object	AimingManager "(Aiming Manager)"
 
 	return result;
 ];
-
-

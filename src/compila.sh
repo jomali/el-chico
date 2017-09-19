@@ -8,7 +8,7 @@
 #	<>	gargoyle-free:	Intérprete multi-plataforma
 #-------------------------------------------------------------------------------
 
-bresc_location=~/bin
+bresc_location=~/data/bin
 zcode_interpreter=gargoyle-free;
 glulx_interpreter=gargoyle-free;
 
@@ -17,7 +17,7 @@ glulx_interpreter=gargoyle-free;
 rm ./*~
 
 if [ "$1" != "" ]; then gameFile=$1;
-else 
+else
 	echo -n "Introduce el nombre del archivo (sin la extensión): ";
 	read gameFile;
 	echo " ";
@@ -28,7 +28,7 @@ if [ ! -e "$gameFile.inf" ]; then
 fi
 
 if [ "$2" != "" ]; then op=$2;
-else 
+else
 	echo "[1] Compilar el relato para MÁQUINA-Z"
 	echo "[2] Compilar el relato para GLULX"
 	echo "[3] Compilar el relato para GLULX (sin multimedia)"
@@ -37,7 +37,7 @@ else
 	echo " "
 fi
 
-perl preprocesaTexto.pl ./descriptions.inf ./$gameFile\_langOM.inf
+perl ./extensions/preprocesaTexto.pl ./$gameFile\_texts.inf ./$gameFile\_langOM.inf
 
 #===============================================================================
 # Compilar el relato para GLULX (sin multimedia)
@@ -51,7 +51,7 @@ if [ "$op" = "3" ]; then
 	echo " "
 	echo -n "Pulsa cualquier tecla para ejecutar la aplicación ('q' para salir): "
 	read key
-	
+
 	if [ "$key" = "q" ]; then exit 0;
 	fi
 	if [ "$key" = "Q" ]; then exit 0;
@@ -66,9 +66,10 @@ elif [ "$op" = "2" ]; then
 	echo "============================================="
 	echo "COMPILANDO PARA GLULX..."
 	echo "---------------------------------------------"
-	$bresc_location/bres $gameFile
+	inform +include_path=,/usr/share/inform/include/,/usr/share/inform/module/,/usr/share/inform/6.31/include/,/usr/share/inform/6.31/module/,/usr/share/inform/6.31/include/gwindows/,/usr/share/inform/6.31/include/other/ -G $gameFile.inf $gameFile.ulx
+	$bresc_location/bres $gameFile.res
 	inform +include_path=,/usr/share/inform/include/,/usr/share/inform/module/,/usr/share/inform/6.31/include/,/usr/share/inform/6.31/module/,/usr/share/inform/6.31/include/gwindows/,/usr/share/inform/6.31/include/other/ -G $gameFile.inf
-	$bresc_location/bresc $gameFile
+	$bresc_location/bresc $gameFile.res
 	mv $gameFile.blb ../$gameFile.blb
 	rm $gameFile.ulx
 
@@ -80,7 +81,7 @@ elif [ "$op" = "2" ]; then
 	fi
 	if [ "$key" = "Q" ]; then exit 0;
 	fi
-	cd .. 
+	cd ..
 	$glulx_interpreter $gameFile.blb
 
 #===============================================================================
@@ -95,7 +96,7 @@ else
 	echo " "
 	echo -n "Pulsa cualquier tecla para ejecutar la aplicación ('q' para salir): "
 	read key
-	
+
 	if [ "$key" = "q" ]; then exit 0;
 	fi
 	if [ "$key" = "Q" ]; then exit 0;
