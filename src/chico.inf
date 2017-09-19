@@ -12,22 +12,13 @@
 !!
 !!==============================================================================
 !!
-!!	Archivo:		chico.inf
-!!	Autor(es):		J. Francisco Martín <jfm.lisaso@gmail.com>
-!!	Idioma:			ES (Castellano)
-!!	Sistema:		Inform-INFSP 6
-!!	Plataforma:		GLULX
-!!	Versión:		0.0
-!!	Fecha:			2017/09/18
-!!
-!!------------------------------------------------------------------------------
-!!
-!!	# HISTORIAL DE VERSIONES
-!!
-!!	0.2.0: 2017/09/17 Reinicio del trabajo en la Segunda Parte.
-!!	0.1.2: 2015/02/23 Añade escritura/lectura de decisiones de la Primera Parte.
-!!	0.1.1: 2015/02/10 Versión inicial de la Primera Parte.
-!!	0.0: 2015/01/29	Inicio del desarrollo.
+!!	File:			chico.inf
+!!	Author(s):		J. Francisco Martín <jfm.lisaso@gmail.com>
+!!	Language:		ES (Castellano)
+!!	System:			Inform-INFSP 6
+!!	Platform:		Máquina-Z/GLULX
+!!	Version:		0.0
+!!	Release:		2017/09/19
 !!
 !!------------------------------------------------------------------------------
 !!
@@ -47,6 +38,15 @@
 !!	<http://www.gnu.org/licenses/>.
 !!
 !!	Copyright (C) 2017, J. Francisco Martín
+!!
+!!------------------------------------------------------------------------------
+!!
+!!	# HISTORIAL DE VERSIONES
+!!
+!!	0.2.0: 2017/09/17 Reinicio del trabajo en la Segunda Parte.
+!!	0.1.2: 2015/02/23 Añade escritura/lectura de decisiones de la Primera Parte.
+!!	0.1.1: 2015/02/10 Versión inicial de la Primera Parte.
+!!	0.0: 2015/01/29	Inicio del desarrollo.
 !!
 !!------------------------------------------------------------------------------
 !!
