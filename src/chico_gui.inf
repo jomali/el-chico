@@ -69,7 +69,7 @@ Object	GUIConfig "(GUI Configuration)"
  with	!!----------------------------------------------------------------------
 		!! Valores generales
 		!!----------------------------------------------------------------------
-		graphic_win_flag false,
+		graphic_win_flag true,
 		margin_bottom_height 0, ! px
 		margin_top_height 0, ! px
 		padding_bottom_height 2, ! px
@@ -96,47 +96,47 @@ Object	GUIConfig "(GUI Configuration)"
 		!! Configuración C. Anchura total: 660px
 		!!----------------------------------------------------------------------
 		window_configuration_c 660,
-		graphic_win_c 225,
-		margin_left_c 8,
-		margin_right_c 8,
-		padding_left_c 20,
-		padding_right_c 20,
+		graphic_win_c 0,
+		margin_left_c 12,
+		margin_right_c 12,
+		padding_left_c 0,
+		padding_right_c 0,
 		!!----------------------------------------------------------------------
 		!! Configuración D. Anchura total: 900px
 		!!----------------------------------------------------------------------
 		window_configuration_d 900,
-		graphic_win_d 225,
-		margin_left_d 20,
-		margin_right_d 10,
+		graphic_win_d 0,
+		margin_left_d 24,
+		margin_right_d 8,
 		padding_left_d 0,
-		padding_right_d 20,
+		padding_right_d 0,
 		!!----------------------------------------------------------------------
 		!! Configuración E. Anchura total: 1050px
 		!!----------------------------------------------------------------------
 		window_configuration_e 1050,
-		graphic_win_e 225,
-		margin_left_e 30,
+		graphic_win_e 0,
+		margin_left_e 32,
 		margin_right_e 10,
 		padding_left_e 0,
-		padding_right_e 20,
+		padding_right_e 0,
 		!!----------------------------------------------------------------------
 		!! Configuración F. Anchura total: 1224px
 		!!----------------------------------------------------------------------
 		window_configuration_f 1224,
-		graphic_win_f 225,
-		margin_left_f 40,
-		margin_right_f 6,
+		graphic_win_f 0,
+		margin_left_f 42,
+		margin_right_f 8,
 		padding_left_f 0,
-		padding_right_f 20,
+		padding_right_f 0,
 		!!----------------------------------------------------------------------
 		!! Configuración G. Anchura total: 1400px
 		!!----------------------------------------------------------------------
 		window_configuration_g 1400,
-		graphic_win_g 225,
+		graphic_win_g 0,
 		margin_left_g 46,
 		margin_right_g 46,
 		padding_left_g 0,
-		padding_right_g 20,
+		padding_right_g 0,
 ;
 
 
@@ -213,7 +213,7 @@ GImageWin -> -> -> -> -> graphicWindow
   with	split 0,
 		split_dir winmethod_Right,
 		col $222222,
-		click_event [ x y; cmd_override="mirar"; ],
+		click_event [; cmd_override="mirar"; ],
   has	abssplit on;
 
 GraphWin -> -> -> -> marginLeft

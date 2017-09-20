@@ -125,9 +125,9 @@ Constant SIN_MENSAJES;			! Se omiten los mensajes por defecto de la lib.
 
 Constant PARSER_PREFIX "[";		! Define texto inicial de los mens. del parser
 Constant PARSER_SUFIX "]";		! Define texto final de los mens. del parser
-Constant STYLE_USR1_BG $909090;	! Colores de texto tipo resaltado
-Constant STYLE_USR1_FG $000000;
-Constant STYLE_USR2_BG $A0A0A0;	! Colores de texto tipo parser
+Constant STYLE_USR1_BG $300000;	! Colores de texto tipo resaltado
+Constant STYLE_USR1_FG $FFFFFF;
+Constant STYLE_USR2_BG $000000;	! Colores de texto tipo parser
 Constant STYLE_USR2_FG $606060;
 
 Global _parser_style = _2ST_;	! Selecciona estilo de los mensajes del parser
@@ -136,7 +136,7 @@ Global _parser_style = _2ST_;	! Selecciona estilo de los mensajes del parser
 !! Constantes de la extensión 'cset'.
 !!------------------------------------------------------------------------------
 
-Constant CSET_STYLE _IST_;		! Estilo de los mensajes de 'cset'
+Constant CSET_STYLE _BST_;		! Estilo de los mensajes de 'cset'
 Constant CSET_PREFIX "[";		! Define el texto inicial de los mensajes
 Constant CSET_SUFIX "]";		! Define el texto final de los mensajes
 Constant CSET_MSG1 "";			! Texto del mensaje MSG1
@@ -428,7 +428,6 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 	#Endif; ! TARGET_GLULX;
 
 	!! Inicializaciones del relato ---------------------------------------------
-	SetGrammaticalInflection(FIRST_PERSON_PRESENT);
 	initial_scene = MainMenu();	! Menú principal
 	ChangePlayer(Chico);		! Establece el personaje controlado por el usr.
 	location = DungeonMaster.start_scene(initial_scene);
@@ -683,39 +682,70 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 !! TODO - Documentación
 !!------------------------------------------------------------------------------
 [ MainMenu
-	i key result;
+	i width key result;
 	.mainMenu;
 	EraseWindow();
+	width = ScreenWidth();
+	SetTextStyle(_MST_);
 	PrintStoryTitle();
 	PrintHeadline();
 	new_line;
-	MonospacedStyle();
-	print "Empezar el relato  ";
-		for (i=0 : i<(ScreenWidth() + 2 - 30) : i++) print ".";
-		print "  [ESPACIO]^";
-	print "Ir al índice de escenas  ";
-		for (i=0 : i<(ScreenWidth() - 1 - 28) : i++) print ".";
-		print "  I^";
-	print "Recuperar partida guardada  ";
-		for (i=0 : i<(ScreenWidth() - 1 - 31) : i++) print ".";
-		print "  R^";
-	print "Salir de la aplicación  ";
-		for (i=0 : i<(ScreenWidth() - 1 - 27) : i++) print ".";
-		print "  Q^";
+	if (width > 32) {
+		print "Empezar el relato  ";
+			for (i=0 : i<(width - 30) : i++) print ".";
+			print "  [ESPACIO]^";
+		print "Configuración  ";
+			for (i=0 : i<(width - 18) : i++) print ".";
+			print "  C^";
+		!! print "Ir al índice de escenas  ";
+		!! 	for (i=0 : i<(width - 28) : i++) print ".";
+		!! 	print "  I^";
+		print "Recuperar partida guardada  ";
+			for (i=0 : i<(width - 31) : i++) print ".";
+			print "  R^";
+		print "Salir de la aplicación  ";
+			for (i=0 : i<(width - 27) : i++) print ".";
+			print "  Q^";
+	} else {
+		print "Empezar el relato:^";
+			print " ";
+			for (i=0 : i < 4 : i++) print ".";
+			print " [ESPACIO]^";
+		print "Configuración:^";
+			print " ";
+			for (i=0 : i < 8 : i++) print ".";
+			print " C^";
+		!! print "Índice de escenas:^";
+		!! 	print " ";
+		!! 	for (i=0 : i < 8 : i++) print ".";
+		!! 	print " I^";
+		print "Recuperar partida guardada:^";
+			print " ";
+			for (i=0 : i < 8 : i++) print ".";
+			print " R^";
+		print "Salir de la aplicación:^";
+			print " ";
+			for (i=0 : i < 8 : i++) print ".";
+			print " Q^";
+	}
 	new_line;
-	spaces  (ScreenWidth() - 11);
+	spaces (width - 13);
 	print "v";
 	PrintVersionNumber();
 	print " / ";
 	PrintSerialNumber();
-	RomanStyle();
+	SetTextStyle(_RST_);
 	key = KeyCharPrimitive();
 	switch (key) {
 		32, -6:		result = 1;
+		#Ifdef DEBUG;
 		'1':		result = 1;
 		'2':		result = 2;
 		'3':		result = 3;
 		'4':		result = 4;
+		#Endif; ! DEBUG;
+		'C', 'c':	HighlightSub();
+					jump mainMenu;
 		'R', 'r':	EraseWindow();
 					print "Cargando partida...^";
 					<Restore>;
@@ -728,27 +758,6 @@ Include "VerbLib.h";			! Define cómo trabajan las acciones
 	EraseWindow();
 	return result;
 ];
-!! [ IndexMenu i;
-!! 	new_line;
-!! 	MonospacedStyle();
-!! 	print "ÍNDICE^";
-!! 	new_line;
-!! 	print "Escena 1: Una mujer muerta  ";
-!! 		for (i=0 : i<(ScreenWidth() - 1 - 31) : i++) print ".";
-!! 		print "  1^";
-!! 	print "Escena 2: La fiesta  ";
-!! 		for (i=0 : i<(ScreenWidth() - 1 - 24) : i++) print ".";
-!! 		print "  2^";
-!! 	print "Escena 3: La huída  ";
-!! 		for (i=0 : i<(ScreenWidth() - 1 - 23) : i++) print ".";
-!! 		print "  -^";
-!! 	print "Escena 4: Maduración  ";
-!! 		for (i=0 : i<(ScreenWidth() - 1 - 25) : i++) print ".";
-!! 		print "  -^";
-!! 	new_line;
-!! 	RomanStyle();
-!! ];
-
 
 !!------------------------------------------------------------------------------
 !! Espera una pulsación de tecla del usuario o, si se introduce un valor
@@ -1102,25 +1111,21 @@ VerboIrregular "establecer estilo de texto resaltado" with imperativo
 	'highlight' 'resaltado';
 
 [ HighlightSub
-	flag st pst;
+	flag st;
 	while (flag == false) {
 		EraseWindow();
-		st = PrintParserPrefix();
 		print (string) Story;
 		print " utiliza un sistema de palabras clave para destacar objetos
-		interactivos del relato. En total hay tres clases de palabras clave:
-		1) nombres de objetos importantes en la historia, 2) objetos o
-		direcciones hacia las que te puedes desplazar, y 3) nombres de otros
-		objetos interactivos.
-		^^
-		Puedes seleccionar el estilo de resaltado con el que deseas que se
-		impriman estas palabras clave para que se adecuen mejor a tus
-		necesidades o a tus preferencias personales. Introduce el número de la
-		palabra clave para rotar entre los estilos de resaltado disponibles:";
+		interactivos del relato. Hay tres clases de palabras clave: 1) nombres
+		de objetos importantes en la historia, 2) objetos o direcciones hacia
+		las que te puedes desplazar, y 3) nombres de otros objetos
+		interactivos. Introduce el número de la clase de palabra clave para
+		rotar entre los estilos de resaltado disponibles y seleccionar aquel
+		que se adeque mejor a tus preferencias personales:";
 		new_line;
 		new_line;
 		print "1) Objetos importantes: ";
-		pst = SetTextStyle(_keyword_st1);
+		st = SetTextStyle(_keyword_st1);
 		switch (_keyword_st1) {
 			_RST_:	print "sin estilo";
 			_IST_:	print "cursiva";
@@ -1128,10 +1133,10 @@ VerboIrregular "establecer estilo de texto resaltado" with imperativo
 			_MST_:	print "monoespaciada";
 			_1ST_:	print "color de fondo";
 		}
-		SetTextStyle(pst);
+		SetTextStyle(st);
 		print ".^";
 		print "2) Direcciones: ";
-		pst = SetTextStyle(_keyword_st2);
+		st = SetTextStyle(_keyword_st2);
 		switch (_keyword_st2) {
 			_RST_:	print "sin estilo";
 			_IST_:	print "cursiva";
@@ -1139,10 +1144,10 @@ VerboIrregular "establecer estilo de texto resaltado" with imperativo
 			_MST_:	print "monoespaciada";
 			_1ST_:	print "color de fondo";
 		}
-		SetTextStyle(pst);
+		SetTextStyle(st);
 		print ".^";
 		print "3) Otros objetos: ";
-		pst = SetTextStyle(_keyword_st3);
+		st = SetTextStyle(_keyword_st3);
 		switch (_keyword_st3) {
 			_RST_:	print "sin estilo";
 			_IST_:	print "cursiva";
@@ -1150,10 +1155,11 @@ VerboIrregular "establecer estilo de texto resaltado" with imperativo
 			_MST_:	print "monoespaciada";
 			_1ST_:	print "color de fondo";
 		}
-		SetTextStyle(pst);
+		SetTextStyle(st);
 		print ".^";
 		new_line;
-		print "Pulsa INTRO para aceptar y salir.^";
+		print (parser) "Pulsa INTRO para aceptar y salir.";
+		new_line;
 		switch (PressAnyKey()) {
 			32, -6:
 				flag = true;

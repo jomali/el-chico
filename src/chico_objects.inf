@@ -48,7 +48,6 @@
 !!	1)	LIMBO
 !!		-	DungeonMaster
 !!		-	Chico
-!!		-	cielo_diurno
 !!		-	cielo_nocturno
 !!		-	guardar_silencio
 !!	2)	DESCAMPADO_1
@@ -71,6 +70,7 @@
 !!		-	cm1_op07
 !!		-	Alberto_1
 !!	3)	TERRAZA
+!!		-	cielo_terraza
 !!		-	piscina
 !!		-	putas
 !!		-	tumbona
@@ -116,115 +116,54 @@ Room	LIMBO "en algún lugar"
 
 Object	DungeonMaster "(Dungeon Master)"
  with	!!----------------------------------------------------------------------
- 		!! Finaliza la escena actual.
-		!!----------------------------------------------------------------------
-		end_scene [ next_location;
-			switch (self._current_scene) {
-				1:	PressAnyKey();
-					if (self._first_scene_end == 2) {
-						self.end_credits();
-					}
-					next_location = self.start_scene(2);
-					PlayerTo(next_location);
-					return true;
-				2:	PressAnyKey();
-					self.end_credits();
-			}
-		],
-		! FIXME
-		end_credits [
-			st;
-				HorizontalRule();
-				PressAnyKey();
-				print (strong) "FIN^";
-				print "Por J. Francisco Martín.^";
-				new_line;
-				PressAnyKey();
-				st = PrintParserPrefix();
-				CreateLink("Haz click aquí o pulsa una tecla para terminar");
-				PrintParserSufix(st);
-				PressAnyKey();
-				!! Escribe las decisiones en un fichero externo y reinicia:
-				!! WriteDecisionsFile();
-				@restart;
-				L__M(##Restart, 2);
-		],
- 		!!----------------------------------------------------------------------
 		!! Inicia una de las escenas del relato.
 		!!
-		!!	@param sc:entero
-		!!		Número de la escena
-		!!	@retorna Object
-		!!		Localidad inicial de la escena
+		!!	@param {integer} scene_code - Número de la escena
+		!!	@returns {Object} Localidad inicial de la escena
 		!!----------------------------------------------------------------------
-		start_scene [ sc;
-	 		switch (sc) {
-				1:	!! :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-					!! Escena 1: La muerta
-					!! :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-					!! Establece la flexión gramatical de la librería:
-					SetGrammaticalInflection(FIRST_PERSON_PRESENT);
-					!! Inicialización de objetos y atributos de la escena:
-					self._current_scene = sc;
-					!! Inicializaciones multimedia:
-					#Ifdef TARGET_GLULX;
-					#Endif; ! TARGET_GLULX;
-					!! Texto inicial:
-					HorizontalRule();
-					O__M(self, 1);
-					new_line;
-					!! Retorna la localidad inicial de la escena:
-					return DESCAMPADO_1;
-				2:	!! :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-					!! Escena 2: La fiesta
-					!! :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-					!! Establece la flexión gramatical de la librería:
-					SetGrammaticalInflection(FIRST_PERSON_PAST);
-					!! Inicialización de objetos y atributos de la escena:
-					self._current_scene = sc;
-					!! Inicializaciones multimedia:
-					#Ifdef TARGET_GLULX;
-					#Endif; ! TARGET_GLULX;
-					!! Texto inicial:
-					HorizontalRule();
-					O__M(self, 2);
-					new_line;
-					!! Retorna la localidad inicial de la escena:
-					return TERRAZA;
-				3:	!! :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-					!! Escena 3: La huida
-					!! :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-					!! Establece la flexión gramatical de la librería:
-					!! Inicialización de objetos y atributos de la escena:
-					self._current_scene = sc;
-					!! Inicializaciones multimedia:
-					#Ifdef TARGET_GLULX;
-					#Endif; ! TARGET_GLULX;
-					!! Texto inicial:
-					!! Retorna la localidad inicial de la escena:
-					return LIMBO;
-				4:	!! :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-					!! Escena 4: Maduración
-					!! :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-					!! Establece la flexión gramatical de la librería:
-					!! Inicialización de objetos y atributos de la escena:
-					self._current_scene = sc;
-					!! Inicializaciones multimedia:
-					#Ifdef TARGET_GLULX;
-					#Endif; ! TARGET_GLULX;
-					!! Texto inicial:
-					!! Retorna la localidad inicial de la escena:
-					return LIMBO;
+		start_scene [ scene_code
+			initial_location;
+			switch (scene_code) {
+			2:	!! Inicializaciones:
+				SetGrammaticalInflection(FIRST_PERSON_PAST);
+				self.current_scene = 2;
+				initial_location = TERRAZA;
+				!! Textos:
+				new_line;
+				HorizontalRule();
+				new_line;
+				O__M(self, 2);
+				new_line;
+			3:	!! Inicializaciones:
+				SetGrammaticalInflection(FIRST_PERSON_PAST);
+				self.current_scene = 3;
+				initial_location = COCHE;
+			4:	!! Inicializaciones:
+				SetGrammaticalInflection(FIRST_PERSON_PRESENT);
+				self.current_scene = 4;
+				initial_location = DESCAMPADO_2;
+			default:
+				!! Inicializaciones:
+				SetGrammaticalInflection(FIRST_PERSON_PRESENT);
+				self.current_scene = 1;
+				initial_location = DESCAMPADO_1;
+				!! Textos:
+				new_line;
+				HorizontalRule();
+				new_line;
+				O__M(self, 1);
+				new_line;
 			}
+			return initial_location;
 		],
 		!!----------------------------------------------------------------------
 		!! Código de la escena actual.
 		!!----------------------------------------------------------------------
-		_current_scene 0,
+		current_scene 0,
  		!!----------------------------------------------------------------------
 		!! Registra el enfado de Mario con el chico
 		!!----------------------------------------------------------------------
-		_mario_anger 0,
+		mario_anger 0,
 		!!----------------------------------------------------------------------
 		!! Registra si Mario ha golpeado al chico
 		!!----------------------------------------------------------------------
@@ -239,7 +178,8 @@ Object	DungeonMaster "(Dungeon Master)"
 		!!	1)	El chico enfurece a Mario y acaba golpeado por el suelo.
 		!!	2)	Mario dispara al chico en la cabeza.
 		!!----------------------------------------------------------------------
-		_first_scene_end 0;
+		_first_scene_end 0,
+;
 
 !! Objeto protagonista
 Object	Chico "chico" LIMBO
@@ -248,20 +188,6 @@ Object	Chico "chico" LIMBO
 		adjectives 'principal',
 		description [; return O__M(self, 1); ],
  has	animate male proper;
-
-Atrezzo	cielo_diurno "cielo"
- with	found_in TERRAZA,
-		name_f	'atmosfera',
-		name_m	'astro' 'cielo' 'dia' 'firmamento' 'sol',
-		gender	G_MASCULINO,
-		adjectives 'azul' 'brillante',
-		description [; return O__M(self, 1); ],
-		react_before [;
-			Examine, Search:
-				if (noun == u_obj)
-					<<Examine self>>;
-		],
- has	male;
 
 Atrezzo	cielo_nocturno "cielo"
  with	found_in DESCAMPADO_1 DESCAMPADO_2,
@@ -398,7 +324,8 @@ Furniture	cadaver_Yamileth "cadáver" DESCAMPADO_1
 		name_m	'bulto' 'cadaver' 'cuerpo' 'fiambre' 'npc' 'personaje' 'pnj',
 		gender	G_MASCULINO,
 		description [; return O__M(self, 1); ],
-		before [;
+		before [
+			loc;
 			SetPronoun('-la', self);
 			SetPronoun('ella', self);
 			Cut:
@@ -406,15 +333,18 @@ Furniture	cadaver_Yamileth "cadáver" DESCAMPADO_1
 					&& IndirectlyContains(player, sierra)) {
 					O__M(self, 2);
 					if (DESCAMPADO_1.smelled) { new_line; O__M(self, 3); }
-					DungeonMaster.end_scene();
+					loc = DungeonMaster.start_scene(2);
+					PlayerTo(loc);
 					return true;
 				}
 				return O__M(self, 4);
 			DefaultAction:
 				if (self has described && IndirectlyContains(player, sierra))
 					<<Cut self>>;
+			Pull, Push, PushDir, Take, Turn:
+				return O__M(self, 5);
 		],
- has	female;
+ has	concealed female;
 
 Item	sierra "sierra" DESCAMPADO_1
  with	name_f	'segueta' 'serreta' 'sierra',
@@ -473,9 +403,9 @@ NPC		Mario_1 "Mario" DESCAMPADO_1
 		!!	4)	El chico le ha preguntado a Mario si estaba sordo.
 		!!	5)	El chico ha llamado hijo de puta a Mario.
 		gets_angry [ arg;
-			if (arg == 0) DungeonMaster._mario_anger++;
-			else DungeonMaster._mario_anger = arg;
-			switch (DungeonMaster._mario_anger) {
+			if (arg == 0) DungeonMaster.mario_anger++;
+			else DungeonMaster.mario_anger = arg;
+			switch (DungeonMaster.mario_anger) {
 				1:	O__M(self, 3);
 				2:	O__M(self, 4);
 				default: conversacion_Mario_1.fixed = true; O__M(self, 5);
@@ -495,7 +425,7 @@ with	initial_action [;
 			return O__M(self, 1);
 		],
 		inter_action [;
-			switch (DungeonMaster._mario_anger) {
+			switch (DungeonMaster.mario_anger) {
 				0, 3:
 					self.add_choice(guardar_silencio);
 					return O__M(self, 2);
@@ -532,7 +462,7 @@ ChoiceSetItem	cm1_op01
 		reaction [;
 			new_line;
 			Mario_1.gets_angry();
-			if (DungeonMaster._mario_anger == 1) {
+			if (DungeonMaster.mario_anger == 1) {
 				!! [No pienso hacerlo / ¿Estás sordo? / Nada]
 				conversacion_Mario_1.add_choice(cm1_op03);
 				conversacion_Mario_1.add_choice(cm1_op04);
@@ -556,7 +486,7 @@ ChoiceSetItem	cm1_op02
 		reaction [;
 			new_line;
 			Mario_1.gets_angry();
-			if (DungeonMaster._mario_anger == 1) {
+			if (DungeonMaster.mario_anger == 1) {
 				!! [No puedo hacerlo / ¿Estás sordo? / Nada]
 				conversacion_Mario_1.add_choice(cm1_op03);
 				conversacion_Mario_1.add_choice(cm1_op04);
@@ -589,7 +519,7 @@ ChoiceSetItem	cm1_op04
  with	entry [; CreateLink("Nada"); ],
 		keys 'importa' 'nada' 'no',
 		reply [; return O__M(self, 1); ],
-		reaction [; DungeonMaster._mario_anger = 3; ],
+		reaction [; DungeonMaster.mario_anger = 3; ],
 		relatives	cm1_op01 cm1_op02 cm1_op03,
 		subtopics	cm1_op05 guardar_silencio,
 		append_choice_set false;
@@ -607,12 +537,14 @@ ChoiceSetItem	cm1_op06
  with	entry [; CreateLink("Perdón"); ],
 		keys 'perdon' 'siento',
 		reply [; return O__M(self, 1); ],
-		reaction [;
+		reaction [
+			loc;
 			DungeonMaster._first_scene_end = 1;
-			DungeonMaster.end_scene();
+			loc = DungeonMaster.start_scene(2);
+			PlayerTo(loc);
 			return true;
 		],
-		relatives	cm1_op07,
+		relatives cm1_op07,
 		append_choice_set false,
 		final_choice true;
 
@@ -620,9 +552,11 @@ ChoiceSetItem	cm1_op07
  with	entry [; CreateLink("Que te jodan"); ],
 		keys 'follen' 'jodan' 'jodete' 'no',
 		reply [; return O__M(self, 1); ],
-		reaction [;
+		reaction [
+			loc;
 			DungeonMaster._first_scene_end = 2;
-			DungeonMaster.end_scene();
+			loc = DungeonMaster.start_scene(2);
+			PlayerTo(loc);
 			return true;
 		],
 		append_choice_set false,
@@ -687,6 +621,19 @@ with	name_f	'terraza',
 	   ],
 	   in_to [; return self.w_to(); ],
 has	female;
+
+Atrezzo	cielo_terraza "cielo" TERRAZA
+with	name_f	'atmosfera',
+		name_m	'astro' 'cielo' 'dia' 'firmamento' 'sol',
+		gender	G_MASCULINO,
+		adjectives 'azul' 'brillante',
+		description [; return O__M(self, 1); ],
+		react_before [;
+			Examine, Search:
+				if (noun == u_obj)
+					<<Examine self>>;
+		],
+has	male;
 
 Atrezzo	piscina "piscina" TERRAZA
 with	name_f	'piscina',

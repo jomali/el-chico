@@ -14,11 +14,11 @@ print "", (name) Alberto_1, " está fuera del alcance de los faros, así que es po
 new_line;
 return true;
 2:	! before: ##TalkTo
-print "Este pasa de hablar con nadie. Se limita a fumar en silencio, como si nada de esto fuese con él. Siempre es así el tío. Ya puede caerse el cielo que a ", (name) Alberto_1, " parece sudársela todo completamente.";
+print "Este pasa de hablar con nadie. Se limita a fumar en silencio, como si esta mierda no fuese con él. Siempre es así el tío. Ya puede caerse el cielo que a ", (name) Alberto_1, " parece sudársela todo completamente.";
 new_line;
 return true;
 3:	! before: ##Attack
-print "He visto a ese hijoputa pelear. La semana pasada le reventó la cara a un mazas de gimnasio que le tiró los tejos en un bar. Sé muy bien qué peleas puedo empezar y cuáles no. Esta: ", (strong) "NO", ".";
+print "He visto a este hijoputa pelear. La semana pasada le reventó la cara a un mazas de gimnasio que le tiró los tejos en un bar. Sé muy bien qué peleas puedo empezar y cuáles no. Esta: ", (strong) "NO", ".";
 new_line;
 return true;
 }
@@ -44,22 +44,26 @@ return true;
 
 
 cadaver_Yamileth: switch (n) {
-1:	! description
+1:	! ##Examine
 print "Era una mujer joven. Ahora... ahora es un cadáver joven. Un cadáver joven cubierto de sangre y trocitos de cerebro. Me dijo su nombre. Yamileth. Tenía un nombre bonito.";
 new_line;
 return true;
-2:	! before: ##Cut
+2:	! ##Cut
 print "Por suerte está tirada de espaldas y no la tengo que ver la cara, pero no puedo apartar la mirada de los trocitos amorfos enredados entre su pelo. Apoyo los dientes de la condenada sierra sobre un brazo... y eso es todo lo lejos que llego antes de notar el flujo desde el estómago, a través del esófago, hasta la boca. Vomito sobre";
 if (cadaver_Yamileth has described) print " Yamileth.";
 else print " el cadáver.";
 new_line;
 return true;
-3:	! before: ##Cut
+3:
 print "El aire es gélido y huele a pota.";
 new_line;
 return true;
-4:	! before: ##Cut
+4:	! ##Cut
 print "Necesito ", (the) sierra, " para hacerlo.";
+new_line;
+return true;
+5:	! ##Pull / ##Push / ##PushDir / ##Take / ##Turn
+print "¿Y a dónde iba a llevármel", (o) cadaver_Yamileth, "? ¿De fiesta?";
 new_line;
 return true;
 }
@@ -84,16 +88,16 @@ Chico: switch (n) {
 return L__M(##Miscellany, 19);
 }
 
-cielo_diurno: switch (n) {
+cielo_nocturno: switch (n) {
 1:	! description
-print "El cielo estaba despejado y el sol calentaba. Incluso en Galicia salían uno o dos días así al año.";
+print "Una noche cerrada sin estrellas. Detrás de una loma se aprecia la anaranjada contaminación lumínica de Vigo.";
 new_line;
 return true;
 }
 
-cielo_nocturno: switch (n) {
+cielo_terraza: switch (n) {
 1:	! description
-print "Una noche cerrada sin estrellas. Detrás de una loma se aprecia la anaranjada contaminación lumínica de Vigo.";
+print "El cielo estaba despejado y el sol calentaba. Incluso en Galicia salían uno o dos días así al año.";
 new_line;
 return true;
 }
@@ -110,15 +114,15 @@ DESCAMPADO_1: switch (n) {
 1:	! description (~~described)
 print "", (name) Mario_1, " regresa desde el maletero, se apoya contra el capó negro, y se me queda mirando, esperando a que empiece a hacer lo que me ha ordenado. El muy cabrón. Sé que el otro, ", (name) Alberto_1, ", no va a mover un músculo. Está ahí plantado, fumando tranquilamente como si nada de todo esto fuera con él. Y ella... ella es sólo un ";
 CreateLink(cadaver_Yamileth, "bulto", 0);
-print " en el suelo, con el largo pelo negro enmarañado y empapado en sangre. Tiene como unos grumos espesos y pegajosos en el pelo... ¡joder! tiene medio puto cerebro pulverizado y enredado entre el pelo... joder. Está claro que ella tampoco va a mover un músculo.
+print " en el suelo, con el largo pelo negro enmarañado y empapado en sangre y lleno de algo así como unos grumos espesos y pegajosos... ¡joder! tiene medio puto cerebro pulverizado y enredado entre el pelo... joder. Está claro que ella tampoco va a mover un músculo.
 ^^
 ---Vamos, chico. No tenemos toda la noche.";
 new_line;
 return true;
 2:	! description
-print "Bajo los faros ", (del) coche, " todo es o blanco o negro. ", (name) Mario_1, " mira ", (the) sierra, " impaciente, esperando a que cumpla la orden. El muy cabrón. Está claro que el otro, ", (name) Alberto_1, ", no va a mover un músculo. Está ahí plantado, fumando tranquilamente como si nada de todo esto fuera con él. Y ella... ella es sólo un ";
+print "Bajo los faros ", (del) coche_descampado, " todo es o blanco o negro. ", (name) Mario_1, " mira ", (the) sierra, " impaciente, esperando a que cumpla la orden. El muy cabrón. Está claro que el otro, ", (name) Alberto_1, ", no va a mover un músculo. Está ahí plantado, fumando tranquilamente como si nada de todo esto fuera con él. Y ella... ella es sólo un ";
 CreateLink(cadaver_Yamileth, "bulto", 0);
-print " en el suelo, con el largo pelo negro enmarañado y empapado en sangre y cubierto de trocitos de cerebro... ella tampoco va a mover un músculo.";
+print " en el suelo, con el largo pelo negro enmarañado y lleno de sangre y de trocitos de cerebro... ella tampoco va a mover un músculo.";
 new_line;
 return true;
 3:	! before: ##Smell
@@ -130,7 +134,7 @@ print "No se escucha nada.";
 new_line;
 return true;
 5:	! before: ##Jump
-print "Pego algunos saltitos en el sitio, intentando entrar en calor. Aunque no sirve de mucho.";
+print "Pego algunos saltitos ridículos en el sitio, intentando entrar en calor. Aunque no sirve de mucho.";
 new_line;
 return true;
 }
@@ -146,11 +150,11 @@ DungeonMaster: switch (n) {
 1:	! Texto inicial: Primera Escena
 print "---¿Por qué tenemos que desmembrarla?
 ^^
-Ella es sólo un bulto en el suelo, recortado por los deslumbrantes faros del coche. La noche se ha acabado encapotando y sin luna los faros son la única luz en el descampado. Hace frío.
+Ella es sólo un bulto en el suelo, recortado por los deslumbrantes faros del coche. La noche se ha acabado encapotando y, sin luna, los faros son la única luz en el descampado. Hace frío.
 ^^
 ---Porque lo he dicho yo. ¿A ti qué cojones te pasa?
 ^^
-Saca algo del maletero y lo lanza hacia aquí. Cae a apenas un paso del cuerpo. ", (A) sierra, ". En la noche, las manchas que salpican la tierra a su alrededor parecen negras. Algo más aterriza junto a ", (the) sierra, " con un golpe. Esta vez es un rollo de bolsas de basura de plástico negras. Bajo los faros del coche todo es o blanco o negro.";
+Saca algo del maletero y lo lanza hacia aquí. Cae a apenas un paso del cuerpo. ", (A) sierra, ". En la noche, las manchas que salpican la tierra a su alrededor parecen negras. Algo más aterriza junto a ", (the) sierra, " con un golpe. Esta vez se trata de un rollo de bolsas de basura de plástico negras. Bajo los faros del coche todo es o blanco o negro.";
 new_line;
 return true;
 2:	! Texto inicial: Segunda Escena A
@@ -641,7 +645,7 @@ return true;
 
 sierra: switch (n) {
 1:	! description (~described)
-print "", (name) Mario_1, " es un puto psicópata. Hay una película, Saw. La ha visto todo el mundo. Sale un psicópata en la peli, con una máscara de payaso o algo así. Todo el mundo sabe de quién hablo. El payaso este encadena a un tipo del tobillo y le deja una pequeña sierra al alcance de la mano. Entonces el tipo intenta cortar el grillete con la sierra, pero es demasiado duro como para cortarlo con una sierra tan pequeña, así que la tiene que utilizar para cortarse el tobillo... ahá, los guionistas debían ser también unos psicópatas buenos. El mundo entero está lleno de ellos. Deberían hacer un club.
+print "", (name) Mario_1, " es un puto psicópata. Hay una película, Saw. La ha visto todo el mundo. Sale un psicópata en la peli, con una máscara de payaso o algo así. El payaso este encadena a un tipo del tobillo y le deja una pequeña sierra al alcance de la mano. Entonces el tipo intenta cortar el grillete, pero es demasiado duro como para cortarlo con una sierra tan pequeña, así que tiene que utilizarla para cortarse el tobillo... ahá, los guionistas debían ser también unos psicópatas buenos. El mundo entero está lleno de ellos. Deberían hacer un club.
 ^^
 ¿Cómo coño puedo estar pensando en una puta película ahora?
 ^^
