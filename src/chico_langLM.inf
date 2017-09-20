@@ -43,11 +43,11 @@
 !!
 !!------------------------------------------------------------------------------
 
-Object	LibraryMessages
- with	before [
- 	st;
 
-	Answer, Ask, AskFor, Order, Tell:
+Object	LibraryMessages
+ with	before [ st;
+
+ 	Answer, Ask, AskFor, Order, Tell:
 		print_ret (parser) "Para iniciar una conversación, usa simplemente la
 		orden HABLA (a/con) PERSONAJE.";
 
@@ -102,6 +102,7 @@ Object	LibraryMessages
 		print_ret (parser) "El relato está ahora en su modo ~superbreve~, que
 		siempre da descripciones cortas de los lugares (incluso si nunca habías
 		estado antes).";
+
 
 	Miscellany:
 		!! Esta es una falsa acción, que se usa simplemente para agrupar aquí
@@ -271,7 +272,7 @@ Object	LibraryMessages
 		!!	3:	Texto a mostrar si el pronombre no está definido.
 		!!	4:	Si el juego no define pronombres.
 		!!	5:	[6/11].
-		switch (n) {
+		switch (lm_n) {
 			1:	st = PrintParserPrefix();
 				print "En este momento, ";
 			2:	print "es ";
@@ -279,25 +280,24 @@ Object	LibraryMessages
 			4:	print "el juego no conoce ningún pronombre.";
 				PrintParserSufix(st);
 				new_line;
-				return true;
 			5:	print ".";
 				PrintParserSufix(st);
 				new_line;
-				return true;
 		}
+		return true;
 
 	Prompt:
 		!! El prompt aparece justo antes de pedir una nueva línea al usuario.
 		!! Puede definirse para que sea una frase, o se genere una frase
 		!! aleatoria en cada turno, por ejemplo.
 		new_line;
-		print (emph) "> ";
+		print (strong) "> ";
 		return true;
 
 	Quit:
 		!!	1:	Respuesta al comando FIN.
 		!!	2:	Respuesta si el jugador escribe algo distinto de "si" o "no".
-		switch (n) {
+		switch (lm_n) {
 			1:	st = PrintParserPrefix();
 				print "Por favor, responde ";
 				CreateLink("SÍ");
@@ -320,7 +320,7 @@ Object	LibraryMessages
 	Restart:
 		!!	1:	Respuesta al comando REINICIAR.
 		!!	2:	Si no se puede reiniciar.
-		switch (n) {
+		switch (lm_n) {
 			1:	st = PrintParserPrefix();
 				print "¿Realmente quieres reiniciar el relato? (";
 				CreateLink("SÍ");
@@ -329,6 +329,7 @@ Object	LibraryMessages
 				print ")";
 				PrintParserSufix(st);
 				print " ";
+				return true;
 			2:	print_ret (parser) "Error al reiniciar la partida.";
 		}
 
@@ -337,7 +338,7 @@ Object	LibraryMessages
 		!!	2:	Éxito (no llega a mostrarse, porque en caso de éxito el estado
 		!!		del juego cambia al momento en que se salvó. El "Ok" que se ve
 		!!		entonces es el del comando Salvar.
-		switch (n) {
+		switch (lm_n) {
 			1:	print_ret (parser) "Error. No se pudo recuperar la
 				partida.";
 			2:	print (parser) "Partida cargada.";
@@ -349,7 +350,7 @@ Object	LibraryMessages
 	Save:
 		!!	1:	Si no se pudo guardar el juego.
 		!!	2:	Éxito.
-		switch (n) {
+		switch (lm_n) {
 			1:	print_ret (parser) "Error. No se pudo guardar la partida.";
 			2:	print_ret (parser) "Partida guardada.";
 		}
@@ -358,7 +359,7 @@ Object	LibraryMessages
 		!! Puntuación del juego. Puede activarse porque el usuario lo pide
 		!! (con el verbo "PUNTUACION") o porque el juego ha terminado. En
 		!! este ultimo caso, la variable "deadflag" valdrá true.
-		switch (n) {
+		switch (lm_n) {
 			1:	st = PrintParserPrefix();
 				if (deadflag) print "En este juego, tu puntuación ha sido ";
 				else print "Hasta el momento tu puntuación es ";
@@ -368,7 +369,7 @@ Object	LibraryMessages
 				print ".";
 				PrintParserSufix(st);
 				new_line;
-				return;
+				return true;
 			2:	print_ret (parser) "Este relato no tiene conteo de
 				puntuación.";
 		}
@@ -376,7 +377,7 @@ Object	LibraryMessages
 	ScriptOff:
 		!!	1:	Error ya estaba desactivada la transcrcipción.
 		!!	2:	Éxito.
-		switch (n) {
+		switch (lm_n) {
 			1:	print_ret (parser) "La transcripción ya estaba
 				desactivada.";
 			2:	new_line; print_ret (parser) "Fin de la transcripción.";
@@ -388,7 +389,7 @@ Object	LibraryMessages
 		!!	1:	Error, ya estaba activada la transcrcipción.
 		!!	2:	Éxito (parte inicial del mensaje, la librería añade el título
 		!!		del juego obtenido de la constante Historia).
-		switch (n) {
+		switch (lm_n) {
 			1:	print_ret (parser) "La transcripción ya estaba activada.";
 			2:	print_ret (parser) "Iniciando la transcripción de:";
 			3:	print_ret (parser) "Intento fallido de comienzo de la
@@ -397,37 +398,19 @@ Object	LibraryMessages
 
 	Strong:
 		!! Respuesta si se usa como primera palabra algún taco.
-		!! TODO - Cambiar por un mensaje más apropiado (¿recomendar AYUDA?)
-		st = PrintParserPrefix();
-		print "Los verdaderos aventureros no ";
-		switch (_grammatical_inflection) {
-			FIRST_PERSON_PRESENT,
-			SECOND_PERSON_PRESENT,
-			THIRD_PERSON_PRESENT:
-				print "usan";
-			FIRST_PERSON_PAST,
-			SECOND_PERSON_PAST,
-			THIRD_PERSON_PAST:
-				print "usaban";
-			FIRST_PERSON_FUTURE,
-			SECOND_PERSON_FUTURE,
-			THIRD_PERSON_FUTURE:
-				print "usarán";
-		}
-		print " ese vocabulario.";
-		PrintParserSufix(st);
-		new_line;
-		return true;
+		!! XXX - Mensaje personalizado
+		print_ret (parser) "Ya hay una cantidad de tacos suficiente en el
+		propio relato.";
 
 	VagueGo:
-		!! TODO - Se podrían mostrar las salidas
 		!! El usuario ha dicho IR sin especificar a dónde
+		!! TODO - Se podrían mostrar las salidas
 		print_ret (parser) "Tienes que especificar en qué dirección ir.";
 
 	Verify:
 		!!	1:	Éxito.
 		!!	2:	Error en la verificación.
-		switch (n) {
+		switch (lm_n) {
 			1:	print_ret (parser) "Fichero de juego verificado e
 				intacto.";
 			2:	print_ret (parser) "El fichero de juego no parece intacto,
@@ -440,7 +423,7 @@ Object	LibraryMessages
 		print_ret (parser) "La instrucción ~SÍ~ no tiene sentido en esta
 		situación.";
 
-];
+		];
 
 
 !!==============================================================================
