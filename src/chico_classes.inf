@@ -357,12 +357,7 @@ Class	Atrezzo
 
 Class	NPC
  class	Thing,
- with	life [;
-			Answer, Ask, AskFor, Order, Tell:
-				print_ret (parser) "Para iniciar una conversación usa
-				simplemente la orden HABLA (a/con) PERSONAJE.";
-		],
-		before [;
+ with	before [;
 			DefaultAction:
 				if (self has described) {
 					<<TalkTo self>>;

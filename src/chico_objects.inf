@@ -206,7 +206,7 @@ Atrezzo	cielo_nocturno "cielo"
 		],
  has	male;
 
-ChoiceSet	guardar_silencio
+ChoiceSetItem	guardar_silencio
  with	entry [; CreateLink("Guardar silencio", false, true); ],
 		keys 'guarda' 'guardar' 'silencio',
 		reply [;
