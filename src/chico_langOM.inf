@@ -140,14 +140,14 @@ return true;
 }
 
 dj: switch (n) {
-1:	! description
+1:	! ##Examine
 print "Aquel tipo parecía un chiste. Tenía los ojos desorbitados y la mandíbula desencajada. Y se agitaba con la música desde detrás de la mesa de mezclas y su portátil como si intentase desencajar también el resto del cuerpo.";
 new_line;
 return true;
 }
 
 DungeonMaster: switch (n) {
-1:	! Texto inicial: Primera Escena
+1:	! Texto inicial: PRIMERA ESCENA
 print "---¿Por qué tenemos que desmembrarla?
 ^^
 Ella es sólo un bulto en el suelo, recortado por los deslumbrantes faros del coche. La noche se ha acabado encapotando y, sin luna, los faros son la única luz en el descampado. Hace frío.
@@ -157,17 +157,15 @@ Ella es sólo un bulto en el suelo, recortado por los deslumbrantes faros del coc
 Saca algo del maletero y lo lanza hacia aquí. Cae a apenas un paso del cuerpo. ", (A) sierra, ". En la noche, las manchas que salpican la tierra a su alrededor parecen negras. Algo más aterriza junto a ", (the) sierra, " con un golpe. Esta vez se trata de un rollo de bolsas de basura de plástico negras. Bajo los faros del coche todo es o blanco o negro.";
 new_line;
 return true;
-2:	! Texto inicial: Segunda Escena A
+2:	! Texto inicial: SEGUNDA ESCENA (A)
 print "OCHO HORAS ANTES.
 ^^
-Alguien vomitaba alcohol y comida a medio digerir en el jardín, apoyado al tronco de un árbol. Ante la indiferencia absoluta de los demás invitados. Era una fiesta en casa de José Freire y, como era habitual en aquellas fiestas, había gente por todas partes. Gente que trabajaba para él, gente interesada en hacer algún trabajo con él, y otros muchos que no tengo ni idea de dónde salían y que sólo parecían interesados en la comida, la bebida y la droga gratis. Al que vomitaba no le había visto en mi vida. Debía ser de estos últimos.
+Alguien vomitaba alcohol y comida a medio digerir en el jardín, apoyado al tronco de un árbol. Ante la indiferencia absoluta de los demás invitados. Nos encontrábamos en una fiesta en casa de Rosa Freire y, como era habitual en aquellas fiestas, ", (strong) "había demasiada gente", ". Por todas partes. Por un lado estábamos los que de un modo u otro trabajábamos para ella; desde los camareros y las fulanas que chapoteaban en la piscina a los matones de pocas luces y los pringados sin voz ni voto del puto último escalafón de la jerarquía, como yo. Estaban también aquellos que hacían negocios con Freire, y los que habían acudido porque pretendían empezar a hacerlos. Y, por último, había siempre todo un ejército que no tengo ni idea de dónde coño salía y que parecía interesado únicamente en la comida, la bebida y la droga gratis. Al que vomitaba no le había visto en mi vida. Debía ser de estos últimos.
 ^^
-Yo, por supuesto, era de los que trabajaban para Freire, por si te lo estás preguntando. Y estaba allí porque se suponía que debía estar allí, pero no me lo estaba pasando bien en absoluto.
-^^
-Al llegar había cogido una copa. Tampoco es que tuviese mucho más que hacer aparte de intentar emborracharme, después de todo. Sin embargo no recuerdo si llegué a darle más de un sorbo antes de dejármela olvidada en alguna parte. Ahora simplemente estaba tirado en una de las tumbonas de la terraza, intentando matar el tiempo hasta que pudiese largarme a casa. Si tenía suerte, podría pasarme toda la fiesta sin tener que aguantar a nadie.";
+Yo de normal tampoco hacía ningún asco a lo gratis, pero en esa ocasión pasaba olímpicamente. Toda aquella gente me daba arcadas ---algunos de forma literal, como míster Vomitona---. De poder escoger, hubiese preferido pasar la tarde viendo un animado partido de petanca en el parque. Sin embargo, cuando el sueldo te lo pagaba Freire, ir a sus fiestas se suponía que formaba parte del trabajo. Así que allí estaba, tirado en una de las tumbonas de la terraza, intentando matar el tiempo y pasar desapercibido hasta que pudiese largarme a casa. Si tenía suerte, podría quedarme allí tumbado durante toda la fiesta sin tener que cruzar una palabra con nadie.";
 new_line;
 return true;
-3:	! Texto inicial: Segunda Escena B
+3:	! Texto inicial: SEGUNDA ESCENA (B)
 print "OCHO HORAS ANTES.";
 new_line;
 return true;
@@ -184,37 +182,44 @@ return true;
 
 
 grupo: switch (n) {
-1:	! description
-print "De aquel grupo, al único que conocía desde hacía tiempo era ";
-CreateLink(grupo, "Berto", 0);
-print ". Le pillábamos porros en el barrio de vez en cuando, hace ya un montón de años. Fue él el que me ofreció empezar a hacer trabajos para Freire. A los demás los conocí después.";
+1:	! ##Examine (A)
+print "Cuatro tipos con los que suele tocarme trabajar. Es decir; los cuatro tipos para los que me toca hacer de chico de los recados normalmente. De los cuatro, al único al que conocía desde hacía tiempo era ";
+CreateLink(grupo, "Berto", 3);
+print ". Le pillábamos porros en el barrio de vez en cuando, hace ya un montón de años. Fue él el que me ofreció empezar a trabajar con la Freire. A los demás los conocí después.";
 new_line;
 return true;
-2:
+2:	! daemon (A)
+new_line;
+print "---¡Lárgate a tomar por culo con eso, anda!
+^^
+El que gritaba era Mario. Vete a saber por qué, le estaba montando el pollo a un camarero que había cometido el error de acercarse a ellos. Pobre desgraciado. Y entonces fui yo el que cometí el error. Crucé la mirada con el loco cabrón. ";
+CreateLink(grupo, "Mario", 0);
+print " me hizo un gesto para que me acercara a ellos.";
+return true;
+3:	! daemon (A2)
+print " Iba a tener que levantarme de mi tumbona al final. Joder.";
+return true;
+4:	! daemon (B)
 new_line;
 print "---¡Eh, chico! ---";
 CreateLink(grupo, "Mario", 0);
-print " seguía empeñado en que no pudiese disfrutar del sol y las tetas de silicona de la ", (name) piscina, ". ---¡Ven aquí!";
+print " se empeñaba en que dejase de disfrutar del sol y las tetas de silicona de ", (the) piscina, ". ---¡Ven aquí!";
 new_line;
 return true;
-3:
+5:	! daemon (C)
 new_line;
-print "No tenía ni idea de qué demonios querría aquel tipo, pero el caso es que ";
+print "¿Qué demonios querría aquel tipo? ";
 CreateLink(grupo, "Mario", 0);
-print " seguía haciendo gestos para que me acercase a ellos.";
+print " seguía haciendo gestos con una mano para que me acercase a ellos.";
 new_line;
 return true;
-4:
+6:	! daemon (D)
 new_line;
 print "";
 CreateLink(grupo, "Mario", 0);
 print " voceó de nuevo. ---¿Es que estás sordo? Ven aquí.
 ^^
-Ese cabrón... Estaba claro que no iba a rendirse así que era mejor ir a ver qué demonios quería. ";
-return true;
-5:
-new_line;
-print "---¡Chico! ¿Dónde coño te habías metido? ¡Ven de una puta vez! ---No parecía que ese cabrón se fuese a olvidar de mí así que era mejor ir a ver qué demonios quería. ";
+Ese cabrón... estaba claro que no iba a rendirse. Era mejor ir a ver qué demonios quería.";
 return true;
 }
 
@@ -310,7 +315,7 @@ print "En realidad era justo a eso a lo que me dedicaba desde que trabajaba para
 Todos se callaron de pronto. Pero por alguna razón volvieron a partirse el culo un momento después. A mi no me hacía ni puta gracia.
 ^^
 ---Vaya. Aquí, el";
-if (DungeonMaster._chico_lied) print " Hugh Hefner";
+if (DungeonMaster.chico_lied) print " Hugh Hefner";
 else print " niño de mamá";
 print " este parece molesto. Muy bien, te escucho, chico. Te escucho atentamente. ---La voz de Mario era suave. Sumamente suave. ---Entonces, ¿vas o no vas a ir a por esas copas que te he pedido educadamente?";
 new_line;
@@ -345,21 +350,6 @@ return true;
 
 
 
-invitados: switch (n) {
-1:	! description 1
-print "Prácticamente todos tenían la mano pegada a un vaso de tubo lleno de cubitos de hielo que tintineaban cuando se movían. Aquello parecía una puta convención de virtuosos de las maracas.";
-return true;
-2:	! description 1 (location == TERRAZA)
-print " Salvo los tipos reunidos en ";
-CreateLink(grupo, "Mario", 0);
-print " junto a la piscina. Esos habían venido para asistir a su propia convención de hijos de puta.";
-return true;
-3:
-print "Confiaba en que si los dejaba en paz ellos me dejarían en paz a mi. De momento había funcionado.";
-new_line;
-return true;
-}
-
 invitados_sala_lectura: switch (n) {
 1:	! description
 print "Los que iban y venían del ";
@@ -384,6 +374,21 @@ new_line;
 return true;
 2:	! before: ##TalkTo
 print "Confiaba en que si los dejaba en paz, ellos me dejarían en paz a mi. De momento había funcionado.";
+}
+
+invitados_terraza: switch (n) {
+1:	! description 1
+print "Prácticamente todos tenían la mano pegada a un vaso de tubo lleno de cubitos de hielo que tintineaban cuando se movían. Aquello parecía una puta convención de virtuosos de las maracas.";
+return true;
+2:	! description 1 (location == TERRAZA)
+print " Salvo los tipos reunidos en ";
+CreateLink(grupo, "Mario", 0);
+print " junto a la piscina. Esos habían venido para asistir a su propia convención de hijos de puta.";
+return true;
+3:
+print "Confiaba en que si los dejaba en paz ellos me dejarían en paz a mi. De momento había funcionado.";
+new_line;
+return true;
 }
 
 
@@ -498,7 +503,7 @@ cm1_op05: switch (n) {
 1:
 print "---Hijo de puta. Eres un puto psicópa-";
 new_line;
-if (DungeonMaster._chico_hitted)
+if (DungeonMaster.chico_hitted)
 print "^Esta vez me esperaba el golpe. Y aún así. Tengo unos reflejos de mierda.^^";
 else
 print "^Veo el movimiento de su mano demasiado tarde para apartarme. ";
@@ -574,24 +579,15 @@ return true;
 }
 
 putas: switch (n) {
-1:	! description (~~described)
-print "Como era tradición en aquellas fiestas, la piscina estaba ocupada por unas cuántas mujeres cuyos bikinis parecían a punto de estallar por culpa de la tensión. Mi plan original al llegar a la terraza había sido tumbarme al sol y matar el tiempo disfrutando del espectáculo. Era un buen plan. Sin embargo ---¡oh, sorpresa!--- aquello no había salido bien. En vez de bikinis demasiado tirantes, al que había acabado mirando era al míster vomitona del jardín.
-^^
-Me pregunto cuándo coño se había convertido en costumbre eso de que nada me saliese como quería.";
+1:	! ##Examine (A)
+print "Era tradición en las fiestas esas; poner a un puñado de mujeres salpicándose entre sí en la piscina, en unos bikinis que podían estallar en cualquier momento por culpa de la tensión. Como buena emprendedora, a Freire se le daba bien explotar personas.";
+return true;
+2:	! ##Examine (B) (~~described)
+print " Podía haberme rebelado con un encendido alegato en contra de la utilización del cuerpo de aquellas mujeres y haber convencido al personal del error y la inmoralidad de esa situación. Es cierto. Pero la verdad es que en su lugar había optado por tumbarme al sol y matar el tiempo intentando disfrutar del espectáculo. Será que soy un cabrón.";
 new_line;
 return true;
-2:	! description Segunda Parte B TODO
-print "Mi plan al llegar era pasar la tarde disfrutando del sol y las tías que se bañaban en bikini en la piscina ---todas estaban improbablemente buenas---. Era un buen plan. Sin embargo, ¡oh, sorpresa! aquello no había salido bien. En vez de a las tías a los que había acabado mirando era a los payasos que rondaban borrachos a mi alrededor. El camarero se estaba ganando el sueldo.
-^^
-Me pregunto cuándo coño se había convertido en costumbre eso de que nada me salga bien.";
-new_line;
-return true;
-3:	! description (described)
-print "Mi plan al llegar a la terraza había sido tumbarme al sol y matar el tiempo disfrutando de las tías que se bañaban en bikini en la piscina. Era un buen plan. Tenía que haber sabido que no saldría bien.";
-new_line;
-return true;
-4:	! before: ##TalkTo
-print "Chapoteaban entre risas y se tiraban chorritos de agua las unas a las otras y exhibían a los invitados como por casualidad esos grandes pechos de silicona suyos que más bien parecían boyas... Precisamente para eso las pagaba Freire. Y estaban haciendo su trabajo con una profesionalidad fascinante. Hubiese sido un sacrilegio molestarlas.";
+3:	! ##Examine (B) (described)
+print " Y a nadie nos importaba. Sospecho que más porque somos unos hijoputas que por miedo a protestarle algo a Freire. Que también.";
 new_line;
 return true;
 }
@@ -600,15 +596,17 @@ return true;
 
 
 SALA_LECTURA: switch (n) {
-1:	! description
+1:	! ##Examine (A)
 print "Entre el ";
-CreateLink(SALON, "salón", 0);
-print " principal donde habían colocado la barra y la ";
+CreateLink(SALON, "salón principal", 0);
+print " donde habían colocado la barra y la ";
 CreateLink(TERRAZA, "terraza", 0);
-print " trasera estaba esta espaciosa sala de grandes cristaleras. Había unas altas estanterías llenas de libros y varias butacas desperdigadas en un rincón. Curiosamente, salvo por aquellos pocos que ocupaban las butacas, la sala de lectura esa era el sitio menos abarrotado de toda la casa. Conociendo el perfil de los invitados";
-if (SALA_LECTURA hasnt visited) {
-print " ---sería arriesgado asegurar que la mitad de ellos hubiese leído un libro en los últimos veinte años, desde aquellos de Teo en la escuela. Qué coño, la cara de alguno te hacía preguntarte si sabría leer siquiera---";
-}
+print " trasera estaba esta espaciosa sala de grandes cristaleras. Había unas altas estanterías llenas de libros y varias butacas desperdigadas por el espacio. Curiosamente, salvo por aquellos pocos que ocupaban las butacas, la sala de lectura esa era el sitio menos abarrotado de toda la casa. Conociendo el perfil de los invitados";
+return true;
+2:	! ##Examine (B) (~~visited)
+print " ---hubiese sido arriesgado aventurar que la mitad de ellos haya leído un libro en los últimos veinte o treinta años, desde aquellos de Teo en la escuela. Qué coño. La cara de alguno hacía preguntarte si sabría leer---";
+return true;
+3:	! ##Examine (C)
 print ", probablemente la presencia de los libros los estuviese ahuyentando de allí.
 ^^
 Además de las puertas al ";
@@ -617,34 +615,26 @@ print " y a la ";
 CreateLink(TERRAZA, "terraza", 0);
 print ", la habitación estaba comunicada con un ";
 CreateLink(PASILLO, "corredor", 0);
-print " que conducía al resto de la planta baja.";
+print " que conducía más adentro en la planta baja.";
 new_line;
 return true;
-2:	! before: ##Go (e_obj)
-print "Podía ver dónde estaban Mario y los demás desde los ventanales. No pensaba salir allí otra vez. Al menos no sin aquellas malditas copas.";
+4:	! ##Go e_obj
+print "Podía ver dónde estaban Mario y los demás desde los ventanales. No pensaba arriesgarme a salir allí otra vez. Al menos no sin aquellas malditas copas.";
 new_line;
 return true;
 }
 
 SALON: switch (n) {
-1:	! description
-print "Aquello era un caos de cuerpos, luces de colorines y música latina a todo volumen. Junto a la puerta a la ";
+1:	! ##Examine (A)
+print "Aquello era una puta discoteca; todo cuerpos, luces de colorines y reguetón a un volumen ensordecedor. Junto a la puerta a la ";
 CreateLink(SALA_LECTURA, "sala de lectura", 0);
-print " habían puesto una plataforma con un dj encargado de pinchar el ruido ese que estaba sonando, y habían puesto también una barra con bebida al fondo del salón para que cualquiera se pudiese servir libremente. Los invitados, por su parte, bailaban y se emborrachaban.";
-new_line;
-return true;
-2:	! description
-print "Grande y abarrotado y bullicioso. Había un dj encargado de poner música y un camarero encargado de poner bebida. Y  ", (the) invitados_salon, " bailaban y se emborrachaban. A juzgar por cómo bailaban, era evidente que ", (the) camarero, " estaba haciendo mejor su trabajo que el ";
-CreateLink(dj, "pinchadiscos", 0);
-print ". Iba a tener que luchar de nuevo para abrirme paso desde la barra hasta la puerta a la ";
-CreateLink(SALA_LECTURA, "sala de lectura", 0);
-print ".";
+print " habían colocado una plataforma para el ", (a) dj, " responsable de pinchar ese ruido que estaba sonando, y habían puesto también una gran mesa con bebida al fondo del salón para que cualquiera se pudiese servir libremente. Los invitados, en su papel, bailaban y se emborrachaban.";
 new_line;
 return true;
 }
 
 sierra: switch (n) {
-1:	! description (~described)
+1:	! ##Examine (~described)
 print "", (name) Mario_1, " es un puto psicópata. Hay una película, Saw. La ha visto todo el mundo. Sale un psicópata en la peli, con una máscara de payaso o algo así. El payaso este encadena a un tipo del tobillo y le deja una pequeña sierra al alcance de la mano. Entonces el tipo intenta cortar el grillete, pero es demasiado duro como para cortarlo con una sierra tan pequeña, así que tiene que utilizarla para cortarse el tobillo... ahá, los guionistas debían ser también unos psicópatas buenos. El mundo entero está lleno de ellos. Deberían hacer un club.
 ^^
 ¿Cómo coño puedo estar pensando en una puta película ahora?
@@ -652,70 +642,82 @@ print "", (name) Mario_1, " es un puto psicópata. Hay una película, Saw. La ha v
 Esa ", (name) sierra, " es algo más grande que la que sale en Saw, creo. Tal vez con ella se podría cortar el grillete. Bueno, da igual. Aquí no hay grilletes.";
 new_line;
 return true;
-2:	! description
+2:	! ##Examine
 print "", (The) sierra, " es algo más grande que la del payaso aquel de Saw. Tal vez con esta sierra sí se podría cortar aquel grillete que aparece en la peli. Aunque da igual. Aquí no hay ningún grillete.";
 new_line;
 return true;
-3:	! before: Take
-print "Agarro la sierra.";
+3:	! ##Take (after)
+print "Recojo la sierra del suelo.";
 new_line;
 return true;
 }
 
 
 TERRAZA: switch (n) {
-1:	! description
-print "", (A) puertas_cristal, " se abrían a aquella terraza llena de gente, en la parte de atrás de la enorme casa de Freire. Muchos de los que andaban por allí eran habituales a los que conocía de vista, aunque ninguno era amigo mío.";
-return true;
-2:	! description (~~visited)
-print " Tampoco los del pequeño ";
-CreateLink(grupo, "grupo", 0);
-print " reunido alrededor de una de las mesas junto a la ", (name) piscina, ", a unos treinta metros de mi tumbona, entre los que estaban los tíos con los que trabajaba.";
-return true;
-3:	! description
-print " Tampoco los del pequeño ";
-CreateLink(grupo, "grupo", 0);
-print " reunido alrededor de una de las mesas junto a la ", (name) piscina, ", entre los que estaban los tíos con los que trabajaba.";
-return true;
-4:	! description (visited)
-print " Por lo que a mí respectaba hubiese preferido mil veces no conocer a ninguno de ellos, ni siquiera de vista, y sí a cualquiera de las mujeres de atrezzo que chapoteaban en el agua. Pero el mundo no es un lugar feliz.";
+1:	! ##Examine (~~visited)
+print "", (A) puertas_cristal, " se abrían a aquella terraza llena de ";
+CreateLink(invitados_terraza, "gente", 0);
+print ", en la parte de atrás de la enorme casa de Freire. Muchos de los que andaban por allí eran habituales a los que conocía al menos de vista, aunque ninguno era amigo mío. Ni planeaba que empezasen a serlo ahora. Tampoco los del pequeño ", (name) grupo, " reunido junto a ", (the) piscina, ", a una veintena de metros de mi tumbona, entre los que estaban los tíos con los que yo trabajaba. Por lo que a mí tocaba, ya podía no conocer a ninguno de ellos y si a cualquiera de ", (the) putas, " que se estaban salpicando unas a otras en ", (the) piscina, ". Pero el mundo no es un lugar feliz.";
 new_line;
 return true;
-5:	! description (~~visited)
-print "Justo en ese momento crucé la mirada con uno de aquellos tíos. ";
-CreateLink(grupo, "Mario", 0);
-print " me hizo un gesto para que me acercara a ellos. Para variar, al final no había tenido suerte e iba a tener que levantarme de mi tumbona. Joder.";
+2:	! ##Examine (visited)
+print "", (A) puertas_cristal, " se abrían a aquella terraza llena de gente, en la parte de atrás de la enorme casa de Freire. Muchos de los que andaban por allí eran habituales a los que conocía al menos de vista, aunque ninguno era amigo mío. Tampoco los del pequeño ", (name) grupo, " reunido junto a ", (the) piscina, ", entre los que estaban los tíos con los que yo trabajaba.";
 new_line;
 return true;
-6:	! before: ##Go w_obj
-print "Hice como que no había visto el gesto de Mario y me metí en la casa.";
-new_line;
-return true;
-7:	! before: ##Go w_obj
-print "Volví a ignorar a Mario y me metí en la casa.";
-new_line;
-return true;
-8:	! before: ##Go w_obj
+3:	! ##Go w_obj (A)
 print "Me metí en la casa.";
 new_line;
 return true;
+4:	! ##Go w_obj (B)
+print "Hice como que no había visto el gesto de ";
+CreateLink(grupo, "Mario", 0);
+print " y fui hacia las puertas.
+^^
+---¡Chico! ¿A dónde coño te crees que vas? ¡Ven de una puta vez! ---En fin. Había sido un buen intento, pero sería mejor ir a ver qué demonios quería y que se callase la boca.";
+new_line;
+return true;
+5:	! ##Go w_obj (C)
+print "Tuve que interrumpir el movimiento incluso antes de llegar a girarme hacia la casa.
+^^
+---¡Eh, chico! ---";
+CreateLink(grupo, "Mario", 0);
+print " me hacía gestos para que me acercase a ellos. ---¡Ven aquí!";
+new_line;
+return true;
+
+
+
 }
 
 tumbona: switch (n) {
-1:	! description
-print "Con lo bien que había estado yo allí sentado hasta entonces viendo vomitar al personal. Joder.";
+1:	! ##Examine (~~general)
+print "Desde allí tenía al mismo tiempo unas vistas perfectas a ", (the) piscina, " y al ";
+CreateLink(TERRAZA, "jardín", 0);
+print ". Intentaba concentrarme en las ";
+CreateLink(putas, "tías", 0);
+print " medio desnudas que retozaban en el agua, pero esos ";
+CreateLink(invitados_terraza, "imbéciles", 0);
+print " medio borrachos que retozaban sobre pota no se cansaban de llamar la atención.";
 new_line;
 return true;
-2:	! before: ##Enter
-print "Ojalá hubiese podido seguir adelante con mi plan de estar allí tumbado sin hacer nada. Pero no. Aquellos tíos me lo iban a joder todo.";
+2:	! ##Examine (general)
+print "Con lo bien que había estado yo hasta entonces allí sentado. Aunque hubiese sido viendo vomitar al personal. Joder.";
 new_line;
 return true;
-3:	! before: ##StandUp
-print "Que si, joder. Ya me había levantado de mi tumbona.";
+3:	! ##Enter (after)
+print "Volví a mi sitio en ", (the) tumbona, ".";
 new_line;
 return true;
-4:	! before: ##StandUp
-print "No estaba en ningún sitio del que debiese levantarme.";
+4:	! ##Exit (after)
+print "Estaba a gusto allí. No sé por qué demonios me levanté.";
+new_line;
+return true;
+5:	! ##Enter (general)
+print "Ojalá hubiese podido seguir adelante con mi plan de estar allí tumbado sin hacer nada durante toda la fiesta. Pero no. Aquellos tíos me lo iban a joder todo.";
+new_line;
+return true;
+6:	! ##Exit (general)
+print "Que si, hostia. Ya me había levantado de mi tumbona.";
 new_line;
 return true;
 }

@@ -81,7 +81,7 @@
 !!		-	cm2_op03
 !!		-	cm2_op04
 !!		-	cm2_op05
-!!		-	invitados
+!!		-	invitados_terraza
 !!		-	puertas_cristal
 !!	4)	SALA_LECTURA
 !!		-	estanterias
@@ -127,7 +127,7 @@ Object	DungeonMaster "(Dungeon Master)"
 			2:	!! Inicializaciones:
 				SetGrammaticalInflection(FIRST_PERSON_PAST);
 				self.current_scene = 2;
-				initial_location = TERRAZA;
+				initial_location = tumbona;
 				!! Textos:
 				new_line;
 				HorizontalRule();
@@ -157,28 +157,34 @@ Object	DungeonMaster "(Dungeon Master)"
 			return initial_location;
 		],
 		!!----------------------------------------------------------------------
-		!! Código de la escena actual.
+		!! Mario empieza a llamar al chico para que se acerque, en la terraza.
 		!!----------------------------------------------------------------------
+		grupo_starts_calling [;
+			self.grupo_called = true;
+			O__M(grupo, 2);
+			if (IndirectlyContains(tumbona, Chico)) O__M(grupo, 3);
+			new_line;
+			return true;
+		],
+		!!----------------------------------------------------------------------
+		!! Otras propiedades
+		!!----------------------------------------------------------------------
+		!! Código de la escena actual
 		current_scene 0,
- 		!!----------------------------------------------------------------------
-		!! Registra el enfado de Mario con el chico
-		!!----------------------------------------------------------------------
-		mario_anger 0,
-		!!----------------------------------------------------------------------
 		!! Registra si Mario ha golpeado al chico
-		!!----------------------------------------------------------------------
-		_chico_hitted false,
-		!!----------------------------------------------------------------------
+		chico_hitted false,
 		!! Registra si el chico ha mentido a Mario
-		!!----------------------------------------------------------------------
-		_chico_lied false,
-		!!----------------------------------------------------------------------
-		!! Código de final de la primera escena:
-		!!	0)	El chico intenta cortar a Yamileth.
-		!!	1)	El chico enfurece a Mario y acaba golpeado por el suelo.
-		!!	2)	Mario dispara al chico en la cabeza.
-		!!----------------------------------------------------------------------
-		_first_scene_end 0,
+		chico_lied false,
+		!! Código de final de la primera escena: 0) el chico intenta cortar a
+		!! Yamileth, 1) el chico enfurece a Mario y acaba golpeado por el
+		!! suelo, 2) Mario dispara al chico en la cabeza
+		first_scene_end 0,
+		!! Indica si Mario ha llamado al chico, en la terraza
+		grupo_called false,
+		!! Indica si el chico ha terminado de hablar con Mario, en la terraza
+		grupo_talked_to false,
+		!! Registra el estado de enfado de Mario con el chico
+		mario_anger 0,
 ;
 
 !! Objeto protagonista
@@ -333,14 +339,20 @@ Furniture	cadaver_Yamileth "cadáver" DESCAMPADO_1
 					&& IndirectlyContains(player, sierra)) {
 					O__M(self, 2);
 					if (DESCAMPADO_1.smelled) { new_line; O__M(self, 3); }
+					PressAnyKey();
 					loc = DungeonMaster.start_scene(2);
 					PlayerTo(loc);
 					return true;
 				}
+				SetPronoun('-la', sierra);
+				SetPronoun('ella', sierra);
 				return O__M(self, 4);
 			DefaultAction:
-				if (self has described && IndirectlyContains(player, sierra))
+				if (self has described && IndirectlyContains(Chico, sierra)) {
+					print (parser) "Cortar cadáver";
+					new_line;
 					<<Cut self>>;
+				}
 			Pull, Push, PushDir, Take, Turn:
 				return O__M(self, 5);
 		],
@@ -356,8 +368,11 @@ Item	sierra "sierra" DESCAMPADO_1
 		],
 		before [;
 			DefaultAction:
-				if (self has described && ~~IndirectlyContains(player, self))
+				if (self has described && ~~IndirectlyContains(Chico, self)) {
+					print (parser) "Coger sierra";
+					new_line;
 					<<Take self>>;
+				}
 		],
 		after [; Take: return O__M(self, 3); ],
  has	concealed female;
@@ -383,7 +398,11 @@ NPC		Mario_1 "Mario" DESCAMPADO_1
 			Attack:
 				return O__M(self, 6);
 			DefaultAction:
-				if (self.talked) <<TalkTo self>>;
+				if (self.talked) {
+					print (parser) "Hablar a Mario";
+					new_line;
+					<<TalkTo self>>;
+				}
 			TalkTo:
 				self.talked = true;
 				ChoiceSetManager.start(conversacion_Mario_1);
@@ -469,7 +488,7 @@ ChoiceSetItem	cm1_op01
 				conversacion_Mario_1.remove_choice(guardar_silencio);
 			}
 			else {
-				DungeonMaster._chico_hitted = true;
+				DungeonMaster.chico_hitted = true;
 				!! [Hijo de puta / Guardar silencio]
 				conversacion_Mario_1.add_choice(cm1_op05);
 				conversacion_Mario_1.add_choice(guardar_silencio);
@@ -493,7 +512,7 @@ ChoiceSetItem	cm1_op02
 				conversacion_Mario_1.remove_choice(guardar_silencio);
 			}
 			else {
-				DungeonMaster._chico_hitted = true;
+				DungeonMaster.chico_hitted = true;
 				!! [Hijo de puta / Guardar silencio]
 				conversacion_Mario_1.add_choice(cm1_op05);
 				conversacion_Mario_1.add_choice(guardar_silencio);
@@ -509,7 +528,7 @@ ChoiceSetItem	cm1_op03
 		reply [; return O__M(self, 1); ],
 		reaction [;
 			Mario_1.gets_angry(4);
-			DungeonMaster._chico_hitted = true;
+			DungeonMaster.chico_hitted = true;
 		],
 		relatives	cm1_op01 cm1_op02 cm1_op04,
 		subtopics	cm1_op06 cm1_op07,
@@ -539,7 +558,7 @@ ChoiceSetItem	cm1_op06
 		reply [; return O__M(self, 1); ],
 		reaction [
 			loc;
-			DungeonMaster._first_scene_end = 1;
+			DungeonMaster.first_scene_end = 1;
 			loc = DungeonMaster.start_scene(2);
 			PlayerTo(loc);
 			return true;
@@ -554,7 +573,7 @@ ChoiceSetItem	cm1_op07
 		reply [; return O__M(self, 1); ],
 		reaction [
 			loc;
-			DungeonMaster._first_scene_end = 2;
+			DungeonMaster.first_scene_end = 2;
 			loc = DungeonMaster.start_scene(2);
 			PlayerTo(loc);
 			return true;
@@ -576,350 +595,335 @@ NPC		Alberto_1 "Alberto" DESCAMPADO_1
  has	concealed male proper;
 
 
- !!==============================================================================
- !!
- !!	3)	TERRAZA
- !!
- !!------------------------------------------------------------------------------
-
+!!==============================================================================
+!!
+!!	3)	TERRAZA
+!!
+!!------------------------------------------------------------------------------
 Outdoors	TERRAZA "Terraza"
-with	name_f	'terraza',
-	   name_m	'patio',
-	   gender	G_FEMENINO,
-	   initial [;
-		   if (self hasnt visited) {
-			   StartDaemon(grupo);
-		   }
-	   ],
-	   description [;
-		   O__M(self, 1);
-		   if (self hasnt general) {
-			   O__M(self, 2);
-		   } else {
-			   O__M(self, 3);
-		   }
-		   if (self has visited) {
-			   O__M(self, 4);
-		   } else {
-			   new_line;
-			   new_line;
-			   O__M(self, 5);
-		   }
-		   return true;
-	   ],
-	   w_to [;
-		   if (conversacion_Mario_2.state == 1) conversacion_Mario_2.state++;
-		   if (~~keep_silent) {
-			   if (grupo.talked) O__M(self, 8);
-			   else {
-				   if (SALA_LECTURA has visited) O__M(self, 7);
-				   else O__M(self, 6);
-			   }
-			   new_line;
-		   }
-		   return SALA_LECTURA;
-	   ],
-	   in_to [; return self.w_to(); ],
-has	female;
+ with	name_f	'terraza',
+		name_m	'jardin' 'patio' 'prado',
+		gender	G_FEMENINO,
+		description [;
+			if (self hasnt visited) return O__M(self, 1);
+			else return O__M(self, 2);
+		],
+		w_to [;
+			if (~~DungeonMaster.grupo_called) {
+				DungeonMaster.grupo_called = true;
+				return O__M(self, 5);
+			}
+			if (~~DungeonMaster.grupo_talked_to) {
+				! FIXME - Forzar conversación
+				return O__M(self, 4);
+			}
+			O__M(self, 3);
+			new_line;
+			return puertas_cristal;
+		],
+		in_to [; return self.w_to(); ],
+ has	female;
 
 Atrezzo	cielo_terraza "cielo" TERRAZA
-with	name_f	'atmosfera',
+ with	name_f	'atmosfera',
 		name_m	'astro' 'cielo' 'dia' 'firmamento' 'sol',
 		gender	G_MASCULINO,
 		adjectives 'azul' 'brillante',
 		description [; return O__M(self, 1); ],
 		react_before [;
+			DefaultAction:
+				if (noun == u_obj)
+					<<Examine self>>;
 			Examine, Search:
 				if (noun == u_obj)
 					<<Examine self>>;
 		],
-has	male;
+ has	male;
 
 Atrezzo	piscina "piscina" TERRAZA
-with	name_f	'piscina',
-	   gender	G_FEMENINO,
-	   before [;
-		   Examine, Look:
-			   <<Examine putas>>;
-	   ],
-has	female;
+ with	name_f	'piscina',
+		gender	G_FEMENINO,
+		before [;
+			Examine, Look:
+				<<Examine putas>>;
+		],
+ has	female;
 
 Atrezzo	putas "putas" TERRAZA
-with	name_f	'chica' 'fulana' 'mujer' 'puta' 'teta' 'tia',
-	   name_fp	'chicas' 'fulanas' 'mujeres' 'putas' 'tetas' 'tias',
-	   name_m	'pecho' 'seno',
-	   name_mp	'pechos' 'senos',
-	   gender	G_FEMENINO + G_PLURAL,
-	   adjectives 'atrezzo' 'bikini' 'florero' 'silicona',
-	   !! TODO descripción Segunda Parte B
-	   description [;
-		   if (self hasnt described) return O__M(self, 1);
-		   return O__M(self, 3);
-	   ],
-	   before [;
-		   TalkTo:
-			   return O__M(self, 4);
-	   ],
-has	female pluralname;
+ with	name_f	'chica' 'fulana' 'mujer' 'puta' 'teta' 'tia',
+		name_fp	'chicas' 'fulanas' 'mujeres' 'putas' 'tetas' 'tias',
+		name_m	'pecho' 'seno',
+		name_mp	'pechos' 'senos',
+		gender	G_FEMENINO + G_PLURAL,
+		adjectives 'atrezzo' 'bikini' 'florero' 'silicona',
+		description [;
+			O__M(self, 1);
+			if (self hasnt described) return O__M(self, 2);
+			else return O__M(self, 3);
+		],
+		before [;
+			TalkTo:
+				return O__M(self, 4);
+		],
+ has	female pluralname;
 
-Atrezzo	tumbona "tumbona" TERRAZA
-with	name_f	'tumbona',
-	   name_fp	'tumbonas',
-	   name_m	'asiento',
-	   name_mp	'asientos',
-	   gender	G_FEMENINO,
-	   adjectives 'libre' 'libres' 'ocupada' 'ocupadas' 'ocupado' 'ocupados',
-	   description [;
-		   return O__M(self, 1);
-	   ],
-	   react_before [;
-		   Sit:
-			   if (noun == nothing) {
-				   <<Sit self>>;
-			   }
-		   StandUp:
-			   if (noun == nothing) {
-				   <<StandUp self>>;
-			   }
-	   ],
-	   before [;
-		   Climb:
-			   <<Sit self>>;
-		   Enter:
-			   <<Sit self>>;
-		   Sit:
-			   return O__M(self, 2);
-		   StandUp:
-			   if (SALA_LECTURA hasnt visited) {
-				   return O__M(self, 3);
-			   } else {
-				   return O__M(self, 4);
-			   }
-	   ],
-has	female;
+Furniture	puertas_cristal "puertas de cristal"
+ with	found_in TERRAZA SALA_LECTURA,
+ 		name_f	'entrada' 'puerta' 'salida',
+ 		name_fp	'puertas',
+ 		gender	G_FEMENINO + G_PLURAL,
+ 		adjectives 'cristal',
+		description [;
+			if (self in TERRAZA) return O__M(self, 1);
+			else return O__M(self, 2);
+		],
+		before [;
+			DefaultAction:
+				print (parser) "Ir hacia puertas de cristal";
+				new_line;
+				<<Go self>>;
+		],
+		door_dir [;
+			if (self in TERRAZA) return w_to;
+			else return e_to;
+		],
+		door_to [;
+			if (self in TERRAZA) return SALA_LECTURA;
+			else return TERRAZA;
+		],
+ has	concealed door female pluralname;
 
-NPC		grupo "compañeros" TERRAZA
-with	name_f	'gente' 'persona',
-	   name_fp	'personas',
-	   name_m	'alberto' 'berto' 'david' 'hombre' 'mario',
-	   name_mp	'companeros' 'grupo' 'hombres',
-	   gender	G_MASCULINO + G_PLURAL,
-	   article	"mis",
-	   adjectives 'junto' 'piscina' 'reunido' 'reunidos',
-	   description [;
-		   return O__M(self, 1);
-	   ],
-	   react_before [;
-		   CSETSelected, TalkTo:
-			   return false;
-		   default:
-			   if (conversacion_Mario_2.fixed)
-				   <<TalkTo self>>;
-	   ],
-	   before [;
-		   DefaultAction:
-			   if (self.talked) <<TalkTo self>>;
-		   TalkTo:
-			   StopDaemon(self);
-			   self.talked = true;
-			   ChoiceSetManager.start(conversacion_Mario_2);
-			   return true;
-	   ],
-	   daemon [;
-		   if (parent(self) ~= real_location) return false;
-		   self.counter++;
-		   switch (self.counter) {
-			   3:
-				   if (random(2) == 1) {
-					   self.counter = 4;
-					   if (parent(self) hasnt general) return O__M(self, 2);
-					   O__M(self, 5);
-					   <<TalkTo grupo>>;
-				   }
-			   4:
-				   if (parent(self) hasnt general) return O__M(self, 2);
-				   O__M(self, 5);
-				   <<TalkTo grupo>>;
-			   6:
-				   if (random(3) == 1) {
-					   self.counter = 8;
-					   if (parent(self) hasnt general) return O__M(self, 3);
-					   O__M(self, 5);
-					   <<TalkTo grupo>>;
-				   }
-			   7:
-				   if (random(2) == 1) {
-					   self.counter = 8;
-					   if (parent(self) hasnt general) return O__M(self, 3);
-					   O__M(self, 5);
-					   <<TalkTo grupo>>;
-				   }
-			   8:
-				   if (parent(self) hasnt general) return O__M(self, 3);
-				   O__M(self, 5);
-				   <<TalkTo grupo>>;
-			   11:
-				   if (random(3) == 1) {
-					   if (parent(self) hasnt general) O__M(self, 4);
-					   else O__M(self, 5);
-					   <<TalkTo grupo>>;
-				   }
-			   12:
-				   if (random(2) == 1) {
-					   if (parent(self) hasnt general) O__M(self, 4);
-					   else O__M(self, 5);
-					   <<TalkTo grupo>>;
-				   }
-			   13:
-				   if (parent(self) hasnt general) O__M(self, 4);
-				   else O__M(self, 5);
-				   <<TalkTo grupo>>;
-		   }
+SmartEnterable	tumbona "tumbona" TERRAZA
+ with	name_f	'tumbona',
+		name_fp	'tumbonas',
+		name_m	'asiento',
+		name_mp	'asientos',
+		gender	G_FEMENINO,
+		adjectives 'libre' 'libres' 'ocupada' 'ocupadas' 'ocupado' 'ocupados',
+		description [;
+			if (DungeonMaster.grupo_called) return O__M(self, 2);
+			else return O__M(self, 1);
+		],
+		react_before [;
+			Exit:
+				if (IndirectlyContains(self, player) && noun == nothing) {
+					<<Exit self>>;
+				}
+			Sit:
+				if (noun == nothing) {
+					<<Sit self>>;
+				}
+			StandUp:
+				if (DungeonMaster.grupo_called && noun == nothing or self) {
+					return O__M(self, 6);
+				}
+				if (IndirectlyContains(self, player)
+					&& noun == nothing or self) {
+					<<Exit self>>;
+				}
+		],
+		before [;
+			Climb, Sit:
+				<<Enter self>>;
+			Enter:
+				if (DungeonMaster.grupo_called
+					&& ~~(IndirectlyContains(self, player))) {
+					return O__M(self, 5);
+				}
+			StandUp:
+				<<Exit self>>;
+		],
+		after [;
+			Enter:
+				if (keep_silent == 0) {
+					return O__M(self, 3);
+				}
+			Exit:
+				if (keep_silent == 0) {
+					return O__M(self, 4);
+				}
+		],
+ has	concealed female transparent;
 
-	   ],
-	   counter 0,
-	   !! Indica si el interlector ha hablado o no con el grupo:
-	   talked false,
-has	concealed male pluralname;
+!!	-	'general' se activa tras hablar con el grupo por primera vez
+NPC		grupo "grupo" TERRAZA
+ with	name_f	'gente' 'persona',
+		name_fp	'personas',
+		name_m	'alberto' 'berto' 'david' 'grupo' 'hombre' 'mario',
+		name_mp	'companeros' 'hombres',
+		gender	G_MASCULINO + G_PLURAL,
+		adjectives 'junto' 'piscina' 'reunido' 'reunidos',
+		description [; return O__M(self, 1); ],
+		react_before [;
+			CSETSelected, TalkTo:
+				return false;
+			default:
+				if (conversacion_Mario_2.fixed)
+					<<TalkTo self>>;
+		],
+		before [;
+			DefaultAction:
+				if (self has general) {
+					print (parser) "Hablar con grupo";
+					new_line;
+					<<TalkTo self>>;
+				}
+			TalkTo:
+				give self general;
+				ChoiceSetManager.start(conversacion_Mario_2);
+				return true;
+		],
+		each_turn [;
+			if (self has general) return false;
+			switch (self.counter) {
+				4:
+					self.counter++;
+					DungeonMaster.grupo_starts_calling();
+					return true;
+				5:
+					if (random(2) == 1) {
+						self.counter++;
+						return O__M(self, 4);
+					}
+				7:
+					if (random(3) == 1) {
+						self.counter++;
+						return O__M(self, 5);
+					}
+				8:
+					if (random(2) == 1) {
+						self.counter++;
+						O__M(self, 6);
+						new_line;
+						<<TalkTo self>>;
+					}
+				default:
+					self.counter++;
+			}
+		],
+ private
+ 		!! Contador que registra el estado del objeto:
+		counter 0,
+ has	concealed male pluralname;
 
 !!------------------------------------------------------------------------------
 !! Conversación con Mario 2
 ChoiceSet	conversacion_Mario_2 "(conversación con Mario 2)"
-with	initial_action [;
-		   self.fixed = true;
-		   self.add_choice(cm2_op01);
-		   self.add_choice(cm2_op02);
-		   return O__M(self, 1);
-	   ],
-	   inter_action [;
-		   switch (self.state) {
-			   0:
-				   return O__M(self, 2);
-			   1:
-				   self.state++;
-				   self.add_choice(guardar_silencio);
-				   return O__M(self, 3);
-			   2:
-				   self.state++;
-				   self.fixed = true;
-				   self.remove_choice(guardar_silencio);
-				   self.add_choice(cm2_op04);
-				   return O__M(self, 4);
-			   3:
-				   return O__M(self, 5);
-			   default:
-				   return O__M(self, 6);
-		   }
-	   ],
-	   state 0,
-	   fixed false;
+ with	initial_action [;
+			self.fixed = true;
+			self.add_choice(cm2_op01);
+			self.add_choice(cm2_op02);
+			return O__M(self, 1);
+		],
+		inter_action [;
+			switch (self.state) {
+				0:
+					return O__M(self, 2);
+				1:
+					self.state++;
+					self.add_choice(guardar_silencio);
+					return O__M(self, 3);
+				2:
+					self.state++;
+					self.fixed = true;
+					self.remove_choice(guardar_silencio);
+					self.add_choice(cm2_op04);
+					return O__M(self, 4);
+				3:
+					return O__M(self, 5);
+				default:
+					return O__M(self, 6);
+			}
+		],
+		state 0,
+		fixed false;
 
 ChoiceSetItem	cm2_op01
-with	entry [; CreateLink("Vivo con mi madre"); ],
-	   keys 'vivo' 'con' 'madre',
-	   reply [; return O__M(self, 1); ],
-	   reaction [;
-		   DungeonMaster._chico_lied = false;
-		   conversacion_Mario_2.fixed = false;
-		   conversacion_Mario_2.state++;
-		   conversacion_Mario_2.add_choice(guardar_silencio);
-		   new_line;
-		   return O__M(conversacion_Mario_2, 7);
-	   ],
-	   relatives	cm2_op02,
-	   subtopics	cm2_op03,
-	   append_choice_set true;
+ with	entry [; CreateLink("Vivo con mi madre"); ],
+		keys 'vivo' 'con' 'madre',
+		reply [; return O__M(self, 1); ],
+		reaction [;
+			DungeonMaster.chico_lied = false;
+			conversacion_Mario_2.fixed = false;
+			conversacion_Mario_2.state++;
+			conversacion_Mario_2.add_choice(guardar_silencio);
+			new_line;
+			return O__M(conversacion_Mario_2, 7);
+		],
+		relatives cm2_op02,
+		subtopics cm2_op03,
+		append_choice_set true;
 
 ChoiceSetItem	cm2_op02
-with	entry [; CreateLink("Mentir", false, true); ],
-	   keys 'mentir' 'miente',
-	   reply [; return O__M(self, 1); ],
-	   reaction [;
-		   DungeonMaster._chico_lied = true;
-		   conversacion_Mario_2.fixed = false;
-		   conversacion_Mario_2.state++;
-		   conversacion_Mario_2.add_choice(guardar_silencio);
-		   new_line;
-		   return O__M(conversacion_Mario_2, 7);
-	   ],
-	   relatives	cm2_op01,
-	   subtopics	cm2_op03,
-	   append_choice_set true;
+ with	entry [; CreateLink("Mentir", false, true); ],
+		keys 'mentir' 'miente',
+		reply [; return O__M(self, 1); ],
+		reaction [;
+			DungeonMaster.chico_lied = true;
+			conversacion_Mario_2.fixed = false;
+			conversacion_Mario_2.state++;
+			conversacion_Mario_2.add_choice(guardar_silencio);
+			new_line;
+			return O__M(conversacion_Mario_2, 7);
+		],
+		relatives cm2_op01,
+		subtopics cm2_op03,
+		append_choice_set true;
 
 ChoiceSetItem	cm2_op03
-with	entry [; CreateLink("No soy el recadero de nadie"); ],
-	   keys 'nadie' 'no' 'recadero' 'soy',
-	   reply [; return O__M(self, 1); ],
-	   reaction [;
-		   conversacion_Mario_2.fixed = true;
-		   conversacion_Mario_2.state = 4;
-		   conversacion_Mario_2.remove_choice(guardar_silencio);
-	   ],
-	   subtopics	cm2_op04 cm2_op05,
-	   append_choice_set true;
+ with	entry [; CreateLink("No soy el recadero de nadie"); ],
+		keys 'nadie' 'no' 'recadero' 'soy',
+		reply [; return O__M(self, 1); ],
+		reaction [;
+			conversacion_Mario_2.fixed = true;
+			conversacion_Mario_2.state = 4;
+			conversacion_Mario_2.remove_choice(guardar_silencio);
+		],
+		subtopics cm2_op04 cm2_op05,
+		append_choice_set true;
 
 ChoiceSetItem	cm2_op04
-with	entry [; CreateLink("Si ya voy", "Si, ya voy"); ],
-	   keys 'afirmar' 'si' 'voy',
-	   reply [; return O__M(self, 1); ],
-	   reaction [;
-		   conversacion_Mario_2.fixed = false;
-		   give grupo general;
-		   new_line;
-		   PlayerTo(SALA_LECTURA);
-		   return true;
-	   ],
-	   relatives	cm2_op05,
-	   append_choice_set false;
+ with	entry [; CreateLink("Si ya voy", "Si, ya voy"); ],
+		keys 'afirmar' 'si' 'voy',
+		reply [; return O__M(self, 1); ],
+		reaction [;
+			conversacion_Mario_2.fixed = false;
+			give grupo general;
+			new_line;
+			PlayerTo(SALA_LECTURA);
+			return true;
+		],
+		relatives cm2_op05,
+		append_choice_set false;
 
 ChoiceSetItem	cm2_op05
-with	entry [; CreateLink("No"); ],
-	   keys 'negar' 'no',
-	   reply [; return O__M(self, 1); ],
-	   reaction [;
-		   conversacion_Mario_2.fixed = false;
-		   give grupo general;
-		   new_line;
-		   PlayerTo(SALA_LECTURA);
-		   return true;
-	   ],
-	   relatives	cm2_op04,
-	   append_choice_set false;
+ with	entry [; CreateLink("No"); ],
+		keys 'negar' 'no',
+		reply [; return O__M(self, 1); ],
+		reaction [;
+			conversacion_Mario_2.fixed = false;
+			give grupo general;
+			new_line;
+			PlayerTo(SALA_LECTURA);
+			return true;
+		],
+		relatives cm2_op04,
+		append_choice_set false;
 
-Atrezzo	invitados "invitados"
-with	found_in TERRAZA SALA_LECTURA SALON,
-	   name_f	'gente',
-	   name_fp	'personas',
-	   name_mp	'invitados',
-	   gender	G_MASCULINO + G_PLURAL,
-	   description [;
-		   if (self hasnt described) {
-			   O__M(self, 1);
-			   if (real_location == TERRAZA) O__M(self, 2);
-			   new_line;
-			   return true;
-		   }
-	   ],
-has	male pluralname;
-
-Furniture	puertas_cristal "puertas de cristal"
-with	found_in TERRAZA SALA_LECTURA,
-	   name_f	'entrada' 'puerta' 'salida',
-	   name_fp	'puertas',
-	   gender	G_FEMENINO + G_PLURAL,
-	   adjectives 'cristal',
-	   description [;
-		   if (self in TERRAZA) return O__M(self, 1);
-		   else return O__M(self, 2);
-	   ],
-	   before [;
-		   DefaultAction:
-			   <<Enter self>>;
-		   Enter:
-			   if (self in TERRAZA) <<Go w_obj>>;
-			   else <<Go e_obj>>;
-	   ],
-has	door female pluralname;
+Atrezzo	invitados_terraza "invitados" TERRAZA
+ with	name_f	'gente',
+		name_fp	'personas',
+		name_mp	'invitados',
+		gender	G_MASCULINO + G_PLURAL,
+		description [;
+			if (self hasnt described) {
+				O__M(self, 1);
+				if (real_location == TERRAZA) O__M(self, 2);
+				new_line;
+				return true;
+			}
+		],
+ has	male pluralname;
 
 
 !!==============================================================================
@@ -929,53 +933,55 @@ has	door female pluralname;
 !!------------------------------------------------------------------------------
 
 Indoors	SALA_LECTURA "Sala de lectura"
-with	name_f	'habitacion' 'sala',
-	   name_m	'cuarto',
-	   adjectives	'lectura' 'pequena' 'pequeno',
-	   gender	G_FEMENINO,
-	   initial [; if (self hasnt visited) give TERRAZA general; ],
-	   description [;
-		   return O__M(self, 1);
-	   ],
-	   n_to	PASILLO,
-	   e_to [;
-		   if (grupo hasnt general) return TERRAZA;
-		   else return O__M(self, 2);
-	   ],
-	   w_to	SALON,
-	   out_to [; return self.e_to(); ],
-has	female;
+ with	name_f	'habitacion' 'sala',
+		name_m	'cuarto',
+		adjectives	'lectura' 'pequena' 'pequeno',
+		gender	G_FEMENINO,
+		initial [; if (self hasnt visited) give TERRAZA general; ],
+		description [;
+			O__M(self, 1);
+			if (self hasnt visited) O__M(self, 2);
+			return O__M(self, 3);
+		],
+	 	n_to	PASILLO,
+	 	e_to [;
+			if (grupo hasnt general) return TERRAZA;
+			else return O__M(self, 4);
+		],
+		w_to	SALON,
+		out_to [; return self.e_to(); ],
+ has	female;
 
 Atrezzo	-> estanterias "estanterías"
-with	name_f	'balda' 'estanteria',
-	   name_fp	'baldas' 'estanterias',
-	   name_m	'estante' 'libro',
-	   name_mp	'estantes' 'libros',
-	   gender	G_FEMENINO + G_PLURAL,
-	   description [; return O__M(self, 1); ],
-has	female pluralname;
+ with	name_f	'balda' 'estanteria',
+		name_fp	'baldas' 'estanterias',
+		name_m	'estante' 'libro',
+		name_mp	'estantes' 'libros',
+		gender	G_FEMENINO + G_PLURAL,
+		description [; return O__M(self, 1); ],
+ has	female pluralname;
 
 Atrezzo	-> invitados_sala_lectura "invitados"
-with	name_f	'gente',
-	   name_fp	'personas',
-	   name_mp	'invitados',
-	   gender	G_MASCULINO + G_PLURAL,
-	   description [;
-		   if (invitados has described) return O__M(self, 1);
-		   else return O__M(invitados, 1);
-	   ],
-	   before [;
-		   Listen:
-			   <<Listen>>;
-		   TalkTo:
-			   if (self.talkTo_flag) return O__M(self, 2);
-			   else {
-				   self.talkTo_flag = true;
-				   return O__M(self, 3);
-			   }
-	   ],
-	   talkTo_flag false,
-has	male pluralname;
+ with	name_f	'gente',
+		name_fp	'personas',
+		name_mp	'invitados',
+		gender	G_MASCULINO + G_PLURAL,
+		description [;
+			if (invitados_terraza has described) return O__M(self, 1);
+			else return O__M(invitados_terraza, 1);
+		],
+		before [;
+			Listen:
+				<<Listen>>;
+			TalkTo:
+				if (self.talkTo_flag) return O__M(self, 2);
+				else {
+					self.talkTo_flag = true;
+					return O__M(self, 3);
+				}
+		],
+		talkTo_flag false,
+ has	male pluralname;
 
 
 !!==============================================================================
@@ -995,17 +1001,24 @@ with	name_m	'corredor' 'pasillo',
 has	male;
 
 Furniture	-> puerta_banno "puerta del baño"
-with	name_m	'bano',
-	   name_f	'puerta' 'puertas',
-	   gender	G_FEMENINO,
-	   adjectives 'abierta' 'cerrada',
-	   before [;
-		   DefaultAction:
-			   <<Enter self>>;
-		   Enter:
-			   <<Go e_obj>>;
-	   ],
-has	door female;
+ with	name_m	'bano',
+		name_f	'puerta' 'puertas',
+		gender	G_FEMENINO,
+		adjectives 'abierta' 'cerrada',
+		before [;
+			DefaultAction:
+				if (self has described) {
+					print (parser) "Ir hacia puerta del baño";
+					new_line;
+					<<Go self>>;
+				}
+				print (parser) "Examinar puerta del baño";
+				new_line;
+				<<Examine self>>;
+		],
+		door_dir w_to,
+		door_to BANNO,
+ has	door female;
 
 Furniture	-> puerta_despacho "puerta del despacho"
 with	name_m	'despacho',
@@ -1022,13 +1035,13 @@ has	female;
 !!------------------------------------------------------------------------------
 
 Indoors	BANNO "Baño"
-with	name_m	'aseo' 'bano',
-	   gender	G_MASCULINO,
-	   description [;
-		   return O__M(self, 1);
-	   ],
-	   w_to	PASILLO,
-has	male;
+ with	name_m	'aseo' 'bano',
+		gender	G_MASCULINO,
+		description [;
+			return O__M(self, 1);
+		],
+		w_to	PASILLO,
+ has	male;
 
 
 !!==============================================================================
@@ -1038,40 +1051,41 @@ has	male;
 !!------------------------------------------------------------------------------
 
 Indoors	SALON "Salón"
-with	name_f	'estancia' 'habitacion' 'sala',
-	   name_m	'cuarto' 'salon',
-	   gender	G_MASCULINO,
-	   description [;
-		   if (self hasnt general) return O__M(self, 2);
-		   give self ~general;
-		   return O__M(self, 1);
-	   ],
-	   after [; Go: if (noun == w_obj) give self general; ],
-	   e_to	SALA_LECTURA,
-has	male;
+ with	name_f	'estancia' 'habitacion' 'sala',
+		name_m	'cuarto' 'salon',
+		gender	G_MASCULINO,
+		description [;
+			return O__M(self, 1);
+			!! if (self hasnt general) return O__M(self, 2);
+			!! give self ~general;
+			!! return O__M(self, 1);
+		],
+		after [; Go: if (noun == w_obj) give self general; ],
+		e_to	SALA_LECTURA,
+ has	male;
 
 Atrezzo	-> camarero "camarero"
-with	name_f	'gente' 'persona',
-	   name_m	'camarero' 'hombre',
-	   gender	G_MASCULINO,
-	   description [; return O__M(self, 1); ],
-has	male;
+ with	name_f	'gente' 'persona',
+		name_m	'camarero' 'hombre',
+		gender	G_MASCULINO,
+		description [; return O__M(self, 1); ],
+ has	male;
 
 Atrezzo	-> dj "dj"
-with	name_f	'gente' 'persona',
-	   name_m	'dj' 'disc' 'discjockey' 'jockey' 'pinchadiscos',
-	   gender	G_MASCULINO,
-	   description [; return O__M(self, 1); ],
-has	male;
+ with	name_f	'gente' 'persona',
+		name_m	'dj' 'disc' 'discjockey' 'jockey' 'pinchadiscos',
+		gender	G_MASCULINO,
+		description [; return O__M(self, 1); ],
+ has	male;
 
 Atrezzo	-> invitados_salon "invitados"
-with	name_f	'gente' 'persona',
-	   name_fp	'personas',
-	   name_m	'invitado',
-	   name_mp	'invitados',
-	   gender	G_MASCULINO + G_PLURAL,
-	   description [; return O__M(self, 1); ],
-has	male pluralname;
+ with	name_f	'gente' 'persona',
+		name_fp	'personas',
+		name_m	'invitado',
+		name_mp	'invitados',
+		gender	G_MASCULINO + G_PLURAL,
+		description [; return O__M(self, 1); ],
+ has	male pluralname;
 
 
 !!==============================================================================

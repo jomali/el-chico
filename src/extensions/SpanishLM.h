@@ -263,7 +263,8 @@ Property inhibit_object_list; ! boolean
 
 
 !!==============================================================================
-!! Similar a la rutina 'lm_as()', con el verbo 'ser'.
+!! Imprime la flexión correcta del verbo 'ser'.
+!! TODO - documentación
 !!
 !!	@param {Object} obj
 !!	@param {boolean} [pastSimple=false] - Activado (==true) para utilizar el
@@ -329,7 +330,7 @@ Property inhibit_object_list; ! boolean
 
 
 !!==============================================================================
-!! Similar a la rutina 'lm_as()', con el verbo 'ser', usando mayúsculas para la
+!! Imprime la flexión correcta del verbo 'ser', usando mayúsculas para la
 !! primera letra.
 !!
 !!	@param {Object} obj
@@ -386,8 +387,7 @@ Property inhibit_object_list; ! boolean
 
 
 !!==============================================================================
-!! Similar a la rutina 'lm_as()', con el verbo 'estar'.
-!! FIXME
+!! Imprime la flexión correcta del verbo 'estar'.
 !!
 !!	@param {Object} obj
 !!	@param {boolean} [pastSimple=false] - Activado (==true) para utilizar el
@@ -397,53 +397,53 @@ Property inhibit_object_list; ! boolean
 [ lm_estas obj pastSimple;
 	switch (_grammatical_inflection) {
 		FIRST_PERSON_PRESENT:
-			if (IsPluralNoun(obj)) print "amos";
-			else print "oy";
+			if (IsPluralNoun(obj)) print "estamos";
+			else print "estoy";
 		SECOND_PERSON_PRESENT:
-			if (IsPluralNoun(obj)) print "áis";
-			else print "ás";
+			if (IsPluralNoun(obj)) print "estáis";
+			else print "estás";
 		THIRD_PERSON_PRESENT:
-			if (IsPluralNoun(obj)) print "án";
-			else print "á";
+			if (IsPluralNoun(obj)) print "están";
+			else print "está";
 		FIRST_PERSON_PAST:
 			if (pastSimple) {
-				if (IsPluralNoun(obj)) print "uvimos";
-				else print "uve";
+				if (IsPluralNoun(obj)) print "estuvimos";
+				else print "estuve";
 			} else {
-				if (IsPluralNoun(obj)) print "ábamos";
-				else print "aba";
+				if (IsPluralNoun(obj)) print "estábamos";
+				else print "estaba";
 			}
 		SECOND_PERSON_PAST:
 			if (pastSimple) {
-				if (IsPluralNoun(obj)) print "uvisteis";
-				else print "uviste";
+				if (IsPluralNoun(obj)) print "estuvisteis";
+				else print "estuviste";
 			} else {
-				if (IsPluralNoun(obj)) print "abais";
-				else print "abas";
+				if (IsPluralNoun(obj)) print "estabais";
+				else print "estabas";
 			}
 		THIRD_PERSON_PAST:
 			if (pastSimple) {
-				if (IsPluralNoun(obj)) print "uvieron";
-				else print "uvo";
+				if (IsPluralNoun(obj)) print "estuvieron";
+				else print "estuvo";
 			} else {
-				if (IsPluralNoun(obj)) print "aban";
-				else print "aba";
+				if (IsPluralNoun(obj)) print "estaban";
+				else print "estaba";
 			}
 		FIRST_PERSON_FUTURE:
-			if (IsPluralNoun(obj)) print "aremos";
-			else print "aré";
+			if (IsPluralNoun(obj)) print "estaremos";
+			else print "estaré";
 		SECOND_PERSON_FUTURE:
-			if (IsPluralNoun(obj)) print "aréis";
-			else print "arás";
+			if (IsPluralNoun(obj)) print "estaréis";
+			else print "estarás";
 		THIRD_PERSON_FUTURE:
-			if (IsPluralNoun(obj)) print "arán";
-			else print "ará";
+			if (IsPluralNoun(obj)) print "estarán";
+			else print "estará";
 	}
 ];
 
 
 !!==============================================================================
-!! Similar a la rutina 'lm_as()', con el verbo 'poder'.
+!! Imprime la flexión correcta del verbo 'poder'.
 !!
 !!	@param {Object} obj
 !!	@param {boolean} [pastSimple=false] - Activado (==true) para utilizar el
@@ -509,7 +509,7 @@ Property inhibit_object_list; ! boolean
 
 
 !!==============================================================================
-!! Similar a la rutina 'lm_as()', con el verbo 'poder', usando mayúsculas para
+!! Imprime la flexión correcta del verbo 'poder', usando mayúsculas para
 !! la primera letra.
 !!
 !!	@param {Object} obj
@@ -592,7 +592,7 @@ Property inhibit_object_list; ! boolean
 
 
 !!==============================================================================
-!! Similar a la rutina 'lm_as()', con el verbo 'tener'.
+!! Imprime la flexión correcta del verbo 'tener'.
 !!
 !!	@param {Object} obj
 !!	@param {boolean} [pastSimple=false] - Activado (==true) para utilizar el
@@ -648,7 +648,7 @@ Property inhibit_object_list; ! boolean
 
 
 !!==============================================================================
-!! Similar a la rutina 'lm_as()', con el verbo 'tener', usando mayúsculas para
+!! Imprime la flexión correcta del verbo 'tener', usando mayúsculas para
 !! la primera letra.
 !!
 !!	@param {Object} obj
@@ -2091,7 +2091,7 @@ Verb	meta 'gramatica' 'grammar'
 							else print "(Saldrá";
 						}
 				}
-				" ", (del_) x1, ").";
+				" ", (del) x1, ").";
 			7:	switch (_grammatical_inflection) {
 					FIRST_PERSON_PRESENT:
 						if (x1 has supporter) {
@@ -2285,7 +2285,7 @@ Verb	meta 'gramatica' 'grammar'
 				print " ";
 				LanguageVerb(verb_word);
 				".";
-			2:	print "No ", (lm_puedes) player, " salir ", (del_) x1,
+			2:	print "No ", (lm_puedes) player, " salir ", (del) x1,
 				" porque ";
 				switch (_grammatical_inflection) {
 					FIRST_PERSON_PRESENT,
@@ -2376,11 +2376,11 @@ Verb	meta 'gramatica' 'grammar'
 							else print "Saldrá";
 						}
 				}
-				" ", (del_) x1, ".";
+				" ", (del) x1, ".";
 			4:	print "No ", (lm_puedes) player, ". No ", (lm_estas) player," ";
 				if (x1 has supporter) print "encima";
 				else print "dentro";
-				" ", (del_) x1, ".";
+				" ", (del) x1, ".";
 		}
 
 	Fill:
@@ -2467,11 +2467,11 @@ Verb	meta 'gramatica' 'grammar'
 			1:	print (lm_ttienes) player, " que ";
 				if (x1 has supporter) print "bajar", (lm_te) player;
 				else print "salir";
-				" ", (del_) x1, " antes.";
+				" ", (del) x1, " antes.";
 			2:	"No ", (lm_puedes) player, " ir por ahí.";
 			3:	"", (lm_eeres) player, " incapaz de trepar por ", (the) x1, ".";
 			4:	"", (lm_eeres) player, " incapaz de bajar por ", (the) x1, ".";
-			5:	"No ", (lm_puedes) player, " pasar a través ", (del_) x1, ".";
+			5:	"No ", (lm_puedes) player, " pasar a través ", (del) x1, ".";
 			6:	print "No ", (lm_puedes) player, " ir porque ", (the) x1," no ";
 				switch (_grammatical_inflection) {
 					FIRST_PERSON_PRESENT,
@@ -2649,7 +2649,7 @@ Verb	meta 'gramatica' 'grammar'
 					THIRD_PERSON_FUTURE:
 						print "podrán";
 				}
-				" meter cosas dentro ", (del_) x1, ".";
+				" meter cosas dentro ", (del) x1, ".";
 			3:	switch (_grammatical_inflection) {
 					FIRST_PERSON_PRESENT,
 					SECOND_PERSON_PRESENT,
@@ -2716,7 +2716,7 @@ Verb	meta 'gramatica' 'grammar'
 						if (IsPluralNoun(player)) print "Meterán";
 						else print "Meterá";
 				}
-				" ", (the) x1, " dentro ", (del_) second, ".";
+				" ", (the) x1, " dentro ", (del) second, ".";
 		}
 
 	Inv:
@@ -2960,14 +2960,14 @@ Verb	meta 'gramatica' 'grammar'
 			19: print " (sobre ", (el_) x1;
 			!! Si el objeto tiene "soporte", la librería va a listar sus
 			!! contenidos. Este es el encabezado de la lista
-			20: print ", encima ", (del_) x1;
+			20: print ", encima ", (del) x1;
 			!! Como e l9, pero en otra modalidad (que se activa si
 			!! EscribirListaDesde es llamada sin el modo BREVE_BIT)
 			21: print " (en ", (el_) x1;
 			!! Si el contenido tiene "recipiente" y puede verse su interior
 			!! y hay cosas, la librería va a mostrar sus contenidos. Este
 			!! es el encabezado de la lista
-			22: print ", dentro ", (del_) x1;
+			22: print ", dentro ", (del) x1;
 			!! Como el 21, pero en otra modalidad (que se activa si
 			!! EscribirListaDesde es llamada sin el modo BREVE_BIT)
 		}
@@ -3889,7 +3889,7 @@ Verb	meta 'gramatica' 'grammar'
 					THIRD_PERSON_FUTURE:
 						print "en ese momento";
 				}
-				print " dentro ", (del_) x1, ")";
+				print " dentro ", (del) x1, ")";
 			9:	print "   (";
 				switch (_grammatical_inflection) {
 					FIRST_PERSON_PRESENT,
@@ -4683,47 +4683,47 @@ Verb	meta 'gramatica' 'grammar'
 					FIRST_PERSON_PRESENT:
 						if (IsPluralNoun(player)) print "podemos";
 						else print "puedo";
-						" ver lo que hay dentro ", (del_) x1, " porque
+						" ver lo que hay dentro ", (del) x1, " porque
 						está", (n) x1, " cerrad", (o) x1, ".";
 					SECOND_PERSON_PRESENT:
 						if (IsPluralNoun(player)) print "podéis";
 						else print "puedes";
-						" ver lo que hay dentro ", (del_) x1, " porque
+						" ver lo que hay dentro ", (del) x1, " porque
 						está", (n) x1, " cerrad", (o) x1, ".";
 					THIRD_PERSON_PRESENT:
 						if (IsPluralNoun(player)) print "pueden";
 						else print "puede";
-						" ver lo que hay dentro ", (del_) x1, " porque
+						" ver lo que hay dentro ", (del) x1, " porque
 						está", (n) x1, " cerrad", (o) x1, ".";
 					FIRST_PERSON_PAST:
 						if (IsPluralNoun(player)) print "podíamos";
 						else print "podía";
-						" ver lo que había dentro ", (del_) x1, " porque
+						" ver lo que había dentro ", (del) x1, " porque
 						estaba", (n) x1, " cerrad", (o) x1, ".";
 					SECOND_PERSON_PAST:
 						if (IsPluralNoun(player)) print "podíais";
 						else print "podías";
-						" ver lo que había dentro ", (del_) x1, " porque
+						" ver lo que había dentro ", (del) x1, " porque
 						estaba", (n) x1, " cerrad", (o) x1, ".";
 					THIRD_PERSON_PAST:
 						if (IsPluralNoun(player)) print "podían";
 						else print "podía";
-						" ver lo que había dentro ", (del_) x1, " porque
+						" ver lo que había dentro ", (del) x1, " porque
 						estaba", (n) x1, " cerrad", (o) x1, ".";
 					FIRST_PERSON_FUTURE:
 						if (IsPluralNoun(player)) print "podremos";
 						else print "podré";
-						" ver lo que haya dentro ", (del_) x1, " porque
+						" ver lo que haya dentro ", (del) x1, " porque
 						estará", (n) x1, " cerrad", (o) x1, ".";
 					SECOND_PERSON_FUTURE:
 						if (IsPluralNoun(player)) print "podréis";
 						else print "podrás";
-						" ver lo que haya dentro ", (del_) x1, " porque
+						" ver lo que haya dentro ", (del) x1, " porque
 						estará", (n) x1, " cerrad", (o) x1, ".";
 					THIRD_PERSON_FUTURE:
 						if (IsPluralNoun(player)) print "podrán";
 						else print "podrá";
-						" ver lo que haya dentro ", (del_) x1, " porque
+						" ver lo que haya dentro ", (del) x1, " porque
 						estará", (n) x1, " cerrad", (o) x1, ".";
 				}
 			6:	switch (_grammatical_inflection) {
@@ -5202,7 +5202,7 @@ Verb	meta 'gramatica' 'grammar'
 			4:	print (lm_ttienes) player, " que ";
 				if (x1 has supporter) print "bajar", (lm_te) player;
 				else print "salir";
-				"", (del_) x1, " antes.";
+				"", (del) x1, " antes.";
 			5:	"Ya ", (lm_tienes) player, " ", (the) x1, ".";
 			6:	switch (_grammatical_inflection) {
 					FIRST_PERSON_PRESENT,
@@ -5233,7 +5233,7 @@ Verb	meta 'gramatica' 'grammar'
 					THIRD_PERSON_FUTURE:
 						print "Parecerá", (n) noun;
 				}
-				" formar parte ", (del_) x1, ".";
+				" formar parte ", (del) x1, ".";
 			8:	print "No ";
 				switch (_grammatical_inflection) {
 						FIRST_PERSON_PRESENT,

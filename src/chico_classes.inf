@@ -293,9 +293,9 @@ Class	Atrezzo
 			default:
 				switch (_grammatical_inflection) {
 					FIRST_PERSON_PRESENT:
-						print "No es necesario que ";
-						if (IsPluralNoun(player)) print "nos preocupemos";
-						else print "me preocupe";
+						if (IsPluralNoun(player))
+							print "No creemos que necesitemos preocuparnos";
+						else print "No creo que necesite preocuparme";
 					SECOND_PERSON_PRESENT:
 						print "No es necesario que ";
 						if (IsPluralNoun(player)) print "os preocupéis";
@@ -305,9 +305,9 @@ Class	Atrezzo
 						if (IsPluralNoun(player)) print "se preocupen";
 						else print "se preocupe";
 					FIRST_PERSON_PAST:
-						print "No era necesario que ";
-						if (IsPluralNoun(player)) print "nos preocupásemos";
-						else print "me preocupase";
+						if (IsPluralNoun(player))
+							print "No creíamos que necesitásemos preocuparnos";
+						else print "No creía que necesitase preocuparme";
 					SECOND_PERSON_PAST:
 						print "No era necesario que ";
 						if (IsPluralNoun(player)) print "os preocupaseis";
@@ -317,9 +317,10 @@ Class	Atrezzo
 						if (IsPluralNoun(player)) print "se preocupasen";
 						else print "se preocupase";
 					FIRST_PERSON_FUTURE:
-						print "No será necesario que ";
-						if (IsPluralNoun(player)) print "nos preocupemos";
-						else print "me preocupe";
+						print "Es difícil que";
+						if (IsPluralNoun(player))
+							print "vayamos a necesitar preocuparnos";
+						else print "vaya a necesitar preocuparme";
 					SECOND_PERSON_FUTURE:
 						print "No será necesario que ";
 						if (IsPluralNoun(player)) print "os preocupéis";
@@ -551,7 +552,7 @@ Class	SmartEnterable
 			Exit:
 				if (keep_silent == 0) {
 					if (self has supporter) {
-						print (lm_te) player, " baj", (lm_as_) player;
+						print "Baj", (lm_as_) player;
 					} else {
 						switch (_grammatical_inflection) {
 							FIRST_PERSON_PRESENT:
